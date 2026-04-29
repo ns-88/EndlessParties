@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Application\EndlessParties.Application\EndlessParties.Application.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\EndlessParties.Infrastructure\EndlessParties.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="WebApplicationBuilderExtensions.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="WebApplicationExtensions.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
