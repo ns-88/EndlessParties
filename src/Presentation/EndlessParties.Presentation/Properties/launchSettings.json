@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "EndlessParties.Presentation": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local"
+      }
+    }
+  }
+}
