@@ -3,6 +3,9 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
+  <Folder Name="/..Shared/Validation/">
+    <Project Path="src/..Shared/Validation/EndlessParties.Shared.Validation/EndlessParties.Shared.Validation.csproj" Id="266d0242-016f-4fc4-9441-c1441e856dea" />
+  </Folder>
   <Folder Name="/Application/">
     <Project Path="src/Application/EndlessParties.Application.Abstractions/EndlessParties.Application.Abstractions.csproj" Id="26f67793-4183-41ae-bda7-6f9355f0189c" />
     <Project Path="src/Application/EndlessParties.Application/EndlessParties.Application.csproj" Id="9eafb6d0-8cae-4292-b367-f44b7e12d00f" />
