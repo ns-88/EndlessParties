@@ -3,7 +3,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using EndlessParties.Shared.Validation;
+using EndlessParties.Shared.Validations;
 using Microsoft.OpenApi;
 
 namespace EndlessParties.Presentation;
@@ -20,9 +20,6 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddHealthChecks();
-
-        services
-            .AddApplicationValidation(typeof(Program).Assembly);
 
         services
             .AddEndpointsApiExplorer()

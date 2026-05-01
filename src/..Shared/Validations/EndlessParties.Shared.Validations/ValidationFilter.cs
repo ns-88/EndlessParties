@@ -1,8 +1,8 @@
-﻿using EndlessParties.Shared.Validation.Dispatcher;
+﻿using EndlessParties.Shared.Validations.Dispatcher;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EndlessParties.Shared.Validation;
+namespace EndlessParties.Shared.Validations;
 
 /// <summary>
 /// Фильтр асинхронного действия для вызова валидации модели запроса

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace EndlessParties.Shared.Validation.Configurations;
+namespace EndlessParties.Shared.Validations.Configurations;
 
 /// <summary>
 /// Конфигуратор настроек <see cref="ApiBehaviorOptions"/> для отключения встроенной валидации
