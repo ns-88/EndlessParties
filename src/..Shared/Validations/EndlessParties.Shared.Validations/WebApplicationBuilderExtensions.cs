@@ -21,7 +21,7 @@ public static class WebApplicationBuilderExtensions
             .AddValidatorsFromAssembly(assembly)
             .AddSingleton<ValidationDispatcher>()
             .AddScoped<ValidationFilter>()
-            .ConfigureOptions<ConfigureValidationFilterOptions>()
+            .ConfigureOptions<ConfigureMvcOptions>()
             .ConfigureOptions<ConfigureApiBehaviorOptions>();
 
         return builder;

@@ -9,6 +9,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Update="Dispatcher\IValidationInvoker.cs">
 			<DependentUpon>ValidationInvoker.cs</DependentUpon>
 		</Compile>

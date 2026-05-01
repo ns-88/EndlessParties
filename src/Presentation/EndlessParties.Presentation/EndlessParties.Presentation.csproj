@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions\EndlessParties.Shared.Exceptions.csproj" />
 		<ProjectReference Include="..\..\..Shared\Validations\EndlessParties.Shared.Validations\EndlessParties.Shared.Validations.csproj" />
 		<ProjectReference Include="..\..\Application\EndlessParties.Application\EndlessParties.Application.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\EndlessParties.Infrastructure\EndlessParties.Infrastructure.csproj" />

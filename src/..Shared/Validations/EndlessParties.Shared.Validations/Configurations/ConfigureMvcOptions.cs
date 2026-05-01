@@ -6,7 +6,7 @@ namespace EndlessParties.Shared.Validations.Configurations;
 /// <summary>
 /// Конфигуратор настроек <see cref="MvcOptions"/> для добавления <see cref="ValidationFilter"/>
 /// </summary>
-internal class ConfigureValidationFilterOptions : IConfigureOptions<MvcOptions>
+internal class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
 {
     /// <inheritdoc />
     public void Configure(MvcOptions options)

@@ -1,6 +1,7 @@
-﻿using EndlessParties.Shared.Validations.Dispatcher;
-using FluentValidation;
+﻿using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Validations.Dispatcher;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EndlessParties.Shared.Validations;
 
@@ -27,11 +28,11 @@ internal class ValidationFilter : IAsyncActionFilter
     {
         if (!context.ModelState.IsValid)
         {
-            throw new ValidationException("Ошибка валидации");
+            throw new ValidationException(context.ModelState);
         }
-        
-        var serviceProvider = context.HttpContext.RequestServices;
 
+        var serviceProvider = context.HttpContext.RequestServices;
+        
         foreach (var argument in context.ActionArguments.Values)
         {
             if (argument == null)
@@ -41,10 +42,20 @@ internal class ValidationFilter : IAsyncActionFilter
 
             var result = await _dispatcher.ValidateAsync(argument, serviceProvider);
 
-            if (!result.IsValid)
+            if (result.IsValid)
             {
-                throw new ValidationException("Ошибка валидации", result.Errors);
+                continue;
             }
+
+            var errors = new ModelStateDictionary();
+
+            foreach (var error in result.Errors)
+            {
+                errors.SetModelValue(error.PropertyName, error.AttemptedValue, error.AttemptedValue?.ToString());
+                errors.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            throw new ValidationException(errors);
         }
 
         await next();
