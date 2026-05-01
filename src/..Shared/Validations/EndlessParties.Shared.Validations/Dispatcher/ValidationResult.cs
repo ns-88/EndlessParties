@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace EndlessParties.Shared.Validation.Dispatcher;
+namespace EndlessParties.Shared.Validations.Dispatcher;
 
 /// <summary>
 /// Результат валидации

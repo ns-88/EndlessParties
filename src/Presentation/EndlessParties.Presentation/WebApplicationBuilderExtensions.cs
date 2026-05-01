@@ -1,5 +1,7 @@
 ﻿using EndlessParties.Application;
 using EndlessParties.Infrastructure;
+using EndlessParties.Shared.Exceptions;
+using EndlessParties.Shared.Validations;
 
 namespace EndlessParties.Presentation
 {
@@ -13,6 +15,12 @@ namespace EndlessParties.Presentation
         /// </summary>
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
+            builder
+                .AddApplicationExceptions();
+
+            builder
+                .AddApplicationValidations(typeof(Program).Assembly);
+
             builder.Services
                 .AddPresentation()
                 .AddApplication()

@@ -1,4 +1,4 @@
-﻿namespace EndlessParties.Shared.Validation.Dispatcher;
+﻿namespace EndlessParties.Shared.Validations.Dispatcher;
 
 /// <summary>
 /// Обработчик для вызова метода валидации типизированного валидатора

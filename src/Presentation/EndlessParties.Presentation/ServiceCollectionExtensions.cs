@@ -3,7 +3,6 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using EndlessParties.Shared.Validation;
 using Microsoft.OpenApi;
 
 namespace EndlessParties.Presentation;
@@ -20,9 +19,6 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddHealthChecks();
-
-        services
-            .AddApplicationValidation(typeof(Program).Assembly);
 
         services
             .AddEndpointsApiExplorer()
@@ -65,6 +61,7 @@ public static class ServiceCollectionExtensions
     private static void ConfigureSerializerOptions(JsonSerializerOptions options)
     {
         options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
         options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         options.WriteIndented = true;
         options.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic);

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EndlessParties.Shared.Validation.Dispatcher;
+namespace EndlessParties.Shared.Validations.Dispatcher;
 
 /// <inheritdoc />
 internal class ValidationInvoker<T> : IValidationInvoker

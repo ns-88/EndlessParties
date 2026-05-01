@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace EndlessParties.Shared.Validation.Dispatcher;
+namespace EndlessParties.Shared.Validations.Dispatcher;
 
 /// <summary>
 /// Сервис для кэширования типизированных обработчиков и выполнения асинхронной валидации моделей
