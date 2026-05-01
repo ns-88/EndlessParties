@@ -1,4 +1,6 @@
-﻿using EndlessParties.Application;
+﻿using System.Reflection;
+using EndlessParties.Application;
+using EndlessParties.Application.Abstractions.Models.Requests;
 using EndlessParties.Infrastructure;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Validations;
@@ -19,8 +21,8 @@ namespace EndlessParties.Presentation
                 .AddApplicationExceptions();
 
             builder
-                .AddApplicationValidations(typeof(Program).Assembly);
-
+                .AddApplicationValidations();
+            
             builder.Services
                 .AddPresentation()
                 .AddApplication()
