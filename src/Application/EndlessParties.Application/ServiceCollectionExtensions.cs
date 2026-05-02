@@ -1,3 +1,5 @@
+using EndlessParties.Application.Abstractions.Services;
+using EndlessParties.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Application;
@@ -12,6 +14,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        services
+            .AddTransient<IEventService, EventService>();
+
         return services;
     }
 }
