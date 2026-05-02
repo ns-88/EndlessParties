@@ -2,6 +2,7 @@
 using EndlessParties.Application.Abstractions.Models.Responses;
 using EndlessParties.Application.Abstractions.Services;
 using EndlessParties.Application.Mappers;
+using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
@@ -37,7 +38,7 @@ internal class EventService : IEventService
         }
         catch (Exception ex)
         {
-            throw new LogicException("Ошибка получения всех событий", ex);
+            throw new LogicException(ApplicationErrors.ReceivingAllEvents, ex);
         }
 
         return EventModelMapper.MapList(events);
@@ -54,11 +55,11 @@ internal class EventService : IEventService
         }
         catch (NotFoundException)
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
         catch (Exception ex)
         {
-            throw new LogicException($"Ошибка получения события по идентификатору. Id: {id}", ex);
+            throw new LogicException(string.Format(ApplicationErrors.ReceivingEventById, id), ex);
         }
 
         return EventModelMapper.Map(@event);
@@ -75,7 +76,7 @@ internal class EventService : IEventService
         }
         catch (Exception ex)
         {
-            throw new LogicException("Ошибка создания события", ex);
+            throw new LogicException(ApplicationErrors.EventCreation, ex);
         }
     }
 
@@ -90,11 +91,11 @@ internal class EventService : IEventService
         }
         catch (NotFoundException)
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
         catch (Exception ex)
         {
-            throw new LogicException($"Ошибка обновления события. Id: {id}", ex);
+            throw new LogicException(string.Format(ApplicationErrors.EventUpdate, id), ex);
         }
     }
 
@@ -107,11 +108,11 @@ internal class EventService : IEventService
         }
         catch (NotFoundException)
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
         catch (Exception ex)
         {
-            throw new LogicException($"Ошибка обновления события. Id: {id}", ex);
+            throw new LogicException(string.Format(ApplicationErrors.EventRemoving, id), ex);
         }
     }
 }

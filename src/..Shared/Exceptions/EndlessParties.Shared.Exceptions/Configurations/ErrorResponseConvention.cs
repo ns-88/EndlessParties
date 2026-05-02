@@ -15,8 +15,6 @@ internal class ErrorResponseConvention : IApplicationModelConvention
         foreach (var controller in application.Controllers)
         {
             AddResponseType<ProblemDetails>(controller, StatusCodes.Status400BadRequest);
-            AddResponseType<ProblemDetails>(controller, StatusCodes.Status404NotFound);
-            AddResponseType<ValidationProblemDetails>(controller, StatusCodes.Status422UnprocessableEntity);
             AddResponseType<ProblemDetails>(controller, StatusCodes.Status500InternalServerError);
         }
     }

@@ -1,4 +1,5 @@
-﻿using EndlessParties.Domain.Models;
+﻿using EndlessParties.Domain.Errors;
+using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 
@@ -33,7 +34,7 @@ internal class EventRepository : IEventRepository
     {
         if (!_events.TryGetValue(id, out var @event))
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
 
         return Task.FromResult(@event);
@@ -44,7 +45,7 @@ internal class EventRepository : IEventRepository
     {
         if (!_events.TryAdd(model.Id, model))
         {
-            throw new LogicException($"Событие с уже было создано. Id: {model.Id}");
+            throw new LogicException(string.Format(ApplicationErrors.EventAlreadyCreated, model.Id));
         }
 
         return Task.CompletedTask;
@@ -55,7 +56,7 @@ internal class EventRepository : IEventRepository
     {
         if (!_events.ContainsKey(id))
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
 
         _events[id] = model;
@@ -68,7 +69,7 @@ internal class EventRepository : IEventRepository
     {
         if (!_events.Remove(id))
         {
-            throw new NotFoundException($"Событие не найдено. Id: {id}");
+            throw new NotFoundException(string.Format(ApplicationErrors.EventNotFound, id));
         }
 
         return Task.CompletedTask;
