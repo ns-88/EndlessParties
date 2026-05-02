@@ -42,6 +42,7 @@ public class EventController : ControllerBase
     /// Получение события по идентификатору
     /// </summary>
     [ProducesResponseType(typeof(EventResponseModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("{id:guid}")]
     public Task<EventResponseModel> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -52,6 +53,7 @@ public class EventController : ControllerBase
     /// Создание события
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [HttpPost]
     public Task Create([FromBody] EventRequestModel model, CancellationToken cancellationToken)
     {
@@ -62,6 +64,8 @@ public class EventController : ControllerBase
     /// Обновление события
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpPut("{id:guid}")]
     public Task Update([FromRoute] Guid id, [FromBody] EventRequestModel model, CancellationToken cancellationToken)
     {
@@ -72,6 +76,7 @@ public class EventController : ControllerBase
     /// Удаление события
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpDelete("{id:guid}")]
     public Task Remove([FromRoute] Guid id, CancellationToken cancellationToken)
     {

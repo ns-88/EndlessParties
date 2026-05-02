@@ -1,15 +1,15 @@
 <Project>
-  <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-  <ItemGroup Label="Microsoft">
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="10.0.7" />
-  </ItemGroup>
-  <ItemGroup Label="Miscellaneous">
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.7" />
-    <PackageVersion Include="FluentValidation" Version="12.1.1" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-    <PackageVersion Include="Riok.Mapperly" Version="4.3.1" />
-  </ItemGroup>
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+	<ItemGroup Label="Microsoft">
+		<PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
+		<PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="10.0.7" />
+	</ItemGroup>
+	<ItemGroup Label="Miscellaneous">
+		<PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+		<PackageVersion Include="FluentValidation" Version="12.1.1" />
+		<PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+		<PackageVersion Include="Riok.Mapperly" Version="4.3.1" />
+	</ItemGroup>
 </Project>
