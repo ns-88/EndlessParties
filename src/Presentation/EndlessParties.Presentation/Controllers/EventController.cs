@@ -9,9 +9,9 @@ namespace EndlessParties.Presentation.Controllers;
 /// Контроллер для работы с мероприятиями (событиями)
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 [Produces("application/json")]
-public class EventController : ControllerBase
+public class EventsController : ControllerBase
 {
     /// <summary>
     /// Сервис <see cref="IEventService"/>
@@ -22,7 +22,7 @@ public class EventController : ControllerBase
     /// <summary>
     /// Конструктор
     /// </summary>
-    public EventController(IEventService eventService)
+    public EventsController(IEventService eventService)
     {
         _eventService = eventService;
     }
@@ -33,9 +33,11 @@ public class EventController : ControllerBase
     /// </summary>
     [ProducesResponseType(typeof(IReadOnlyList<EventResponseModel>), StatusCodes.Status200OK)]
     [HttpGet]
-    public Task<IReadOnlyList<EventResponseModel>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IReadOnlyList<EventResponseModel>>> GetAll(CancellationToken cancellationToken)
     {
-        return _eventService.GetAll(cancellationToken);
+        var eventModelList = await _eventService.GetAll(cancellationToken);
+
+        return Ok(eventModelList);
     }
 
     /// <summary>
@@ -44,42 +46,50 @@ public class EventController : ControllerBase
     [ProducesResponseType(typeof(EventResponseModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("{id:guid}")]
-    public Task<EventResponseModel> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<EventResponseModel>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        return _eventService.GetById(id, cancellationToken);
+        var eventModel = await _eventService.GetById(id, cancellationToken);
+
+        return Ok(eventModel);
     }
 
     /// <summary>
     /// Создание события
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(EventResponseModel), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [HttpPost]
-    public Task Create([FromBody] EventRequestModel model, CancellationToken cancellationToken)
+    public async Task<ActionResult<EventResponseModel>> Create([FromBody] EventRequestModel model, CancellationToken cancellationToken)
     {
-        return _eventService.Create(model, cancellationToken);
+        var eventModel = await _eventService.Create(model, cancellationToken);
+
+        return CreatedAtAction(nameof(GetById), new { id = eventModel.Id }, eventModel);
     }
 
     /// <summary>
     /// Обновление события
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpPut("{id:guid}")]
-    public Task Update([FromRoute] Guid id, [FromBody] EventRequestModel model, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EventRequestModel model, CancellationToken cancellationToken)
     {
-        return _eventService.Update(id, model, cancellationToken);
+        await _eventService.Update(id, model, cancellationToken);
+
+        return NoContent();
     }
 
     /// <summary>
     /// Удаление события
     /// </summary>
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpDelete("{id:guid}")]
-    public Task Remove([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> Remove([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        return _eventService.Remove(id, cancellationToken);
+        await _eventService.Remove(id, cancellationToken);
+
+        return NoContent();
     }
 }

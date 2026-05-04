@@ -66,11 +66,13 @@ internal class EventService : IEventService
     }
 
     /// <inheritdoc />
-    public async Task Create(EventRequestModel model, CancellationToken cancellationToken)
+    public async Task<EventResponseModel> Create(EventRequestModel model, CancellationToken cancellationToken)
     {
+        Event @event;
+
         try
         {
-            var @event = new Event(model.Title, model.Description, model.StartAt, model.EndAt);
+            @event = new Event(model.Title, model.Description, model.StartAt, model.EndAt);
 
             await _eventRepository.Create(@event, cancellationToken);
         }
@@ -78,6 +80,8 @@ internal class EventService : IEventService
         {
             throw new LogicException(ApplicationErrors.EventCreation, ex);
         }
+
+        return EventModelMapper.Map(@event);
     }
 
     /// <inheritdoc />

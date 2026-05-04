@@ -21,7 +21,7 @@ public interface IEventService
     /// <summary>
     /// Создание события
     /// </summary>
-    Task Create(EventRequestModel model, CancellationToken cancellationToken);
+    Task<EventResponseModel> Create(EventRequestModel model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Обновление события
