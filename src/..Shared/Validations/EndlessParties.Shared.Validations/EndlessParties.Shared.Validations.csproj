@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Dispatcher\IValidationInvoker.cs">
+			<DependentUpon>ValidationInvoker.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

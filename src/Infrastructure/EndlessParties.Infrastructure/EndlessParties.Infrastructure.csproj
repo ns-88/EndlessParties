@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+		<ProjectReference Include="..\EndlessParties.Infrastructure.Abstractions\EndlessParties.Infrastructure.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+	</ItemGroup>
+
+</Project>

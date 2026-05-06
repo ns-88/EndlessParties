@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/..Shared/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/..Shared/Exceptions/">
+    <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions.Models/EndlessParties.Shared.Exceptions.Models.csproj" Id="c74e9d32-fa61-4013-9869-d529b88ef9b5" />
+    <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions/EndlessParties.Shared.Exceptions.csproj" Id="52d2faef-d251-42be-bf25-da16acc9da40" />
+  </Folder>
+  <Folder Name="/..Shared/Validations/">
+    <Project Path="src/..Shared/Validations/EndlessParties.Shared.Validations/EndlessParties.Shared.Validations.csproj" Id="266d0242-016f-4fc4-9441-c1441e856dea" />
+  </Folder>
+  <Folder Name="/Application/">
+    <Project Path="src/Application/EndlessParties.Application.Abstractions/EndlessParties.Application.Abstractions.csproj" Id="26f67793-4183-41ae-bda7-6f9355f0189c" />
+    <Project Path="src/Application/EndlessParties.Application/EndlessParties.Application.csproj" Id="9eafb6d0-8cae-4292-b367-f44b7e12d00f" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="src/Infrastructure/EndlessParties.Infrastructure.Abstractions/EndlessParties.Infrastructure.Abstractions.csproj" Id="24cedb9e-e66e-4b91-b219-037d53d2724e" />
+    <Project Path="src/Infrastructure/EndlessParties.Infrastructure/EndlessParties.Infrastructure.csproj" Id="f04bd548-9ee8-42f5-a789-9dd533d10a24" />
+  </Folder>
+  <Folder Name="/Infrastructure/Core/">
+    <Project Path="src/Infrastructure/Core/EndlessParties.Domain/EndlessParties.Domain.csproj" Id="c1a4a99f-7577-4546-a577-aeb669c54a30" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="src/Presentation/EndlessParties.Presentation/EndlessParties.Presentation.csproj" Id="838d44a0-b57d-4553-94a0-0f63b9cc327e" />
+  </Folder>
+</Solution>
