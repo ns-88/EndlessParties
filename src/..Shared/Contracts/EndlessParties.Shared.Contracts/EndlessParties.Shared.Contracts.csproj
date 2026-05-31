@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" >
+
+	<ItemGroup>
+		<Compile Update="Filters\DataFilterExtensions.cs">
+			<DependentUpon>DataFilterBase.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

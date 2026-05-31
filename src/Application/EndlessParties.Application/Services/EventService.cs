@@ -5,6 +5,7 @@ using EndlessParties.Application.Mappers;
 using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
+using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Exceptions.Models;
 
 namespace EndlessParties.Application.Services;
@@ -28,20 +29,22 @@ internal class EventService : IEventService
 
 
     /// <inheritdoc />
-    public async Task<IReadOnlyList<EventResponseModel>> GetAll(CancellationToken cancellationToken)
+    public async Task<EventPaginatedResponseModel> GetAll(GetAllEventsQueryFilter filter, CancellationToken cancellationToken)
     {
-        IReadOnlyList<Event> events;
+        CollectionResult<Event> collectionResult;
 
         try
         {
-            events = await _eventRepository.GetAll(cancellationToken);
+            var eventsFilter = GetAllEventsFilterMapper.Map(filter);
+
+            collectionResult = await _eventRepository.GetAll(eventsFilter, cancellationToken);
         }
         catch (Exception ex)
         {
             throw new LogicException(ApplicationErrors.ReceivingAllEvents, ex);
         }
 
-        return EventModelMapper.MapList(events);
+        return EventPaginatedResponseMapper.Map(collectionResult, filter);
     }
 
     /// <inheritdoc />
@@ -62,7 +65,7 @@ internal class EventService : IEventService
             throw new LogicException(string.Format(ApplicationErrors.ReceivingEventById, id), ex);
         }
 
-        return EventModelMapper.Map(@event);
+        return EventMapper.Map(@event);
     }
 
     /// <inheritdoc />
@@ -81,7 +84,7 @@ internal class EventService : IEventService
             throw new LogicException(ApplicationErrors.EventCreation, ex);
         }
 
-        return EventModelMapper.Map(@event);
+        return EventMapper.Map(@event);
     }
 
     /// <inheritdoc />

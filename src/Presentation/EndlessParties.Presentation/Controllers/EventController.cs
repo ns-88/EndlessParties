@@ -31,13 +31,13 @@ public class EventsController : ControllerBase
     /// <summary>
     /// Получение всех событий
     /// </summary>
-    [ProducesResponseType(typeof(IReadOnlyList<EventResponseModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(EventPaginatedResponseModel), StatusCodes.Status200OK)]
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<EventResponseModel>>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<EventPaginatedResponseModel>> GetAll([FromQuery] GetAllEventsQueryFilter filter, CancellationToken cancellationToken)
     {
-        var eventModelList = await _eventService.GetAll(cancellationToken);
+        var eventPaginated = await _eventService.GetAll(filter, cancellationToken);
 
-        return Ok(eventModelList);
+        return Ok(eventPaginated);
     }
 
     /// <summary>

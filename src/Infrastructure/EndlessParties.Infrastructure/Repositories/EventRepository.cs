@@ -1,11 +1,16 @@
-﻿using EndlessParties.Domain.Errors;
+﻿using System.Diagnostics.CodeAnalysis;
+using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
+using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
+using EndlessParties.Shared.Contracts.Filters;
+using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Exceptions.Models;
 
 namespace EndlessParties.Infrastructure.Repositories;
 
 /// <inheritdoc />
+[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
 internal class EventRepository : IEventRepository
 {
     /// <summary>
@@ -22,11 +27,31 @@ internal class EventRepository : IEventRepository
         _events = new Dictionary<Guid, Event>();
     }
 
+    /// <summary>
+    /// Конструктор, принимающий словарь событий <see cref="Event"/>
+    /// </summary>
+    public EventRepository(Dictionary<Guid, Event> events)
+    {
+        _events = events;
+    }
+
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<Event>> GetAll(CancellationToken cancellationToken)
+    public Task<CollectionResult<Event>> GetAll(GetAllEventsFilter filter, CancellationToken cancellationToken)
     {
-        return Task.FromResult<IReadOnlyList<Event>>(_events.Values.ToArray());
+        // Применение фильтра запроса
+        var filteredQuery = _events.Values.ApplyFilter(filter);
+
+        // Подсчет общего числа результатов запроса
+        var totalCount = filteredQuery.Count();
+
+        // Применение пагинации
+        var pagedQuery = filteredQuery.ApplyPagination(filter);
+
+        // Получение финального результата
+        var eventItems = pagedQuery.ToList();
+
+        return Task.FromResult(new CollectionResult<Event>(totalCount, eventItems));
     }
 
     /// <inheritdoc />

@@ -7,8 +7,8 @@ namespace EndlessParties.Application.Mappers;
 /// <summary>
 /// Маппер для объектов <see cref="Event"/> и <see cref="EventResponseModel"/>
 /// </summary>
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
-internal static partial class EventModelMapper
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Both)]
+internal static partial class EventMapper
 {
     /// <summary>
     /// Преобразование из <see cref="Event"/> в <see cref="EventResponseModel"/>
