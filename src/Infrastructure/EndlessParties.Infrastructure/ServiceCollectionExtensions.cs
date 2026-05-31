@@ -1,4 +1,5 @@
 using EndlessParties.Infrastructure.Abstractions.Repositories;
+using EndlessParties.Infrastructure.Data;
 using EndlessParties.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +16,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services
-            .AddSingleton<IEventRepository, EventRepository>();
+            .AddSingleton<IEventRepository, EventRepository>(_ => EventRepository.FromData());
 
         return services;
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EndlessParties.Shared.Exceptions.Models;
+﻿namespace EndlessParties.Shared.Exceptions.Models;
 
 /// <summary>
 /// Исключение, возникающее при ошибках логики

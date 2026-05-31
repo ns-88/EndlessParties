@@ -1,4 +1,6 @@
 ﻿using EndlessParties.Domain.Models;
+using EndlessParties.Infrastructure.Abstractions.Models;
+using EndlessParties.Shared.Contracts.Models;
 
 namespace EndlessParties.Infrastructure.Abstractions.Repositories;
 
@@ -10,7 +12,7 @@ public interface IEventRepository
     /// <summary>
     /// Получение всех событий
     /// </summary>
-    Task<IReadOnlyList<Event>> GetAll(CancellationToken cancellationToken);
+    Task<CollectionResult<Event>> GetAll(GetAllEventsFilter filter, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение события по идентификатору
