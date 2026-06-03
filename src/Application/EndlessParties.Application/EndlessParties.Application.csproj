@@ -12,4 +12,8 @@
 		<PackageReference Include="Riok.Mapperly" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="EndlessParties.Tests.Application" />
+	</ItemGroup>
+
 </Project>
