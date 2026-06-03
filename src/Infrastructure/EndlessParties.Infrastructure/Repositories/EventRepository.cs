@@ -27,14 +27,6 @@ internal class EventRepository : IEventRepository
         _events = new Dictionary<Guid, Event>();
     }
 
-    /// <summary>
-    /// Конструктор, принимающий словарь событий <see cref="Event"/>
-    /// </summary>
-    public EventRepository(Dictionary<Guid, Event> events)
-    {
-        _events = events;
-    }
-
 
     /// <inheritdoc />
     public Task<CollectionResult<Event>> GetAll(GetAllEventsFilter filter, CancellationToken cancellationToken)
