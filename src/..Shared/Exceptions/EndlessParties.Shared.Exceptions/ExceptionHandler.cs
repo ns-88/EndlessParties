@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace EndlessParties.Shared.Exceptions;
 
@@ -37,13 +38,19 @@ internal class ExceptionHandler : IExceptionHandler
     /// </summary>
     private readonly ProblemDetailsFactory _factory;
 
+    /// <summary>
+    /// Логгер <see cref="ILogger{T}"/>
+    /// </summary>
+    private readonly ILogger<ExceptionHandler> _logger;
+
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    public ExceptionHandler(ProblemDetailsFactory factory)
+    public ExceptionHandler(ProblemDetailsFactory factory, ILogger<ExceptionHandler> logger)
     {
         _factory = factory;
+        _logger = logger;
     }
 
 
@@ -57,6 +64,8 @@ internal class ExceptionHandler : IExceptionHandler
             NotFoundException notFoundException => HandleNotFoundException(notFoundException, httpContext),
             _ => HandleUnknownException(exception, httpContext)
         };
+
+        _logger.LogError(exception, "Ошибка вызова метода API {Method}", httpContext.Request.Path);
 
         return await problemDetails.TryWriteToResponse(httpContext, cancellationToken);
     }
