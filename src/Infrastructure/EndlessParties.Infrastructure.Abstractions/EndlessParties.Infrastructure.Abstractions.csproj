@@ -1,7 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
 		<ProjectReference Include="..\Core\EndlessParties.Domain\EndlessParties.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Models\GetAllEventsFilterExtensions.cs">
+			<DependentUpon>GetAllEventsFilter.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>

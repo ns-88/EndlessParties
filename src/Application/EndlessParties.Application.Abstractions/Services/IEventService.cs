@@ -11,7 +11,7 @@ public interface IEventService
     /// <summary>
     /// Получение всех событий
     /// </summary>
-    Task<IReadOnlyList<EventResponseModel>> GetAll(CancellationToken cancellationToken);
+    Task<EventPaginatedResponseModel> GetAll(GetAllEventsQueryFilter filter, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение события по идентификатору
