@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace EndlessParties.Presentation;
 
 /// <summary>
@@ -11,12 +13,25 @@ public class Program
     /// <param name="args">Аргументы командной строки</param>
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        builder.ConfigureServices();
-        
-        var application = builder.Build();
-        application.ConfigureApp();
+        Log.AddBootstrapLogger();
 
-        await application.RunAsync();
+        try
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            builder.ConfigureServices();
+
+            var application = builder.Build();
+            application.ConfigureApp();
+
+            await application.RunAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Ошибка запуска приложения");
+        }
+        finally
+        {
+            await Log.CloseAndFlushAsync();
+        }
     }
 }

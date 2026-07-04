@@ -1,35 +1,33 @@
-﻿using System.Reflection;
-using EndlessParties.Application;
-using EndlessParties.Application.Abstractions.Models.Requests;
+﻿using EndlessParties.Application;
 using EndlessParties.Infrastructure;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Validations;
+using Serilog;
 
-namespace EndlessParties.Presentation
+namespace EndlessParties.Presentation;
+
+/// <summary>
+/// Класс-расширение <see cref="WebApplicationBuilder"/> для регистрации сервисов и конфигурации инфраструктуры приложения
+/// </summary>
+public static class WebApplicationBuilderExtensions
 {
-    /// <summary>
-    /// Класс-расширение <see cref="WebApplicationBuilder"/> для регистрации сервисов и конфигурации инфраструктуры приложения
-    /// </summary>
-    public static class WebApplicationBuilderExtensions
+    extension(WebApplicationBuilder builder)
     {
         /// <summary>
         /// Конфигурирование сервисов
         /// </summary>
-        public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
+        public WebApplicationBuilder ConfigureServices()
         {
             builder
-                .AddApplicationExceptions();
+                .AddSerilog()
+                .AddApplicationExceptions()
+                .AddApplicationValidations()
+                .AddDependencyValidation();
 
-            builder
-                .AddApplicationValidations();
-            
             builder.Services
                 .AddPresentation()
                 .AddApplication()
                 .AddInfrastructure();
-
-            builder
-                .AddDependencyValidation();
 
             return builder;
         }
@@ -37,7 +35,7 @@ namespace EndlessParties.Presentation
         /// <summary>
         /// Добавление проверки жизненного цикла и создания зависимостей
         /// </summary>
-        private static void AddDependencyValidation(this WebApplicationBuilder builder)
+        private void AddDependencyValidation()
         {
             if (!builder.Environment.IsEnvironment("local"))
             {
@@ -49,6 +47,21 @@ namespace EndlessParties.Presentation
                 setup.ValidateScopes = true;
                 setup.ValidateOnBuild = true;
             });
+        }
+
+        /// <summary>
+        /// Добавление логгера Serilog
+        /// </summary>
+        private WebApplicationBuilder AddSerilog()
+        {
+            builder.Services.AddSerilog((services, loggerConfiguration) =>
+            {
+                loggerConfiguration
+                    .ReadFrom.Configuration(builder.Configuration)
+                    .ReadFrom.Services(services);
+            });
+
+            return builder;
         }
     }
 }
