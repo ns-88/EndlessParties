@@ -63,20 +63,18 @@ namespace EndlessParties.Infrastructure.Data {
         /// <summary>
         ///   Ищет локализованную строку, похожую на [
         ///  {
+        ///    &quot;Id&quot;: &quot;f29e4be5-074f-4260-8627-17e2a52e7b34&quot;,
         ///    &quot;Title&quot;: &quot;Рок-концерт &apos;Огни города&apos;&quot;,
         ///    &quot;Description&quot;: &quot;Выступление местных рок-групп на открытой площадке парка.&quot;,
         ///    &quot;StartAt&quot;: &quot;2024-06-15T18:00:00&quot;,
         ///    &quot;EndAt&quot;: &quot;2024-06-15T22:30:00&quot;
         ///  },
         ///  {
+        ///    &quot;Id&quot;: &quot;73c89c6c-4001-49b7-a3c6-2e759388a67d&quot;,
         ///    &quot;Title&quot;: &quot;Встреча с Виктором Пелевиным&quot;,
         ///    &quot;Description&quot;: &quot;Презентация новой книги и автограф-сессия в центральном книжном магазине.&quot;,
         ///    &quot;StartAt&quot;: &quot;2024-06-16T15:00:00&quot;,
-        ///    &quot;EndAt&quot;: &quot;2024-06-16T17:00:00&quot;
-        ///  },
-        ///  {
-        ///    &quot;Title&quot;: &quot;Литературный вечер &apos;Поэзия серебряного века&apos;&quot;,
-        ///    [остаток строки не уместился]&quot;;.
+        ///    &quot;EndAt [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Events {
             get {
