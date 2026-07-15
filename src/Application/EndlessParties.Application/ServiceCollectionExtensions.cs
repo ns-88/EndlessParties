@@ -1,5 +1,7 @@
-using EndlessParties.Application.Abstractions.Services;
-using EndlessParties.Application.Services;
+using EndlessParties.Application.Abstractions.Bookings.Services;
+using EndlessParties.Application.Abstractions.Events.Services;
+using EndlessParties.Application.Bookings.Services;
+using EndlessParties.Application.Events.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Application;
@@ -15,7 +17,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services
-            .AddTransient<IEventService, EventService>();
+            .AddTransient<IEventService, EventService>()
+            .AddTransient<IBookingService, BookingService>();
 
         return services;
     }

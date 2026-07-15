@@ -1,1 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Errors\EventsErrors.cs">
+			<DependentUpon>ApplicationErrors.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Errors\BookingsErrors.cs">
+			<DependentUpon>ApplicationErrors.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
