@@ -58,6 +58,14 @@ internal class EventRepository : IEventRepository
     }
 
     /// <inheritdoc />
+    public Task<bool> Exists(Guid id, CancellationToken cancellationToken)
+    {
+        var exists = _events.ContainsKey(id);
+
+        return Task.FromResult(exists);
+    }
+
+    /// <inheritdoc />
     public Task Create(Event model, CancellationToken cancellationToken)
     {
         if (!_events.TryAdd(model.Id, model))
