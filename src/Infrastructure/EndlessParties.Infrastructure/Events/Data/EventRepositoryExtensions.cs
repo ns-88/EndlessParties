@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Events.Repositories;
 
-namespace EndlessParties.Tests.Infrastructure.Extensions;
+namespace EndlessParties.Infrastructure.Events.Data;
 
 /// <summary>
 /// Набор методов-расширений для типа <see cref="EventRepository"/>
@@ -14,10 +12,17 @@ internal static class EventRepositoryExtensions
     extension(EventRepository)
     {
         /// <summary>
-        /// Создание репозитория со списком событий <see cref="Event"/>
+        /// Создание репозитория со списком событий <see cref="Event"/> полученных из json файла
         /// </summary>
-        public static EventRepository FromData(IReadOnlyList<Event> events)
+        public static EventRepository FromData()
         {
+            var events = JsonSerializer.Deserialize<IReadOnlyList<Event>>(Resource.Events);
+
+            if (events == null)
+            {
+                throw new InvalidOperationException("Ошибка получения списка событий");
+            }
+
             var eventRepository = new EventRepository();
 
             FillRepository().Wait();

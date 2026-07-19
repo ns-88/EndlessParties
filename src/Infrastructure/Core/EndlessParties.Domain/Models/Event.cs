@@ -1,4 +1,7 @@
-﻿namespace EndlessParties.Domain.Models;
+﻿using EndlessParties.Domain.Errors;
+using EndlessParties.Shared.Exceptions.Models;
+
+namespace EndlessParties.Domain.Models;
 
 /// <summary>
 /// Мероприятие (событие)
@@ -63,32 +66,32 @@ public class Event
     {
         if (string.IsNullOrWhiteSpace(title))
         {
-            throw new InvalidOperationException("Наименование не задано");
+            throw new LogicException(ApplicationErrors.Events.NameNotSpecified);
         }
 
         if (title.Length > MaxTitleLength)
         {
-            throw new InvalidOperationException("Длина наименования больше допустимой");
+            throw new LogicException(ApplicationErrors.Events.NameLongerThanAllowed);
         }
 
         if (description is { Length: > MaxDescriptionLength })
         {
-            throw new InvalidOperationException("Длина описания больше допустимой");
+            throw new LogicException(ApplicationErrors.Events.DescriptionLongerThanAllowed);
         }
 
         if (startAt == default)
         {
-            throw new InvalidOperationException("Дата и время начала не заданы");
+            throw new LogicException(ApplicationErrors.Events.DateAndTimeStartNotSet);
         }
 
         if (endAt == default)
         {
-            throw new InvalidOperationException("Дата и время завершения не заданы");
+            throw new LogicException(ApplicationErrors.Events.DateAndTimeCompletionNotSet);
         }
 
         if (startAt >= endAt)
         {
-            throw new InvalidOperationException("Начало события не может быть позже его завершения");
+            throw new LogicException(ApplicationErrors.Events.StartCannotLaterCompletion);
         }
     }
 }

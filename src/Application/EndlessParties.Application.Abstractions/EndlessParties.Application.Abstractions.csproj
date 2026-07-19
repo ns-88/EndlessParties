@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\Core\EndlessParties.Domain\EndlessParties.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

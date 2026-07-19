@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
-using EndlessParties.Application.Abstractions.Models.Requests;
-using EndlessParties.Application.Abstractions.Models.Responses;
-using EndlessParties.Application.Services;
+using EndlessParties.Application.Abstractions.Events.Models.Requests;
+using EndlessParties.Application.Abstractions.Events.Models.Responses;
+using EndlessParties.Application.Events.Services;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
@@ -59,12 +59,12 @@ public class EventServiceTests
         var eventService = _autoMocker.CreateInstance<EventService>();
 
         var eventRequest = _fixture
-            .Build<EventRequestModel>()
+            .Build<CreateEventRequest>()
             .With(x => x.StartAt, StartAt)
             .With(x => x.EndAt, EndAt)
             .Create();
 
-        var eventResponse = new EventResponseModel
+        var eventResponse = new EventResponse
         {
             Id = Guid.NewGuid(),
             Title = eventRequest.Title,
@@ -116,7 +116,7 @@ public class EventServiceTests
 
         var collectionResult = new CollectionResult<Event>(20, eventItems);
 
-        var eventPaginatedResponse = new EventPaginatedResponseModel
+        var eventPaginatedResponse = new EventPaginatedResponse
         {
             PageNumber = queryFilter.Page!.Value,
             PageSize = queryFilter.PageSize!.Value,
@@ -124,7 +124,7 @@ public class EventServiceTests
             TotalPages = 2,
             Items =
             [
-                new EventResponseModel
+                new EventResponse
                 {
                     Id = eventItems[0].Id,
                     Title = eventItems[0].Title,
@@ -170,7 +170,7 @@ public class EventServiceTests
             .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
             .Create();
 
-        var eventResponse = new EventResponseModel
+        var eventResponse = new EventResponse
         {
             Id = Guid.NewGuid(),
             Title = @event.Title,
@@ -210,7 +210,7 @@ public class EventServiceTests
         var id = Guid.NewGuid();
 
         var eventRequest = _fixture
-            .Build<EventRequestModel>()
+            .Build<CreateEventRequest>()
             .With(x => x.StartAt, StartAt)
             .With(x => x.EndAt, EndAt)
             .Create();

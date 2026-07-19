@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using EndlessParties.Domain.Models;
-using EndlessParties.Infrastructure.Repositories;
+using EndlessParties.Infrastructure.Events.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Tests.Infrastructure.Extensions;
 using FluentAssertions;
