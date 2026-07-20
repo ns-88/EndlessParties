@@ -29,5 +29,10 @@ public static partial class ApplicationErrors
         /// Ошибка создания
         /// </summary>
         public const string Creation = "Ошибка создания бронирования";
+
+        /// <summary>
+        /// Обработка бронирования невозможна
+        /// </summary>
+        public const string ProcessingNotPossible = "Обработка бронирования невозможна";
     }
 }

@@ -20,6 +20,11 @@ public interface IEventRepository
     Task<Event> GetById(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Получение признака наличия события с указанным идентификатором
+    /// </summary>
+    Task<bool> Exists(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Создание события
     /// </summary>
     Task Create(Event model, CancellationToken cancellationToken);
