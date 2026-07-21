@@ -3,8 +3,8 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 	<ItemGroup Label="Microsoft">
-		<PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
-		<PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="10.0.9" />
+		<PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
+		<PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="10.0.10" />
 	</ItemGroup>
 	<ItemGroup Label="Miscellaneous">
 		<PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
@@ -13,7 +13,7 @@
 		<PackageVersion Include="Riok.Mapperly" Version="4.3.1" />
 	</ItemGroup>
 	<ItemGroup Label="Logs">
-		<PackageVersion Include="Serilog" Version="4.3.1" />
+		<PackageVersion Include="Serilog" Version="4.4.0" />
 		<PackageVersion Include="Serilog.Extensions.Hosting" Version="10.0.0" />
 		<PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.1" />
 		<PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
@@ -24,6 +24,6 @@
 		<PackageVersion Include="Moq.AutoMock" Version="4.0.2" />
 		<PackageVersion Include="AutoFixture" Version="4.18.1" />
 		<PackageVersion Include="FluentAssertions" Version="8.10.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
 	</ItemGroup>
 </Project>
