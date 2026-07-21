@@ -66,18 +66,18 @@ internal class BookingService : IBookingService
     }
 
     /// <inheritdoc />
-    public async Task<BookingResponse> Create(CreateBookingRequest model, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Create(CreateBookingRequest request, CancellationToken cancellationToken)
     {
         Booking booking;
 
         try
         {
-            if (!await _eventRepository.Exists(model.EventId, cancellationToken))
+            if (!await _eventRepository.Exists(request.EventId, cancellationToken))
             {
-                throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, model.EventId));
+                throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, request.EventId));
             }
 
-            booking = new Booking(model.EventId);
+            booking = new Booking(request.EventId);
 
             await _bookingRepository.Create(booking, cancellationToken);
 

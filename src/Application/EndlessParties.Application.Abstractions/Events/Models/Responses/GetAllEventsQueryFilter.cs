@@ -25,10 +25,10 @@ public class GetAllEventsQueryFilter : QueryFilterBase
     /// <summary>
     /// Дата и время начала
     /// </summary>
-    public DateTime? From { get; init; }
+    public DateTimeOffset? From { get; init; }
 
     /// <summary>
     /// Дата и время завершения
     /// </summary>
-    public DateTime? To { get; init; }
+    public DateTimeOffset? To { get; init; }
 }

@@ -36,18 +36,18 @@ public class Event
     /// <summary>
     /// Дата и время начала
     /// </summary>
-    public DateTime StartAt { get; }
+    public DateTimeOffset StartAt { get; }
 
     /// <summary>
     /// Дата и время завершения
     /// </summary>
-    public DateTime EndAt { get; }
+    public DateTimeOffset EndAt { get; }
 
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    public Event(string title, string? description, DateTime startAt, DateTime endAt)
+    public Event(string title, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
         Validation(title, description, startAt, endAt);
 
@@ -62,7 +62,7 @@ public class Event
     /// <summary>
     /// Валидация доменной сущности
     /// </summary>
-    private static void Validation(string title, string? description, DateTime startAt, DateTime endAt)
+    private static void Validation(string title, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
         if (string.IsNullOrWhiteSpace(title))
         {

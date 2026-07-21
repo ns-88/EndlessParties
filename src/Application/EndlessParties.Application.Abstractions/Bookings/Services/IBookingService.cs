@@ -16,5 +16,5 @@ public interface IBookingService
     /// <summary>
     /// Создание бронирования
     /// </summary>
-    Task<BookingResponse> Create(CreateBookingRequest model, CancellationToken cancellationToken);
+    Task<BookingResponse> Create(CreateBookingRequest request, CancellationToken cancellationToken);
 }

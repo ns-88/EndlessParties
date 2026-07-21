@@ -47,9 +47,9 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpPost]
-    public async Task<ActionResult<BookingResponse>> Create([FromBody] CreateBookingRequest model, CancellationToken cancellationToken)
+    public async Task<ActionResult<BookingResponse>> Create([FromBody] CreateBookingRequest request, CancellationToken cancellationToken)
     {
-        var bookingModel = await _bookingService.Create(model, cancellationToken);
+        var bookingModel = await _bookingService.Create(request, cancellationToken);
 
         return AcceptedAtAction(nameof(GetById), new { id = bookingModel.Id }, bookingModel);
     }
