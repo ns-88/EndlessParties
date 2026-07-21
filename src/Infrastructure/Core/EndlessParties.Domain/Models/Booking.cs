@@ -27,12 +27,12 @@ public class Booking
     /// <summary>
     /// Дата и время создания
     /// </summary>
-    public DateTime CreatedAt { get; }
+    public DateTimeOffset CreatedAt { get; }
 
     /// <summary>
     /// Дата и время обработки
     /// </summary>
-    public DateTime? ProcessedAt { get; private set; }
+    public DateTimeOffset? ProcessedAt { get; private set; }
 
 
     /// <summary>
@@ -43,7 +43,7 @@ public class Booking
         Id = Guid.NewGuid();
         EventId = eventId;
         Status = BookingStatus.Pending;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTimeOffset.UtcNow;
     }
 
 
@@ -58,7 +58,7 @@ public class Booking
         }
 
         Status = BookingStatus.Confirmed;
-        ProcessedAt = DateTime.Now;
+        ProcessedAt = DateTimeOffset.UtcNow;
     }
 
     /// <summary>
@@ -72,6 +72,6 @@ public class Booking
         }
 
         Status = BookingStatus.Rejected;
-        ProcessedAt = DateTime.Now;
+        ProcessedAt = DateTimeOffset.UtcNow;
     }
 }

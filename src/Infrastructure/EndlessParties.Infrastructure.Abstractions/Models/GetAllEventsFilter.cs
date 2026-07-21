@@ -20,10 +20,10 @@ public class GetAllEventsFilter : DataFilterBase
     /// <summary>
     /// Дата и время начала
     /// </summary>
-    public required DateTime? From { get; init; }
+    public required DateTimeOffset? From { get; init; }
 
     /// <summary>
     /// Дата и время завершения
     /// </summary>
-    public required DateTime? To { get; init; }
+    public required DateTimeOffset? To { get; init; }
 }

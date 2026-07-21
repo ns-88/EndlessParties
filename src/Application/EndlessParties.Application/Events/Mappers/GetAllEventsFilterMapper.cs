@@ -24,4 +24,12 @@ internal static partial class GetAllEventsFilterMapper
     {
         return (source.Page - 1) * source.PageSize;
     }
+
+    /// <summary>
+    /// Преобразование даты и времени во время в формате UTC
+    /// </summary>
+    private static DateTimeOffset? MapToUtc(DateTimeOffset? source)
+    {
+        return source?.ToUniversalTime();
+    }
 }

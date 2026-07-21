@@ -59,9 +59,9 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [HttpPost]
-    public async Task<ActionResult<EventResponse>> Create([FromBody] CreateEventRequest model, CancellationToken cancellationToken)
+    public async Task<ActionResult<EventResponse>> Create([FromBody] CreateEventRequest request, CancellationToken cancellationToken)
     {
-        var eventModel = await _eventService.Create(model, cancellationToken);
+        var eventModel = await _eventService.Create(request, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = eventModel.Id }, eventModel);
     }
@@ -73,9 +73,9 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateEventRequest model, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateEventRequest request, CancellationToken cancellationToken)
     {
-        await _eventService.Update(id, model, cancellationToken);
+        await _eventService.Update(id, request, cancellationToken);
 
         return NoContent();
     }

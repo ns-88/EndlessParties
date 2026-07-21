@@ -21,12 +21,12 @@ public interface IEventService
     /// <summary>
     /// Создание события
     /// </summary>
-    Task<EventResponse> Create(CreateEventRequest model, CancellationToken cancellationToken);
+    Task<EventResponse> Create(CreateEventRequest request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Обновление события
     /// </summary>
-    Task Update(Guid id, CreateEventRequest model, CancellationToken cancellationToken);
+    Task Update(Guid id, CreateEventRequest request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление события

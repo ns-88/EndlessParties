@@ -69,13 +69,16 @@ internal class EventService : IEventService
     }
 
     /// <inheritdoc />
-    public async Task<EventResponse> Create(CreateEventRequest model, CancellationToken cancellationToken)
+    public async Task<EventResponse> Create(CreateEventRequest request, CancellationToken cancellationToken)
     {
         Event @event;
 
         try
         {
-            @event = new Event(model.Title, model.Description, model.StartAt, model.EndAt);
+            var startAtUtc = request.StartAt.ToUniversalTime();
+            var endAtUtc = request.EndAt.ToUniversalTime();
+
+            @event = new Event(request.Title, request.Description, startAtUtc, endAtUtc);
 
             await _eventRepository.Create(@event, cancellationToken);
         }
@@ -88,11 +91,14 @@ internal class EventService : IEventService
     }
 
     /// <inheritdoc />
-    public async Task Update(Guid id, CreateEventRequest model, CancellationToken cancellationToken)
+    public async Task Update(Guid id, CreateEventRequest request, CancellationToken cancellationToken)
     {
         try
         {
-            var @event = new Event(model.Title, model.Description, model.StartAt, model.EndAt);
+            var startAtUtc = request.StartAt.ToUniversalTime();
+            var endAtUtc = request.EndAt.ToUniversalTime();
+
+            var @event = new Event(request.Title, request.Description, startAtUtc, endAtUtc);
 
             await _eventRepository.Update(id, @event, cancellationToken);
         }

@@ -18,10 +18,10 @@ public class CreateEventRequest
     /// <summary>
     /// Дата и время начала
     /// </summary>
-    public required DateTime StartAt { get; init; }
+    public required DateTimeOffset StartAt { get; init; }
 
     /// <summary>
     /// Дата и время завершения
     /// </summary>
-    public required DateTime EndAt { get; init; }
+    public required DateTimeOffset EndAt { get; init; }
 }
