@@ -1,4 +1,6 @@
-﻿using EndlessParties.Application.Abstractions.Events.Models.Requests;
+﻿using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
+using EndlessParties.Application.Abstractions.Bookings.Services;
+using EndlessParties.Application.Abstractions.Events.Models.Requests;
 using EndlessParties.Application.Abstractions.Events.Models.Responses;
 using EndlessParties.Application.Abstractions.Events.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +20,19 @@ public class EventsController : ControllerBase
     /// </summary>
     private readonly IEventService _eventService;
 
-    
+    /// <summary>
+    /// Сервис <see cref="IBookingService"/>
+    /// </summary>
+    private readonly IBookingService _bookingService;
+
+
     /// <summary>
     /// Конструктор
     /// </summary>
-    public EventsController(IEventService eventService)
+    public EventsController(IEventService eventService, IBookingService bookingService)
     {
         _eventService = eventService;
+        _bookingService = bookingService;
     }
 
 
@@ -64,6 +72,19 @@ public class EventsController : ControllerBase
         var eventModel = await _eventService.Create(request, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = eventModel.Id }, eventModel);
+    }
+
+    /// <summary>
+    /// Создание бронирования
+    /// </summary>
+    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [HttpPost("{id:guid}/book")]
+    public async Task<ActionResult<BookingResponse>> CreateBooking([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var bookingModel = await _bookingService.Create(id, cancellationToken);
+
+        return AcceptedAtAction(nameof(GetById), new { id = bookingModel.Id }, bookingModel);
     }
 
     /// <summary>

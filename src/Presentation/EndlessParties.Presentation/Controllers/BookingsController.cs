@@ -1,5 +1,4 @@
-﻿using EndlessParties.Application.Abstractions.Bookings.Models.Requests;
-using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
+﻿using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 using EndlessParties.Application.Abstractions.Bookings.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,18 +38,5 @@ public class BookingsController : ControllerBase
         var bookingModel = await _bookingService.GetById(id, cancellationToken);
 
         return Ok(bookingModel);
-    }
-
-    /// <summary>
-    /// Создание бронирования
-    /// </summary>
-    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    [HttpPost]
-    public async Task<ActionResult<BookingResponse>> Create([FromBody] CreateBookingRequest request, CancellationToken cancellationToken)
-    {
-        var bookingModel = await _bookingService.Create(request, cancellationToken);
-
-        return AcceptedAtAction(nameof(GetById), new { id = bookingModel.Id }, bookingModel);
     }
 }

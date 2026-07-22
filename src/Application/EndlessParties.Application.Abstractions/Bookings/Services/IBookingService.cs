@@ -1,5 +1,4 @@
-﻿using EndlessParties.Application.Abstractions.Bookings.Models.Requests;
-using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
+﻿using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 
 namespace EndlessParties.Application.Abstractions.Bookings.Services;
 
@@ -16,5 +15,5 @@ public interface IBookingService
     /// <summary>
     /// Создание бронирования
     /// </summary>
-    Task<BookingResponse> Create(CreateBookingRequest request, CancellationToken cancellationToken);
+    Task<BookingResponse> Create(Guid eventId, CancellationToken cancellationToken);
 }

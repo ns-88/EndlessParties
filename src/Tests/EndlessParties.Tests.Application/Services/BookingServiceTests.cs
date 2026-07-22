@@ -1,6 +1,4 @@
-﻿using AutoFixture;
-using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
-using EndlessParties.Application.Abstractions.Bookings.Models.Requests;
+﻿using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
 using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 using EndlessParties.Application.Bookings.Services;
 using EndlessParties.Domain.Enums;
@@ -12,7 +10,6 @@ using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
-using static EndlessParties.Domain.Errors.ApplicationErrors;
 
 namespace EndlessParties.Tests.Application.Services;
 
@@ -26,11 +23,6 @@ public class BookingServiceTests
     /// </summary>
     private readonly AutoMocker _autoMocker;
 
-    /// <summary>
-    /// Сервис создания тестовых данных <see cref="Fixture"/>
-    /// </summary>
-    private readonly Fixture _fixture;
-
 
     /// <summary>
     /// Конструктор
@@ -38,7 +30,6 @@ public class BookingServiceTests
     public BookingServiceTests()
     {
         _autoMocker = new AutoMocker(MockBehavior.Strict);
-        _fixture = new Fixture();
     }
 
 
@@ -55,7 +46,7 @@ public class BookingServiceTests
         {
             // #### Arrange ####
             var bookingService = _autoMocker.CreateInstance<BookingService>();
-            var bookingRequest = _fixture.Create<CreateBookingRequest>();
+            var eventId = Guid.NewGuid();
 
             _autoMocker
                 .GetMock<IEventRepository>()
@@ -73,7 +64,7 @@ public class BookingServiceTests
                 .Returns(true);
 
             // #### Act ####
-            var actualResult = await bookingService.Create(bookingRequest, CancellationToken.None);
+            var actualResult = await bookingService.Create(eventId, CancellationToken.None);
 
             // #### Assert ####
             actualResult.Should().NotBeNull();
@@ -81,7 +72,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Exists(bookingRequest.EventId, CancellationToken.None), Times.Once);
+                .Verify(x => x.Exists(eventId, CancellationToken.None), Times.Once);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -102,7 +93,7 @@ public class BookingServiceTests
         {
             // #### Arrange ####
             var bookingService = _autoMocker.CreateInstance<BookingService>();
-            var bookingRequest = _fixture.Create<CreateBookingRequest>();
+            var eventId = Guid.NewGuid();
 
             _autoMocker
                 .GetMock<IEventRepository>()
@@ -124,7 +115,7 @@ public class BookingServiceTests
 
             for (var i = 0; i < 3; i++)
             {
-                var actualResult = await bookingService.Create(bookingRequest, CancellationToken.None);
+                var actualResult = await bookingService.Create(eventId, CancellationToken.None);
 
                 bookingResponses.Add(actualResult);
             }
@@ -134,7 +125,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Exists(bookingRequest.EventId, CancellationToken.None), Times.Exactly(3));
+                .Verify(x => x.Exists(eventId, CancellationToken.None), Times.Exactly(3));
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -228,7 +219,7 @@ public class BookingServiceTests
         {
             // #### Arrange ####
             var bookingService = _autoMocker.CreateInstance<BookingService>();
-            var createRequest = _fixture.Create<CreateBookingRequest>();
+            var eventId = Guid.NewGuid();
 
             _autoMocker
                 .GetMock<IEventRepository>()
@@ -236,10 +227,10 @@ public class BookingServiceTests
                 .ReturnsAsync(false);
 
             // #### Act ####
-            var action = () => bookingService.Create(createRequest, CancellationToken.None);
+            var action = () => bookingService.Create(eventId, CancellationToken.None);
 
             // #### Assert ####
-            (await action.Should().ThrowAsync<LogicException>()).WithInnerException<NotFoundException>();
+            await action.Should().ThrowAsync<NotFoundException>();
 
             _autoMocker
                 .GetMock<IEventRepository>()

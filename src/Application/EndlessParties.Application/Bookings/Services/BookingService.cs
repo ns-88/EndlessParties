@@ -1,5 +1,4 @@
 ﻿using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
-using EndlessParties.Application.Abstractions.Bookings.Models.Requests;
 using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 using EndlessParties.Application.Abstractions.Bookings.Services;
 using EndlessParties.Application.Bookings.Mappers;
@@ -66,18 +65,18 @@ internal class BookingService : IBookingService
     }
 
     /// <inheritdoc />
-    public async Task<BookingResponse> Create(CreateBookingRequest request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Create(Guid eventId, CancellationToken cancellationToken)
     {
         Booking booking;
 
+        if (!await _eventRepository.Exists(eventId, cancellationToken))
+        {
+            throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, eventId));
+        }
+
         try
         {
-            if (!await _eventRepository.Exists(request.EventId, cancellationToken))
-            {
-                throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, request.EventId));
-            }
-
-            booking = new Booking(request.EventId);
+            booking = new Booking(eventId);
 
             await _bookingRepository.Create(booking, cancellationToken);
 
