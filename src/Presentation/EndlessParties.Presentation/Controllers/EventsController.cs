@@ -84,7 +84,7 @@ public class EventsController : ControllerBase
     {
         var bookingModel = await _bookingService.Create(id, cancellationToken);
 
-        return AcceptedAtAction(nameof(GetById), new { id = bookingModel.Id }, bookingModel);
+        return AcceptedAtAction(nameof(BookingsController.GetById), "Bookings", new { id = bookingModel.Id }, bookingModel);
     }
 
     /// <summary>
