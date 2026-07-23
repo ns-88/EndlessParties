@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
-using EndlessParties.Application.Abstractions.Models.Requests;
-using EndlessParties.Application.Abstractions.Models.Responses;
-using EndlessParties.Application.Services;
+using EndlessParties.Application.Abstractions.Events.Models.Requests;
+using EndlessParties.Application.Abstractions.Events.Models.Responses;
+using EndlessParties.Application.Events.Services;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
@@ -21,12 +21,12 @@ public class EventServiceTests
     /// <summary>
     /// Дата и время начала события
     /// </summary>
-    private static readonly DateTime StartAt = new(2025, 01, 01);
+    private static readonly DateTimeOffset StartAt = new(new DateTime(2025, 01, 01), TimeSpan.Zero);
 
     /// <summary>
     /// Дата и время завершения события
     /// </summary>
-    private static readonly DateTime EndAt = new(2025, 01, 02);
+    private static readonly DateTimeOffset EndAt = new(new DateTime(2025, 01, 02), TimeSpan.Zero);
 
     /// <summary>
     /// Контейнер <see cref="AutoMocker"/>
@@ -50,223 +50,219 @@ public class EventServiceTests
 
 
     /// <summary>
-    /// Создание события с корректными данными и получение ответа с данными события
+    /// Позитивные тесты
     /// </summary>
-    [Fact]
-    public async Task Create_CorrectData_ReturnsValidEventResponse()
+    public class Positive : EventServiceTests
     {
-        // #### Arrange ####
-        var eventService = _autoMocker.CreateInstance<EventService>();
-
-        var eventRequest = _fixture
-            .Build<EventRequestModel>()
-            .With(x => x.StartAt, StartAt)
-            .With(x => x.EndAt, EndAt)
-            .Create();
-
-        var eventResponse = new EventResponseModel
+        /// <summary>
+        /// Создание события с корректными данными и получение ожидаемого ответа
+        /// </summary>
+        [Fact]
+        public async Task Create_CorrectData_ReturnsValidEventResponse()
         {
-            Id = Guid.NewGuid(),
-            Title = eventRequest.Title,
-            Description = eventRequest.Description,
-            StartAt = eventRequest.StartAt,
-            EndAt = eventRequest.EndAt
-        };
+            // #### Arrange ####
+            var eventService = _autoMocker.CreateInstance<EventService>();
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Setup(x => x.Create(It.IsAny<Event>(), CancellationToken.None))
-            .Returns(Task.CompletedTask);
+            var eventRequest = _fixture
+                .Build<CreateEventRequest>()
+                .With(x => x.StartAt, StartAt)
+                .With(x => x.EndAt, EndAt)
+                .Create();
 
-        // #### Act ####
-        var actualResult = await eventService.Create(eventRequest, CancellationToken.None);
+            var eventResponse = new EventResponse
+            {
+                Id = Guid.NewGuid(),
+                Title = eventRequest.Title,
+                Description = eventRequest.Description,
+                StartAt = eventRequest.StartAt,
+                EndAt = eventRequest.EndAt
+            };
 
-        // #### Assert ####
-        actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.Create(It.IsAny<Event>(), CancellationToken.None))
+                .Returns(Task.CompletedTask);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Verify(x => x.Create(It.IsAny<Event>(), CancellationToken.None), Times.Once);
+            // #### Act ####
+            var actualResult = await eventService.Create(eventRequest, CancellationToken.None);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .VerifyNoOtherCalls();
-    }
+            // #### Assert ####
+            actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
 
-    /// <summary>
-    /// Получение всех событий для корректного фильтра с возвратом данных пагинации
-    /// </summary>
-    [Fact]
-    public async Task GetAll_CorrectFilter_ReturnsValidEventPaginatedResponse()
-    {
-        // #### Arrange ####
-        var eventService = _autoMocker.CreateInstance<EventService>();
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.Create(It.IsAny<Event>(), CancellationToken.None), Times.Once);
 
-        var queryFilter = _fixture
-            .Build<GetAllEventsQueryFilter>()
-            .With(x => x.Page, 1)
-            .With(x => x.PageSize, 10)
-            .Create();
+            _autoMocker.VerifyNoOtherCalls();
+        }
 
-        var eventItems = _fixture
-            .Build<Event>()
-            .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
-            .CreateMany(1)
-            .ToList();
-
-        var collectionResult = new CollectionResult<Event>(20, eventItems);
-
-        var eventPaginatedResponse = new EventPaginatedResponseModel
+        /// <summary>
+        /// Получение всех событий для корректного фильтра с возвратом данных пагинации
+        /// </summary>
+        [Fact]
+        public async Task GetAll_CorrectFilter_ReturnsValidEventPaginatedResponse()
         {
-            PageNumber = queryFilter.Page!.Value,
-            PageSize = queryFilter.PageSize!.Value,
-            TotalCount = 20,
-            TotalPages = 2,
-            Items =
-            [
-                new EventResponseModel
-                {
-                    Id = eventItems[0].Id,
-                    Title = eventItems[0].Title,
-                    Description = eventItems[0].Description,
-                    StartAt = eventItems[0].StartAt,
-                    EndAt = eventItems[0].EndAt
-                }
-            ]
-        };
+            // #### Arrange ####
+            var eventService = _autoMocker.CreateInstance<EventService>();
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Setup(x => x.GetAll(It.IsAny<GetAllEventsFilter>(), CancellationToken.None))
-            .ReturnsAsync(collectionResult);
+            var queryFilter = _fixture
+                .Build<GetAllEventsQueryFilter>()
+                .With(x => x.Page, 1)
+                .With(x => x.PageSize, 10)
+                .Create();
 
-        // #### Act ####
-        var actualResult = await eventService.GetAll(queryFilter, CancellationToken.None);
+            var eventItems = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .CreateMany(1)
+                .ToList();
 
-        // #### Assert ####
-        actualResult.Should().BeEquivalentTo(eventPaginatedResponse, x => x.Excluding(ctx => ctx.Path.EndsWith("Id")));
+            var collectionResult = new CollectionResult<Event>(20, eventItems);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Verify(x => x.GetAll(It.IsAny<GetAllEventsFilter>(), CancellationToken.None), Times.Once);
+            var eventPaginatedResponse = new EventPaginatedResponse
+            {
+                PageNumber = queryFilter.Page!.Value,
+                PageSize = queryFilter.PageSize!.Value,
+                TotalCount = 20,
+                TotalPages = 2,
+                Items =
+                [
+                    new EventResponse
+                    {
+                        Id = eventItems[0].Id,
+                        Title = eventItems[0].Title,
+                        Description = eventItems[0].Description,
+                        StartAt = eventItems[0].StartAt,
+                        EndAt = eventItems[0].EndAt
+                    }
+                ]
+            };
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .VerifyNoOtherCalls();
-    }
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.GetAll(It.IsAny<GetAllEventsFilter>(), CancellationToken.None))
+                .ReturnsAsync(collectionResult);
 
-    /// <summary>
-    /// Получение события по идентификатору для корректного фильтра с возвратом ответа с данными события
-    /// </summary>
-    [Fact]
-    public async Task GetById_CorrectFilter_ReturnsValidEventResponse()
-    {
-        // #### Arrange ####
-        var eventService = _autoMocker.CreateInstance<EventService>();
-        var id = Guid.NewGuid();
+            // #### Act ####
+            var actualResult = await eventService.GetAll(queryFilter, CancellationToken.None);
 
-        var @event = _fixture
-            .Build<Event>()
-            .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
-            .Create();
+            // #### Assert ####
+            actualResult.Should().BeEquivalentTo(eventPaginatedResponse, x => x.Excluding(ctx => ctx.Path.EndsWith("Id")));
 
-        var eventResponse = new EventResponseModel
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.GetAll(It.IsAny<GetAllEventsFilter>(), CancellationToken.None), Times.Once);
+
+            _autoMocker.VerifyNoOtherCalls();
+        }
+
+        /// <summary>
+        /// Получение события по идентификатору для корректного фильтра с возвратом ожидаемого ответа
+        /// </summary>
+        [Fact]
+        public async Task GetById_CorrectFilter_ReturnsValidEventResponse()
         {
-            Id = Guid.NewGuid(),
-            Title = @event.Title,
-            Description = @event.Description,
-            StartAt = @event.StartAt,
-            EndAt = @event.EndAt
-        };
+            // #### Arrange ####
+            var eventService = _autoMocker.CreateInstance<EventService>();
+            var eventId = Guid.NewGuid();
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Setup(x => x.GetById(id, CancellationToken.None))
-            .ReturnsAsync(@event);
+            var @event = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .Create();
 
-        // #### Act ####
-        var actualResult = await eventService.GetById(id, CancellationToken.None);
+            var eventResponse = new EventResponse
+            {
+                Id = Guid.NewGuid(),
+                Title = @event.Title,
+                Description = @event.Description,
+                StartAt = @event.StartAt,
+                EndAt = @event.EndAt
+            };
 
-        // #### Assert ####
-        actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.GetById(eventId, CancellationToken.None))
+                .ReturnsAsync(@event);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Verify(x => x.GetById(id, CancellationToken.None), Times.Once);
+            // #### Act ####
+            var actualResult = await eventService.GetById(eventId, CancellationToken.None);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .VerifyNoOtherCalls();
-    }
+            // #### Assert ####
+            actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
 
-    /// <summary>
-    /// Обновление события с корректными данными без генерации исключения
-    /// </summary>
-    [Fact]
-    public async Task Update_CorrectData_NoThrowException()
-    {
-        // #### Arrange ####
-        var eventService = _autoMocker.CreateInstance<EventService>();
-        var id = Guid.NewGuid();
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
 
-        var eventRequest = _fixture
-            .Build<EventRequestModel>()
-            .With(x => x.StartAt, StartAt)
-            .With(x => x.EndAt, EndAt)
-            .Create();
+            _autoMocker.VerifyNoOtherCalls();
+        }
 
-        var @event = new Event(eventRequest.Title, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
-        Event? actualEvent = null;
+        /// <summary>
+        /// Обновление события с корректными данными без генерации исключения
+        /// </summary>
+        [Fact]
+        public async Task Update_CorrectData_NoThrowException()
+        {
+            // #### Arrange ####
+            var eventService = _autoMocker.CreateInstance<EventService>();
+            var eventId = Guid.NewGuid();
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Setup(x => x.Update(id, It.IsAny<Event>(), CancellationToken.None))
-            .Callback((Guid _, Event eventArg, CancellationToken _) => actualEvent = eventArg)
-            .Returns(Task.CompletedTask);
+            var eventRequest = _fixture
+                .Build<CreateEventRequest>()
+                .With(x => x.StartAt, StartAt)
+                .With(x => x.EndAt, EndAt)
+                .Create();
 
-        // #### Act ####
-        var action = () => eventService.Update(id, eventRequest, CancellationToken.None);
+            var @event = new Event(eventRequest.Title, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
+            Event? actualEvent = null;
 
-        // #### Assert ####
-        await action.Should().NotThrowAsync();
-        actualEvent.Should().BeEquivalentTo(@event, x => x.Excluding(e => e.Id));
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
+                .Callback((Guid _, Event eventArg, CancellationToken _) => actualEvent = eventArg)
+                .Returns(Task.CompletedTask);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Verify(x => x.Update(id, It.IsAny<Event>(), CancellationToken.None), Times.Once);
+            // #### Act ####
+            var action = () => eventService.Update(eventId, eventRequest, CancellationToken.None);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .VerifyNoOtherCalls();
-    }
+            // #### Assert ####
+            await action.Should().NotThrowAsync();
+            actualEvent.Should().BeEquivalentTo(@event, x => x.Excluding(e => e.Id));
 
-    /// <summary>
-    /// Удаления события с корректными данными без генерации исключения
-    /// </summary>
-    [Fact]
-    public async Task Remove_CorrectData_NoThrowException()
-    {
-        // #### Arrange ####
-        var eventService = _autoMocker.CreateInstance<EventService>();
-        var id = Guid.NewGuid();
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Once);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Setup(x => x.Remove(id, CancellationToken.None))
-            .Returns(Task.CompletedTask);
+            _autoMocker.VerifyNoOtherCalls();
+        }
 
-        // #### Act ####
-        var action = () => eventService.Remove(id, CancellationToken.None);
+        /// <summary>
+        /// Удаления события с корректными данными без генерации исключения
+        /// </summary>
+        [Fact]
+        public async Task Remove_CorrectData_NoThrowException()
+        {
+            // #### Arrange ####
+            var eventService = _autoMocker.CreateInstance<EventService>();
+            var eventId = Guid.NewGuid();
 
-        // #### Assert ####
-        await action.Should().NotThrowAsync();
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.Remove(eventId, CancellationToken.None))
+                .Returns(Task.CompletedTask);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .Verify(x => x.Remove(id, CancellationToken.None), Times.Once());
+            // #### Act ####
+            var action = () => eventService.Remove(eventId, CancellationToken.None);
 
-        _autoMocker
-            .GetMock<IEventRepository>()
-            .VerifyNoOtherCalls();
+            // #### Assert ####
+            await action.Should().NotThrowAsync();
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.Remove(eventId, CancellationToken.None), Times.Once());
+
+            _autoMocker.VerifyNoOtherCalls();
+        }
     }
 }

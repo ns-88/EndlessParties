@@ -17,8 +17,8 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
     private readonly Event _eventLiteraryEvening = new(
         "Литературный вечер 'Поэзия серебряного века",
         "Чтение стихов Ахматовой и Гумилева под аккомпанемент скрипки.",
-        new DateTime(2024, 06, 17, 19, 00, 00),
-        new DateTime(2024, 06, 17, 21, 00, 00));
+        new DateTimeOffset(new DateTime(2024, 06, 17, 19, 00, 00), TimeSpan.Zero),
+        new DateTimeOffset(new DateTime(2024, 06, 17, 21, 00, 00), TimeSpan.Zero));
 
     /// <summary>
     /// Событие 'Общегородской субботник'
@@ -26,8 +26,8 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
     private readonly Event _eventCitywideCleanDay = new(
         "Общегородской субботник",
         "Уборка территории набережной и высадка молодых саженцев.",
-        new DateTime(2024, 07, 20, 09, 00, 00),
-        new DateTime(2024, 07, 20, 14, 00, 00));
+        new DateTimeOffset(new DateTime(2024, 07, 20, 09, 00, 00), TimeSpan.Zero),
+        new DateTimeOffset(new DateTime(2024, 07, 20, 14, 00, 00), TimeSpan.Zero));
 
 
     /// <inheritdoc />
@@ -89,7 +89,7 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
             {
                 Title = null,
                 Description = null,
-                From = new DateTime(2024, 07, 20, 08, 00, 00),
+                From = new DateTimeOffset(new DateTime(2024, 07, 20, 08, 00, 00), TimeSpan.Zero),
                 To = null,
                 Count = 1,
                 Offset = 0,
@@ -112,7 +112,7 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
                 Title = null,
                 Description = null,
                 From = null,
-                To = new DateTime(2024, 06, 17, 22, 00, 00),
+                To = new DateTimeOffset(new DateTime(2024, 06, 17, 22, 00, 00), TimeSpan.Zero),
                 Count = 1,
                 Offset = 0,
                 SortDirection = SortDirection.Descending
@@ -225,8 +225,8 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
             {
                 Title = "вечер",
                 Description = "стих",
-                From = new DateTime(2024, 06, 17, 15, 00, 00),
-                To = new DateTime(2024, 06, 17, 22, 00, 00),
+                From = new DateTimeOffset(new DateTime(2024, 06, 17, 15, 00, 00), TimeSpan.Zero),
+                To = new DateTimeOffset(new DateTime(2024, 06, 17, 22, 00, 00), TimeSpan.Zero),
                 Count = 1,
                 Offset = 0,
                 SortDirection = SortDirection.Descending

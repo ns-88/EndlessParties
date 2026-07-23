@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using EndlessParties.Domain.Models;
-using EndlessParties.Infrastructure.Repositories;
+﻿using EndlessParties.Domain.Models;
+using EndlessParties.Infrastructure.Events.Repositories;
 
 namespace EndlessParties.Tests.Infrastructure.Extensions;
 

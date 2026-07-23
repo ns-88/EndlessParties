@@ -1,6 +1,7 @@
 using EndlessParties.Infrastructure.Abstractions.Repositories;
-using EndlessParties.Infrastructure.Data;
-using EndlessParties.Infrastructure.Repositories;
+using EndlessParties.Infrastructure.Bookings.Repositories;
+using EndlessParties.Infrastructure.Events.Data;
+using EndlessParties.Infrastructure.Events.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Infrastructure;
@@ -16,7 +17,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services
-            .AddSingleton<IEventRepository, EventRepository>(_ => EventRepository.FromData());
+            .AddSingleton<IEventRepository, EventRepository>(_ => EventRepository.FromData())
+            .AddSingleton<IBookingRepository, BookingRepository>();
 
         return services;
     }

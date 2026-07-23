@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using EndlessParties.Domain.Models;
-using EndlessParties.Infrastructure.Repositories;
+using EndlessParties.Infrastructure.Events.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Tests.Infrastructure.Extensions;
 using FluentAssertions;
@@ -16,12 +16,12 @@ public class EventRepositoryTests
     /// <summary>
     /// Дата и время начала события
     /// </summary>
-    private static readonly DateTime StartAt = new(2025, 01, 01);
+    private static readonly DateTimeOffset StartAt = new(new DateTime(2025, 01, 01), TimeSpan.Zero);
 
     /// <summary>
     /// Дата и время завершения события
     /// </summary>
-    private static readonly DateTime EndAt = new(2025, 01, 02);
+    private static readonly DateTimeOffset EndAt = new(new DateTime(2025, 01, 02), TimeSpan.Zero);
 
     /// <summary>
     /// Сервис создания тестовых данных
