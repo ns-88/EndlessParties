@@ -11,4 +11,9 @@ public class EventResponse : CreateEventRequest
     /// Идентификатор
     /// </summary>
     public required Guid Id { get; init; }
+
+    /// <summary>
+    /// Текущее количество свободных мест
+    /// </summary>
+    public required int AvailableSeats { get; init; }
 }

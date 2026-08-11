@@ -29,6 +29,16 @@ public class Event
     public string Title { get; }
 
     /// <summary>
+    /// Общее количество мест
+    /// </summary>
+    public int TotalSeats { get; }
+
+    /// <summary>
+    /// Текущее количество свободных мест
+    /// </summary>
+    public int AvailableSeats { get; private set; }
+
+    /// <summary>
     /// Описание
     /// </summary>
     public string? Description { get; }
@@ -47,12 +57,14 @@ public class Event
     /// <summary>
     /// Конструктор
     /// </summary>
-    public Event(string title, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
+    public Event(string title, int totalSeats, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
-        Validation(title, description, startAt, endAt);
+        Validation(title, totalSeats, description, startAt, endAt);
 
         Id = Guid.NewGuid();
         Title = title;
+        TotalSeats = totalSeats;
+        AvailableSeats = totalSeats;
         Description = description;
         StartAt = startAt;
         EndAt = endAt;
@@ -60,13 +72,51 @@ public class Event
 
 
     /// <summary>
+    /// Резервирование свободных мест
+    /// </summary>
+    public bool TryReserveSeats(int count = 1)
+    {
+        if (count <= 0)
+        {
+            throw new ArgumentException(ApplicationErrors.Events.SeatsCountWrongValue, nameof(count));
+        }
+
+        if (count > TotalSeats || count > AvailableSeats)
+        {
+            return false;
+        }
+
+        AvailableSeats -= count;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Освобождение зарезервированных мест
+    /// </summary>
+    public void ReleaseSeats(int count = 1)
+    {
+        if (count > TotalSeats || count > AvailableSeats)
+        {
+            throw new ArgumentException(ApplicationErrors.Events.SeatsCountWrongValue, nameof(count));
+        }
+
+        AvailableSeats += count;
+    }
+
+    /// <summary>
     /// Валидация доменной сущности
     /// </summary>
-    private static void Validation(string title, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
+    private static void Validation(string title, int totalSeats, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
             throw new LogicException(ApplicationErrors.Events.NameNotSpecified);
+        }
+
+        if (totalSeats <= 0)
+        {
+            throw new LogicException(ApplicationErrors.Events.TotalSeatsLessAllowed);
         }
 
         if (title.Length > MaxTitleLength)

@@ -1,4 +1,5 @@
-﻿using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
+﻿using AutoFixture;
+using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
 using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 using EndlessParties.Application.Bookings.Services;
 using EndlessParties.Domain.Enums;
@@ -19,9 +20,29 @@ namespace EndlessParties.Tests.Application.Services;
 public class BookingServiceTests
 {
     /// <summary>
+    /// Дата и время начала мероприятия
+    /// </summary>
+    private static readonly DateTimeOffset EventStartAt = new(new DateTime(2025, 01, 01), TimeSpan.Zero);
+
+    /// <summary>
+    /// Дата и время завершения мероприятия
+    /// </summary>
+    private static readonly DateTimeOffset EventEndAt = new(new DateTime(2025, 01, 02), TimeSpan.Zero);
+
+    /// <summary>
+    /// Общее количество свободных мест для мероприятия
+    /// </summary>
+    private const int EventTotalSeats = 10;
+
+    /// <summary>
     /// Контейнер <see cref="AutoMocker"/>
     /// </summary>
     private readonly AutoMocker _autoMocker;
+
+    /// <summary>
+    /// Сервис создания тестовых данных <see cref="Fixture"/>
+    /// </summary>
+    private readonly Fixture _fixture;
 
 
     /// <summary>
@@ -30,6 +51,7 @@ public class BookingServiceTests
     public BookingServiceTests()
     {
         _autoMocker = new AutoMocker(MockBehavior.Strict);
+        _fixture = new Fixture();
     }
 
 
@@ -48,14 +70,24 @@ public class BookingServiceTests
             var bookingService = _autoMocker.CreateInstance<BookingService>();
             var eventId = Guid.NewGuid();
 
+            var @event = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, EventTotalSeats, description, EventStartAt, EventEndAt))
+                .Create();
+
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.Exists(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(true);
+                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(@event);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
             _autoMocker
@@ -69,14 +101,19 @@ public class BookingServiceTests
             // #### Assert ####
             actualResult.Should().NotBeNull();
             actualResult.Status.Should().Be(BookingStatus.Pending);
+            @event.AvailableSeats.Should().Be(EventTotalSeats - 1);
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Exists(eventId, CancellationToken.None), Times.Once);
+                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Once);
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
@@ -92,17 +129,28 @@ public class BookingServiceTests
         public async Task Create_MultipleBookings_ReturnsValidBookingResponse()
         {
             // #### Arrange ####
+            const int bookingCount = 3;
             var bookingService = _autoMocker.CreateInstance<BookingService>();
             var eventId = Guid.NewGuid();
 
+            var @event = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, EventTotalSeats, description, EventStartAt, EventEndAt))
+                .Create();
+
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.Exists(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(true);
+                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(@event);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
             _autoMocker
@@ -113,7 +161,7 @@ public class BookingServiceTests
             // #### Act ####
             var bookingResponses = new List<BookingResponse>();
 
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < bookingCount; i++)
             {
                 var actualResult = await bookingService.Create(eventId, CancellationToken.None);
 
@@ -122,18 +170,23 @@ public class BookingServiceTests
 
             // #### Assert ####
             bookingResponses.Should().OnlyHaveUniqueItems(x => x.Id);
+            @event.AvailableSeats.Should().Be(EventTotalSeats - bookingCount);
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Exists(eventId, CancellationToken.None), Times.Exactly(3));
+                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Exactly(bookingCount));
 
             _autoMocker
                 .GetMock<IBookingRepository>()
-                .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(3));
+                .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(bookingCount));
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Exactly(bookingCount));
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
-                .Verify(x => x.TryPublish(It.IsAny<BookingCreatedMessage>()), Times.Exactly(3));
+                .Verify(x => x.TryPublish(It.IsAny<BookingCreatedMessage>()), Times.Exactly(bookingCount));
 
             _autoMocker.VerifyNoOtherCalls();
         }
@@ -223,8 +276,8 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.Exists(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(false);
+                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .ThrowsAsync(new NotFoundException(string.Empty));
 
             // #### Act ####
             var action = () => bookingService.Create(eventId, CancellationToken.None);
@@ -234,7 +287,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Exists(It.IsAny<Guid>(), CancellationToken.None), Times.Once);
+                .Verify(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }

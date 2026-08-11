@@ -29,6 +29,11 @@ public class EventServiceTests
     private static readonly DateTimeOffset EndAt = new(new DateTime(2025, 01, 02), TimeSpan.Zero);
 
     /// <summary>
+    /// Общее количество мест
+    /// </summary>
+    private const int TotalSeats = 10;
+
+    /// <summary>
     /// Контейнер <see cref="AutoMocker"/>
     /// </summary>
     private readonly AutoMocker _autoMocker;
@@ -65,6 +70,7 @@ public class EventServiceTests
 
             var eventRequest = _fixture
                 .Build<CreateEventRequest>()
+                .With(x => x.TotalSeats, TotalSeats)
                 .With(x => x.StartAt, StartAt)
                 .With(x => x.EndAt, EndAt)
                 .Create();
@@ -73,6 +79,8 @@ public class EventServiceTests
             {
                 Id = Guid.NewGuid(),
                 Title = eventRequest.Title,
+                TotalSeats = eventRequest.TotalSeats,
+                AvailableSeats = eventRequest.TotalSeats,
                 Description = eventRequest.Description,
                 StartAt = eventRequest.StartAt,
                 EndAt = eventRequest.EndAt
@@ -113,7 +121,7 @@ public class EventServiceTests
 
             var eventItems = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string ? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .CreateMany(1)
                 .ToList();
 
@@ -131,6 +139,8 @@ public class EventServiceTests
                     {
                         Id = eventItems[0].Id,
                         Title = eventItems[0].Title,
+                        TotalSeats = eventItems[0].TotalSeats,
+                        AvailableSeats = eventItems[0].AvailableSeats,
                         Description = eventItems[0].Description,
                         StartAt = eventItems[0].StartAt,
                         EndAt = eventItems[0].EndAt
@@ -168,13 +178,15 @@ public class EventServiceTests
 
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventResponse = new EventResponse
             {
                 Id = Guid.NewGuid(),
                 Title = @event.Title,
+                TotalSeats = @event.TotalSeats,
+                AvailableSeats = @event.TotalSeats,
                 Description = @event.Description,
                 StartAt = @event.StartAt,
                 EndAt = @event.EndAt
@@ -210,11 +222,12 @@ public class EventServiceTests
 
             var eventRequest = _fixture
                 .Build<CreateEventRequest>()
+                .With(x => x.TotalSeats, TotalSeats)
                 .With(x => x.StartAt, StartAt)
                 .With(x => x.EndAt, EndAt)
                 .Create();
 
-            var @event = new Event(eventRequest.Title, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
+            var @event = new Event(eventRequest.Title, eventRequest.TotalSeats, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
             Event? actualEvent = null;
 
             _autoMocker

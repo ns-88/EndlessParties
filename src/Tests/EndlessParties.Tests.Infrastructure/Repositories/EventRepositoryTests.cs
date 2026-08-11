@@ -24,6 +24,11 @@ public class EventRepositoryTests
     private static readonly DateTimeOffset EndAt = new(new DateTime(2025, 01, 02), TimeSpan.Zero);
 
     /// <summary>
+    /// Общее количество мест
+    /// </summary>
+    private const int TotalSeats = 10;
+
+    /// <summary>
     /// Сервис создания тестовых данных
     /// </summary>
     private readonly Fixture _fixture;
@@ -54,7 +59,7 @@ public class EventRepositoryTests
 
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             // #### Act ####
@@ -92,7 +97,7 @@ public class EventRepositoryTests
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventRepository = EventRepository.FromData([@event]);
@@ -113,12 +118,12 @@ public class EventRepositoryTests
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var newEvent = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventRepository = EventRepository.FromData([@event]);
@@ -141,7 +146,7 @@ public class EventRepositoryTests
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventRepository = EventRepository.FromData([@event]);
@@ -172,7 +177,7 @@ public class EventRepositoryTests
 
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventRepository = EventRepository.FromData([@event]);
@@ -195,7 +200,7 @@ public class EventRepositoryTests
 
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             var eventRepository = EventRepository.FromData([@event]);

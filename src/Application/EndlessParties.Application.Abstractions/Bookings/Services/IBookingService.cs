@@ -5,7 +5,7 @@ namespace EndlessParties.Application.Abstractions.Bookings.Services;
 /// <summary>
 /// Сервис для работы с бронированиями
 /// </summary>
-public interface IBookingService
+public interface IBookingService : IDisposable
 {
     /// <summary>
     /// Получение бронирования по идентификатору
