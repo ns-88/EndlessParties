@@ -16,6 +16,16 @@ public static partial class ApplicationErrors
         public const string NameNotSpecified = "Наименование события не задано";
 
         /// <summary>
+        /// Общее количество мест меньше допустимого
+        /// </summary>
+        public const string TotalSeatsLessAllowed = "Общее количество мест меньше допустимого";
+
+        /// <summary>
+        /// Количество свободных мест имеет неверное значение
+        /// </summary>
+        public const string SeatsCountWrongValue = "Количество свободных мест имеет неверное значение";
+
+        /// <summary>
         /// Длина наименования события больше допустимой
         /// </summary>
         public const string NameLongerThanAllowed = "Длина наименования события больше допустимой";

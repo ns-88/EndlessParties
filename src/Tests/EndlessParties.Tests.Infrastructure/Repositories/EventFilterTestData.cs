@@ -15,7 +15,7 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
     /// Событие 'Литературный вечер'
     /// </summary>
     private readonly Event _eventLiteraryEvening = new(
-        "Литературный вечер 'Поэзия серебряного века",
+        "Литературный вечер 'Поэзия серебряного века", 10,
         "Чтение стихов Ахматовой и Гумилева под аккомпанемент скрипки.",
         new DateTimeOffset(new DateTime(2024, 06, 17, 19, 00, 00), TimeSpan.Zero),
         new DateTimeOffset(new DateTime(2024, 06, 17, 21, 00, 00), TimeSpan.Zero));
@@ -24,7 +24,7 @@ public sealed class EventFilterTestData : TheoryData<EventFilterTestCase>
     /// Событие 'Общегородской субботник'
     /// </summary>
     private readonly Event _eventCitywideCleanDay = new(
-        "Общегородской субботник",
+        "Общегородской субботник", 10,
         "Уборка территории набережной и высадка молодых саженцев.",
         new DateTimeOffset(new DateTime(2024, 07, 20, 09, 00, 00), TimeSpan.Zero),
         new DateTimeOffset(new DateTime(2024, 07, 20, 14, 00, 00), TimeSpan.Zero));

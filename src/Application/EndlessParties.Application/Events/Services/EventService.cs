@@ -78,7 +78,7 @@ internal class EventService : IEventService
             var startAtUtc = request.StartAt.ToUniversalTime();
             var endAtUtc = request.EndAt.ToUniversalTime();
 
-            @event = new Event(request.Title, request.Description, startAtUtc, endAtUtc);
+            @event = new Event(request.Title, request.TotalSeats, request.Description, startAtUtc, endAtUtc);
 
             await _eventRepository.Create(@event, cancellationToken);
         }
@@ -98,7 +98,7 @@ internal class EventService : IEventService
             var startAtUtc = request.StartAt.ToUniversalTime();
             var endAtUtc = request.EndAt.ToUniversalTime();
 
-            var @event = new Event(request.Title, request.Description, startAtUtc, endAtUtc);
+            var @event = new Event(request.Title, request.TotalSeats, request.Description, startAtUtc, endAtUtc);
 
             await _eventRepository.Update(id, @event, cancellationToken);
         }
