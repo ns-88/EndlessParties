@@ -26,7 +26,7 @@ public class EventRepositoryTests
     /// <summary>
     /// Общее количество мест
     /// </summary>
-    private const int TotalSeats = 10;
+    private const int TotalSeats = 3;
 
     /// <summary>
     /// Сервис создания тестовых данных
