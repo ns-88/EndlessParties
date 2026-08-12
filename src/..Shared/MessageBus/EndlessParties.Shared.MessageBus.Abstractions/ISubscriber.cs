@@ -9,4 +9,9 @@ public interface ISubscriber<T>
     /// Получение сообщения
     /// </summary>
     Task<T> Read(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Получение всех доступных сообщений в виде асинхронной последовательности
+    /// </summary>
+    IAsyncEnumerable<T> ReadAll(CancellationToken cancellationToken);
 }

@@ -54,4 +54,10 @@ internal class ChannelMessageBus<T> : IPublisher<T>, ISubscriber<T>
     {
         return _reader.ReadAsync(cancellationToken).AsTask();
     }
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<T> ReadAll(CancellationToken cancellationToken)
+    {
+        return _reader.ReadAllAsync(cancellationToken);
+    }
 }
