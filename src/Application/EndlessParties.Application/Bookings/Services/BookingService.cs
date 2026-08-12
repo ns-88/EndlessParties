@@ -7,6 +7,7 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
+using EndlessParties.Shared.Utils;
 
 namespace EndlessParties.Application.Bookings.Services;
 
@@ -62,7 +63,7 @@ internal class BookingService : IBookingService
         {
             throw new NotFoundException(string.Format(ApplicationErrors.Bookings.NotFound, id));
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(string.Format(ApplicationErrors.Bookings.ReceivingById, id), ex);
         }
@@ -98,7 +99,7 @@ internal class BookingService : IBookingService
                     throw new LogicException(ApplicationErrors.Bookings.ProcessingNotPossible);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
             {
                 throw new LogicException(ApplicationErrors.Bookings.Creation, ex);
             }
@@ -120,7 +121,7 @@ internal class BookingService : IBookingService
             {
                 throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, eventId));
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
             {
                 throw new LogicException(ApplicationErrors.Bookings.Creation, ex);
             }

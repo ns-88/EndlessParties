@@ -7,6 +7,7 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Utils;
 
 namespace EndlessParties.Application.Events.Services;
 
@@ -39,7 +40,7 @@ internal class EventService : IEventService
 
             collectionResult = await _eventRepository.GetAll(eventsFilter, cancellationToken);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(ApplicationErrors.Events.ReceivingAll, ex);
         }
@@ -60,7 +61,7 @@ internal class EventService : IEventService
         {
             throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(string.Format(ApplicationErrors.Events.ReceivingById, id), ex);
         }
@@ -82,7 +83,7 @@ internal class EventService : IEventService
 
             await _eventRepository.Create(@event, cancellationToken);
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(ApplicationErrors.Events.Creation, ex);
         }
@@ -106,7 +107,7 @@ internal class EventService : IEventService
         {
             throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(string.Format(ApplicationErrors.Events.Update, id), ex);
         }
@@ -123,7 +124,7 @@ internal class EventService : IEventService
         {
             throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
             throw new LogicException(string.Format(ApplicationErrors.Events.Deletion, id), ex);
         }

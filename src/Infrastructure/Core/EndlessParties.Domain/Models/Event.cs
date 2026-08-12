@@ -19,6 +19,11 @@ public class Event
     public const int MaxDescriptionLength = 100;
 
     /// <summary>
+    /// Временная блокировка методов объекта до перехода на БД
+    /// </summary>
+    private Lock _lock;
+
+    /// <summary>
     /// Идентификатор
     /// </summary>
     public Guid Id { get; }
@@ -61,6 +66,8 @@ public class Event
     {
         Validation(title, totalSeats, description, startAt, endAt);
 
+        _lock = new Lock();
+
         Id = Guid.NewGuid();
         Title = title;
         TotalSeats = totalSeats;
@@ -78,17 +85,20 @@ public class Event
     {
         if (count <= 0)
         {
-            throw new ArgumentException(ApplicationErrors.Events.SeatsCountWrongValue, nameof(count));
+            throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
         }
 
-        if (count > TotalSeats || count > AvailableSeats)
+        using (_lock.EnterScope())
         {
-            return false;
+            if (count > TotalSeats || count > AvailableSeats)
+            {
+                return false;
+            }
+
+            AvailableSeats -= count;
+
+            return true;
         }
-
-        AvailableSeats -= count;
-
-        return true;
     }
 
     /// <summary>
@@ -96,12 +106,25 @@ public class Event
     /// </summary>
     public void ReleaseSeats(int count = 1)
     {
-        if (count > TotalSeats || count > AvailableSeats)
+        if (count <= 0)
         {
-            throw new ArgumentException(ApplicationErrors.Events.SeatsCountWrongValue, nameof(count));
+            throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
         }
 
-        AvailableSeats += count;
+        if (count > TotalSeats)
+        {
+            throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanTotalCount);
+        }
+
+        using (_lock.EnterScope())
+        {
+            if (count > TotalSeats - AvailableSeats)
+            {
+                throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
+            }
+
+            AvailableSeats += count;
+        }
     }
 
     /// <summary>

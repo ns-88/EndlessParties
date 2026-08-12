@@ -26,6 +26,16 @@ public static partial class ApplicationErrors
         public const string SeatsCountWrongValue = "Количество свободных мест имеет неверное значение";
 
         /// <summary>
+        /// Количество освобождаемых мест превышает общее число доступных мест
+        /// </summary>
+        public const string SeatsCountGreaterThanTotalCount = "Количество освобождаемых мест превышает общее число доступных мест";
+
+        /// <summary>
+        /// Количество освобождаемых мест превышает число занятых мест
+        /// </summary>
+        public const string SeatsCountGreaterThanOccupiedCount = "Количество освобождаемых мест превышает число занятых мест";
+
+        /// <summary>
         /// Длина наименования события больше допустимой
         /// </summary>
         public const string NameLongerThanAllowed = "Длина наименования события больше допустимой";

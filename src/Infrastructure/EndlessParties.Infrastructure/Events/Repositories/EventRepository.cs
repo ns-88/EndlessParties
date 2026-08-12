@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
@@ -16,7 +17,7 @@ internal class EventRepository : IEventRepository
     /// <summary>
     /// Словарь добавленных событий <see cref="Event"/>
     /// </summary>
-    private readonly Dictionary<Guid, Event> _events;
+    private readonly ConcurrentDictionary<Guid, Event> _events;
 
 
     /// <summary>
@@ -24,7 +25,7 @@ internal class EventRepository : IEventRepository
     /// </summary>
     public EventRepository()
     {
-        _events = new Dictionary<Guid, Event>();
+        _events = new ConcurrentDictionary<Guid, Event>();
     }
 
 
@@ -92,7 +93,7 @@ internal class EventRepository : IEventRepository
     /// <inheritdoc />
     public Task Remove(Guid id, CancellationToken cancellationToken)
     {
-        if (!_events.Remove(id))
+        if (!_events.Remove(id, out _))
         {
             throw new NotFoundException(string.Format(ApplicationErrors.ObjectNotFound, id));
         }
