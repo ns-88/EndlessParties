@@ -31,7 +31,7 @@ public class EventServiceTests
     /// <summary>
     /// Общее количество мест
     /// </summary>
-    private const int TotalSeats = 10;
+    private const int TotalSeats = 3;
 
     /// <summary>
     /// Контейнер <see cref="AutoMocker"/>

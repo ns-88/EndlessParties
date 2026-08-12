@@ -234,6 +234,6 @@ internal partial class BookingProcessorService : BackgroundService
             throw new LogicException("Ошибка валидации события на соответствие бизнес-правилам");
         }
 
-        return Task.FromResult(validationResult);
+        return Task.FromResult(!validationResult);
     }
 }

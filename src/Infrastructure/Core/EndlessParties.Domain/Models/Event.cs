@@ -21,7 +21,7 @@ public class Event
     /// <summary>
     /// Временная блокировка методов объекта до перехода на БД
     /// </summary>
-    private Lock _lock;
+    private readonly Lock _lock;
 
     /// <summary>
     /// Идентификатор
