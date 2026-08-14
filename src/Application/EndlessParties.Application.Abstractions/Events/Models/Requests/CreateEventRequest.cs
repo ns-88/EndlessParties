@@ -11,6 +11,11 @@ public class CreateEventRequest
     public required string Title { get; init; }
 
     /// <summary>
+    /// Общее количество мест
+    /// </summary>
+    public required int TotalSeats { get; init; }
+
+    /// <summary>
     /// Описание
     /// </summary>
     public required string? Description { get; init; }

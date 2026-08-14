@@ -34,5 +34,10 @@ public static partial class ApplicationErrors
         /// Обработка бронирования невозможна
         /// </summary>
         public const string ProcessingNotPossible = "Обработка бронирования невозможна";
+
+        /// <summary>
+        /// Нет доступных мест для бронирования
+        /// </summary>
+        public const string NoAvailableSeats = "Нет доступных мест для бронирования";
     }
 }

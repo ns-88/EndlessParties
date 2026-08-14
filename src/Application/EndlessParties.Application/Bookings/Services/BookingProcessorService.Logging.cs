@@ -12,10 +12,23 @@ internal partial class BookingProcessorService
     private partial void LogNewBooking(Guid bookingId);
 
     /// <summary>
-    /// Бронирование успешно обработано
+    /// Обработка бронирования завершена
     /// </summary>
-    [LoggerMessage(LogLevel.Information, "Бронирование успешно обработано. Id: \"{BookingId}\", статус: \"{BookingStatus}\"")]
-    private partial void LogBookingSuccessfullyProcessed(Guid bookingId, BookingStatus bookingStatus);
+    [LoggerMessage(LogLevel.Information, "Обработка бронирования завершена. Id: \"{BookingId}\", статус: \"{BookingStatus}\"")]
+    private partial void LogBookingProcessingCompleted(Guid bookingId, BookingStatus bookingStatus);
+
+    /// <summary>
+    /// Событие не найдено
+    /// </summary>
+    [LoggerMessage(LogLevel.Warning, "Событие не найдено. Id: \"{BookedEventId}\"")]
+    private partial void LogEventNotFound(Guid bookedEventId);
+
+    /// <summary>
+    /// Валидация события на соответствие бизнес-правилам не выполнена
+    /// </summary>
+    [LoggerMessage(LogLevel.Information, "Валидация события на соответствие бизнес-правилам не выполнена, бронирование будет отклонено. " +
+                                         "Id: \"{BookedEventId}\"")]
+    private partial void LogEventValidationFailed(Guid bookedEventId);
 
     /// <summary>
     /// Ошибка обработки бронирования
@@ -34,12 +47,6 @@ internal partial class BookingProcessorService
     /// </summary>
     [LoggerMessage(LogLevel.Information, "Работа фонового сервиса обработки бронирований завершена")]
     private partial void LogServiceStopped();
-
-    /// <summary>
-    /// Ошибка получения сообщения с данными бронирования для обработки
-    /// </summary>
-    [LoggerMessage(LogLevel.Error, "Ошибка получения сообщения с данными бронирования для обработки")]
-    partial void LogErrorReceivingBookingCreatedMessage(Exception ex);
 
     /// <summary>
     /// Критическая ошибка работы фонового сервиса обработки бронирований

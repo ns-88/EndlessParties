@@ -32,6 +32,11 @@ internal class ExceptionHandler : IExceptionHandler
     /// </summary>
     private const string NotFoundErrorTitle = "Запрашиваемый объект не найден";
 
+    /// <summary>
+    /// Конфликт состояния данных
+    /// </summary>
+    private const string ConflictErrorTitle = "Конфликт состояния данных";
+
 
     /// <summary>
     /// Фабрика <see cref="ProblemDetailsFactory"/>
@@ -62,6 +67,7 @@ internal class ExceptionHandler : IExceptionHandler
             LogicException logicException => HandleLogicException(logicException, httpContext),
             ValidationException validationException => HandleValidationException(validationException, httpContext),
             NotFoundException notFoundException => HandleNotFoundException(notFoundException, httpContext),
+            ConflictException conflictException => HandleConflictException(conflictException, httpContext),
             _ => HandleUnknownException(exception, httpContext)
         };
 
@@ -104,6 +110,19 @@ internal class ExceptionHandler : IExceptionHandler
             httpContext,
             StatusCodes.Status404NotFound,
             NotFoundErrorTitle,
+            detail: exception.Message,
+            instance: httpContext.Request.Path);
+    }
+
+    /// <summary>
+    /// Обработка исключения с типом <see cref="ConflictException"/>
+    /// </summary>
+    private ProblemDetails HandleConflictException(ConflictException exception, HttpContext httpContext)
+    {
+        return _factory.CreateProblemDetails(
+            httpContext,
+            StatusCodes.Status409Conflict,
+            ConflictErrorTitle,
             detail: exception.Message,
             instance: httpContext.Request.Path);
     }

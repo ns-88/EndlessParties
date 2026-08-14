@@ -15,7 +15,10 @@ internal class CreateEventRequestValidator : AbstractValidator<CreateEventReques
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(Event.MaxTitleLength)
-            .When(x => !string.IsNullOrWhiteSpace(x.Description), ApplyConditionTo.CurrentValidator);
+            .When(x => !string.IsNullOrWhiteSpace(x.Title), ApplyConditionTo.CurrentValidator);
+
+        RuleFor(x => x.TotalSeats)
+            .NotEmpty();
 
         RuleFor(x => x.Description)
             .MaximumLength(Event.MaxDescriptionLength)

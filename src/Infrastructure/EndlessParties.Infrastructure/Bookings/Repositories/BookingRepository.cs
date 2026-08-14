@@ -1,4 +1,5 @@
-﻿using EndlessParties.Domain.Errors;
+﻿using System.Collections.Concurrent;
+using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
@@ -11,7 +12,7 @@ internal class BookingRepository : IBookingRepository
     /// <summary>
     /// Словарь добавленных бронирований <see cref="Booking"/>
     /// </summary>
-    private readonly Dictionary<Guid, Booking> _bookings;
+    private readonly ConcurrentDictionary<Guid, Booking> _bookings;
 
 
     /// <summary>
@@ -19,7 +20,7 @@ internal class BookingRepository : IBookingRepository
     /// </summary>
     public BookingRepository()
     {
-        _bookings = new Dictionary<Guid, Booking>();
+        _bookings = new ConcurrentDictionary<Guid, Booking>();
     }
 
 
