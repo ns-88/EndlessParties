@@ -7,7 +7,7 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
-using EndlessParties.Shared.Utils;
+using EndlessParties.Shared.Utils.Exceptions;
 
 namespace EndlessParties.Application.Bookings.Services;
 

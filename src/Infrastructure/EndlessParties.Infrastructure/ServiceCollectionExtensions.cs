@@ -1,3 +1,4 @@
+using EndlessParties.Database;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Infrastructure.Bookings.Repositories;
 using EndlessParties.Infrastructure.Events.Data;
@@ -14,11 +15,14 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Добавление сервисов инфраструктурного слоя
     /// </summary>
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, InfrastructureSettings settings)
     {
+        settings.Validate();
+
         services
             .AddSingleton<IEventRepository, EventRepository>(_ => EventRepository.FromData())
-            .AddSingleton<IBookingRepository, BookingRepository>();
+            .AddSingleton<IBookingRepository, BookingRepository>()
+            .AddEventsDatabase(settings.EventsDatabase);
 
         return services;
     }

@@ -13,6 +13,7 @@ internal static partial class EventMapper
     /// <summary>
     /// Преобразование из <see cref="Event"/> в <see cref="EventResponse"/>
     /// </summary>
+    [MapperIgnoreSource(nameof(Event.Bookings))]
     public static partial EventResponse Map(Event source);
 
     /// <summary>
