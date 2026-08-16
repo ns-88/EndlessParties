@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+﻿using EndlessParties.Database.Database;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EndlessParties.Presentation;
 
@@ -26,6 +28,8 @@ public static class WebApplicationExtensions
 
         application
             .MapControllers();
+        application
+            .ApplyMigrations();
 
         return application;
     }
@@ -47,5 +51,21 @@ public static class WebApplicationExtensions
         }
 
         return application;
+    }
+
+    /// <summary>
+    /// Применение миграций
+    /// </summary>
+    private static void ApplyMigrations(this WebApplication application)
+    {
+        if (!application.Environment.IsEnvironment("local"))
+        {
+            return;
+        }
+
+        using var scope = application.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+
+        dbContext.Database.Migrate();
     }
 }

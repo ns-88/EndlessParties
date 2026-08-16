@@ -1,6 +1,7 @@
 ﻿using EndlessParties.Application;
 using EndlessParties.Infrastructure;
 using EndlessParties.Shared.Exceptions;
+using EndlessParties.Shared.Utils.Database.Settings;
 using EndlessParties.Shared.Validations;
 using Serilog;
 
@@ -11,57 +12,71 @@ namespace EndlessParties.Presentation;
 /// </summary>
 public static class WebApplicationBuilderExtensions
 {
-    extension(WebApplicationBuilder builder)
+    /// <summary>
+    /// Конфигурирование сервисов
+    /// </summary>
+    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        /// <summary>
-        /// Конфигурирование сервисов
-        /// </summary>
-        public WebApplicationBuilder ConfigureServices()
+        builder
+            .AddSerilog()
+            .AddApplicationExceptions()
+            .AddApplicationValidations()
+            .AddDependencyValidation();
+
+        var infrastructureSettings = GetInfrastructureSettings(builder.Configuration);
+
+        builder.Services
+            .AddPresentation()
+            .AddApplication()
+            .AddInfrastructure(infrastructureSettings);
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Добавление проверки жизненного цикла и создания зависимостей
+    /// </summary>
+    private static void AddDependencyValidation(this WebApplicationBuilder builder)
+    {
+        if (!builder.Environment.IsEnvironment("local"))
         {
-            builder
-                .AddSerilog()
-                .AddApplicationExceptions()
-                .AddApplicationValidations()
-                .AddDependencyValidation();
-
-            builder.Services
-                .AddPresentation()
-                .AddApplication()
-                .AddInfrastructure();
-
-            return builder;
+            return;
         }
 
-        /// <summary>
-        /// Добавление проверки жизненного цикла и создания зависимостей
-        /// </summary>
-        private void AddDependencyValidation()
+        builder.Host.UseDefaultServiceProvider(setup =>
         {
-            if (!builder.Environment.IsEnvironment("local"))
+            setup.ValidateScopes = true;
+            setup.ValidateOnBuild = true;
+        });
+    }
+
+    /// <summary>
+    /// Добавление логгера Serilog
+    /// </summary>
+    private static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSerilog((services, loggerConfiguration) =>
+        {
+            loggerConfiguration
+                .ReadFrom.Configuration(builder.Configuration)
+                .ReadFrom.Services(services);
+        });
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Получение настроек <see cref="InfrastructureSettings"/>
+    /// </summary>
+    private static InfrastructureSettings GetInfrastructureSettings(IConfiguration config)
+    {
+        return new InfrastructureSettings
+        {
+            EventsDatabase = new DatabaseSettings
             {
-                return;
+                ConnectionString = config.GetConnectionString("Postgres:Events")!,
+                RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
             }
-
-            builder.Host.UseDefaultServiceProvider(setup =>
-            {
-                setup.ValidateScopes = true;
-                setup.ValidateOnBuild = true;
-            });
-        }
-
-        /// <summary>
-        /// Добавление логгера Serilog
-        /// </summary>
-        private WebApplicationBuilder AddSerilog()
-        {
-            builder.Services.AddSerilog((services, loggerConfiguration) =>
-            {
-                loggerConfiguration
-                    .ReadFrom.Configuration(builder.Configuration)
-                    .ReadFrom.Services(services);
-            });
-
-            return builder;
-        }
+        };
     }
 }

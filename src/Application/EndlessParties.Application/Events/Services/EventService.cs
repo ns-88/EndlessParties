@@ -7,7 +7,7 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Exceptions.Models;
-using EndlessParties.Shared.Utils;
+using EndlessParties.Shared.Utils.Exceptions;
 
 namespace EndlessParties.Application.Events.Services;
 

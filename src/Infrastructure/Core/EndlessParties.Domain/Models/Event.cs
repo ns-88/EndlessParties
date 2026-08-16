@@ -19,11 +19,6 @@ public class Event
     public const int MaxDescriptionLength = 100;
 
     /// <summary>
-    /// Временная блокировка методов объекта до перехода на БД
-    /// </summary>
-    private readonly Lock _lock;
-
-    /// <summary>
     /// Идентификатор
     /// </summary>
     public Guid Id { get; }
@@ -58,6 +53,19 @@ public class Event
     /// </summary>
     public DateTimeOffset EndAt { get; }
 
+    /// <summary>
+    /// Список связанных сущностей <see cref="Booking"/>
+    /// </summary>
+    public IReadOnlyList<Booking> Bookings { get; } = [];
+
+
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    private Event()
+    {
+        Title = null!;
+    }
 
     /// <summary>
     /// Конструктор
@@ -65,8 +73,6 @@ public class Event
     public Event(string title, int totalSeats, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
         Validation(title, totalSeats, description, startAt, endAt);
-
-        _lock = new Lock();
 
         Id = Guid.NewGuid();
         Title = title;
@@ -88,17 +94,14 @@ public class Event
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
         }
 
-        using (_lock.EnterScope())
+        if (count > TotalSeats || count > AvailableSeats)
         {
-            if (count > TotalSeats || count > AvailableSeats)
-            {
-                return false;
-            }
-
-            AvailableSeats -= count;
-
-            return true;
+            return false;
         }
+
+        AvailableSeats -= count;
+
+        return true;
     }
 
     /// <summary>
@@ -116,15 +119,12 @@ public class Event
             throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanTotalCount);
         }
 
-        using (_lock.EnterScope())
+        if (count > TotalSeats - AvailableSeats)
         {
-            if (count > TotalSeats - AvailableSeats)
-            {
-                throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
-            }
-
-            AvailableSeats += count;
+            throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
         }
+
+        AvailableSeats += count;
     }
 
     /// <summary>

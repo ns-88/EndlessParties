@@ -1,4 +1,4 @@
-﻿namespace EndlessParties.Shared.Utils;
+﻿namespace EndlessParties.Shared.Utils.Exceptions;
 
 /// <summary>
 /// Набор методов-расширений для класса <see cref="Exception"/>

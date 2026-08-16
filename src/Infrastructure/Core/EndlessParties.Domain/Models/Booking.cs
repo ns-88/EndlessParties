@@ -15,9 +15,14 @@ public class Booking
     public Guid Id { get; }
 
     /// <summary>
-    /// Идентификатор связанного события
+    /// Внешний ключ для родительской сущности <see cref="Models.Event"/>
     /// </summary>
     public Guid EventId { get; }
+
+    /// <summary>
+    /// Родительская сущность <see cref="Models.Event"/>
+    /// </summary>
+    public Event Event { get; }
 
     /// <summary>
     /// Статус
@@ -38,12 +43,21 @@ public class Booking
     /// <summary>
     /// Конструктор
     /// </summary>
+    private Booking()
+    {
+        Event = null!;
+    }
+
+    /// <summary>
+    /// Конструктор
+    /// </summary>
     public Booking(Guid eventId)
     {
         Id = Guid.NewGuid();
         EventId = eventId;
         Status = BookingStatus.Pending;
         CreatedAt = DateTimeOffset.UtcNow;
+        Event = null!;
     }
 
 
