@@ -1,7 +1,6 @@
 using EndlessParties.Database;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Infrastructure.Bookings.Repositories;
-using EndlessParties.Infrastructure.Events.Data;
 using EndlessParties.Infrastructure.Events.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,8 +19,8 @@ public static class ServiceCollectionExtensions
         settings.Validate();
 
         services
-            .AddSingleton<IEventRepository, EventRepository>(_ => EventRepository.FromData())
-            .AddSingleton<IBookingRepository, BookingRepository>()
+            .AddScoped<IEventRepository, EventRepository>()
+            .AddScoped<IBookingRepository, BookingRepository>()
             .AddEventsDatabase(settings.EventsDatabase);
 
         return services;

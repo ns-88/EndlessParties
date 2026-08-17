@@ -230,22 +230,12 @@ public class EventServiceTests
             var @event = new Event(eventRequest.Title, eventRequest.TotalSeats, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
             Event? actualEvent = null;
 
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
-                .Callback((Guid _, Event eventArg, CancellationToken _) => actualEvent = eventArg)
-                .Returns(Task.CompletedTask);
-
             // #### Act ####
             var action = () => eventService.Update(eventId, eventRequest, CancellationToken.None);
 
             // #### Assert ####
             await action.Should().NotThrowAsync();
             actualEvent.Should().BeEquivalentTo(@event, x => x.Excluding(e => e.Id));
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }

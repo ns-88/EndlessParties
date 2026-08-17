@@ -4,6 +4,7 @@
 		<ProjectReference Include="..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
 		<ProjectReference Include="..\..\..Shared\MessageBus\EndlessParties.Shared.ChannelMessageBus\EndlessParties.Shared.ChannelMessageBus.csproj" />
 		<ProjectReference Include="..\..\..Shared\MessageBus\EndlessParties.Shared.MessageBus.Abstractions\EndlessParties.Shared.MessageBus.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\EndlessParties.Infrastructure.Abstractions\EndlessParties.Infrastructure.Abstractions.csproj" />
 		<ProjectReference Include="..\EndlessParties.Application.Abstractions\EndlessParties.Application.Abstractions.csproj" />

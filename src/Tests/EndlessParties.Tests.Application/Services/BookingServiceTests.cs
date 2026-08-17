@@ -87,11 +87,6 @@ public class BookingServiceTests
                 .Returns(Task.CompletedTask);
 
             _autoMocker
-                .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
-                .Returns(Task.CompletedTask);
-
-            _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
                 .Setup(x => x.TryPublish(It.IsAny<BookingCreatedMessage>()))
                 .Returns(true);
@@ -111,10 +106,6 @@ public class BookingServiceTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Once);
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Once);
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
@@ -149,11 +140,6 @@ public class BookingServiceTests
                 .Returns(Task.CompletedTask);
 
             _autoMocker
-                .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
-                .Returns(Task.CompletedTask);
-
-            _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
                 .Setup(x => x.TryPublish(It.IsAny<BookingCreatedMessage>()))
                 .Returns(true);
@@ -179,10 +165,6 @@ public class BookingServiceTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(EventTotalSeats));
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Exactly(EventTotalSeats));
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
@@ -216,11 +198,6 @@ public class BookingServiceTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
-                .Returns(Task.CompletedTask);
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
             _autoMocker
@@ -260,10 +237,6 @@ public class BookingServiceTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(totalSeats));
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Exactly(totalSeats));
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
@@ -427,11 +400,6 @@ public class BookingServiceTests
                 .Returns(Task.CompletedTask);
 
             _autoMocker
-                .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
-                .Returns(Task.CompletedTask);
-
-            _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()
                 .Setup(x => x.TryPublish(It.IsAny<BookingCreatedMessage>()))
                 .Returns(true);
@@ -454,10 +422,6 @@ public class BookingServiceTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(EventTotalSeats));
-
-            _autoMocker
-                .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Exactly(EventTotalSeats));
 
             _autoMocker
                 .GetMock<IPublisher<BookingCreatedMessage>>()

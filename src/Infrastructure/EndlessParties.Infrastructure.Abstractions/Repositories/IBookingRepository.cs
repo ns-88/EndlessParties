@@ -16,9 +16,4 @@ public interface IBookingRepository
     /// Создание бронирования
     /// </summary>
     Task Create(Booking model, CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Обновление бронирования
-    /// </summary>
-    Task Update(Guid id, Booking model, CancellationToken cancellationToken);
 }

@@ -8,7 +8,7 @@ internal partial class BookingProcessorService
     /// <summary>
     /// Полученно бронирование для обработки
     /// </summary>
-    [LoggerMessage(LogLevel.Information, "Полученно бронирование для обработки. Id брони: \"{BookingId}\"")]
+    [LoggerMessage(LogLevel.Information, "Получено бронирование для обработки. Id брони: \"{BookingId}\"")]
     private partial void LogNewBooking(Guid bookingId);
 
     /// <summary>

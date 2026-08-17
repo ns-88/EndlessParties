@@ -1,4 +1,5 @@
-﻿using EndlessParties.Shared.Utils.Database.Settings;
+﻿using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.Database.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,9 +26,10 @@ public static class ServiceCollectionExtensions
                         .MigrationsAssembly(typeof(TContext).Assembly.FullName);
                 });
 
-            dbContextSetup
-                .UseSnakeCaseNamingConvention();
+            dbContextSetup.UseSnakeCaseNamingConvention();
         });
+
+        services.AddScoped<IUnitOfWork, DefaultUnitOfWork<TContext>>();
 
         return services;
     }
