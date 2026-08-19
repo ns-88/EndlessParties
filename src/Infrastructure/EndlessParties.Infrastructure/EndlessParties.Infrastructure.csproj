@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+		<ProjectReference Include="..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
 		<ProjectReference Include="..\Database\EndlessParties.Database\EndlessParties.Database.csproj" />
 		<ProjectReference Include="..\EndlessParties.Infrastructure.Abstractions\EndlessParties.Infrastructure.Abstractions.csproj" />
 	</ItemGroup>
@@ -17,21 +18,9 @@
 		<Compile Update="InfrastructureSettingsValidator.cs">
 			<DependentUpon>InfrastructureSettings.cs</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Events\Data\Resource.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resource.resx</DependentUpon>
+		<Compile Update="Events\Repositories\GetAllEventsFilterExtensions.cs">
+			<DependentUpon>EventRepository.cs</DependentUpon>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Events\Data\Resource.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resource.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

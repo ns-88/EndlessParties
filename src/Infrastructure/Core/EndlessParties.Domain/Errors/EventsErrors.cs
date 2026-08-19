@@ -89,5 +89,10 @@ public static partial class ApplicationErrors
         /// Ошибка удаления
         /// </summary>
         public const string Deletion = "Ошибка удаления события. Id: \"{0}\"";
+
+        /// <summary>
+        /// Данные события были изменены другим пользователем или системой
+        /// </summary>
+        public const string ModifiedByAnotherUserOrSystem = "Данные события были изменены другим пользователем или системой. Id: \"{0}\"";
     }
 }

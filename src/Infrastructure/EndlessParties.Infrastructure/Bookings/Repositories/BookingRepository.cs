@@ -1,8 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using EndlessParties.Database.Database;
 using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EndlessParties.Infrastructure.Bookings.Repositories;
 
@@ -10,51 +12,46 @@ namespace EndlessParties.Infrastructure.Bookings.Repositories;
 internal class BookingRepository : IBookingRepository
 {
     /// <summary>
-    /// Словарь добавленных бронирований <see cref="Booking"/>
+    /// Таблица <see cref="EventsDbContext.Bookings"/>
     /// </summary>
-    private readonly ConcurrentDictionary<Guid, Booking> _bookings;
+    private readonly DbSet<Booking> _bookings;
 
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    public BookingRepository()
+    public BookingRepository(EventsDbContext dbContext)
     {
-        _bookings = new ConcurrentDictionary<Guid, Booking>();
+        _bookings = dbContext.Bookings;
     }
 
 
     /// <inheritdoc />
-    public Task<Booking> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<Booking> GetById(Guid id, CancellationToken cancellationToken)
     {
-        if (!_bookings.TryGetValue(id, out var booking))
+        Booking? booking;
+
+        try
         {
-            throw new NotFoundException(string.Format(ApplicationErrors.ObjectNotFound, id));
+            booking = await _bookings.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
+        {
+            throw new LogicException(string.Format(ApplicationErrors.Bookings.ReceivingById, id), ex);
         }
 
-        return Task.FromResult(booking);
+        if (booking == null)
+        {
+            throw new NotFoundException(string.Format(ApplicationErrors.Bookings.NotFound, id));
+        }
+
+        return booking;
     }
 
     /// <inheritdoc />
     public Task Create(Booking model, CancellationToken cancellationToken)
     {
-        if (!_bookings.TryAdd(model.Id, model))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.ObjectAlreadyCreated, model.Id));
-        }
-
-        return Task.CompletedTask;
-    }
-
-    /// <inheritdoc />
-    public Task Update(Guid id, Booking model, CancellationToken cancellationToken)
-    {
-        if (!_bookings.ContainsKey(id))
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.ObjectNotFound, id));
-        }
-
-        _bookings[id] = model;
+        _bookings.Add(model);
 
         return Task.CompletedTask;
     }

@@ -15,7 +15,7 @@ internal static class EventRepositoryExtensions
         /// </summary>
         public static EventRepository FromData(IReadOnlyList<Event> events)
         {
-            var eventRepository = new EventRepository();
+            var eventRepository = new EventRepository(null!);
 
             FillRepository().Wait();
 

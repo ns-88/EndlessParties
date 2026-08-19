@@ -5,6 +5,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Models\Event.Validation.cs">
+			<DependentUpon>Event.cs</DependentUpon>
+		</Compile>
 		<Compile Update="Errors\EventsErrors.cs">
 			<DependentUpon>ApplicationErrors.cs</DependentUpon>
 		</Compile>

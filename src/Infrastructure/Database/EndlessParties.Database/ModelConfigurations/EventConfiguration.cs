@@ -33,10 +33,17 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .IsRequired(false);
 
         builder
-            .Property<NpgsqlTsVector>("search_vector")
-            .HasComputedColumnSql("to_tsvector('russian', coalesce(title, '') || ' ' || coalesce(description, ''))", stored: true);
+            .Property<NpgsqlTsVector>("title_search_vector")
+            .HasComputedColumnSql("to_tsvector('russian', coalesce(title, ''))", stored: true);
         builder
-            .HasIndex("search_vector")
+            .HasIndex("title_search_vector")
+            .HasMethod("GIN");
+
+        builder
+            .Property<NpgsqlTsVector>("description_search_vector")
+            .HasComputedColumnSql("to_tsvector('russian', coalesce(description, ''))", stored: true);
+        builder
+            .HasIndex("description_search_vector")
             .HasMethod("GIN");
 
         builder
@@ -58,5 +65,9 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
         builder
             .Property(x => x.EndAt)
             .IsRequired();
+
+        builder
+            .Property(x => x.RowVersion)
+            .IsRowVersion();
     }
 }
