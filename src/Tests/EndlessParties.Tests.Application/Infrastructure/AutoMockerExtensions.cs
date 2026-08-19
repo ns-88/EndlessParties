@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Moq.AutoMock;
 
-namespace EndlessParties.Tests.Application;
+namespace EndlessParties.Tests.Application.Infrastructure;
 
 /// <summary>
 /// Набор методов-расширений для класса <see cref="AutoMocker"/>
