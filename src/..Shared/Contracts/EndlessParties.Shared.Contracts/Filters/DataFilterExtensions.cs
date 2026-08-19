@@ -8,7 +8,7 @@ public static class DataFilterExtensions
     /// <summary>
     /// Применение пагинации к запросу
     /// </summary>
-    public static IEnumerable<T> ApplyPagination<T>(this IEnumerable<T> query, DataFilterBase filter)
+    public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> query, DataFilterBase filter)
     {
         if (filter.Offset.HasValue)
         {

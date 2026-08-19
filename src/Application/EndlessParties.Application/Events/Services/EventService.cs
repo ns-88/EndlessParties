@@ -5,9 +5,10 @@ using EndlessParties.Application.Events.Mappers;
 using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
-using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Exceptions.Models;
-using EndlessParties.Shared.Utils;
+using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EndlessParties.Application.Events.Services;
 
@@ -19,31 +20,27 @@ internal class EventService : IEventService
     /// </summary>
     private readonly IEventRepository _eventRepository;
 
+    /// <summary>
+    /// Единица работы <see cref="IUnitOfWork"/>
+    /// </summary>
+    private readonly IUnitOfWork _unitOfWork;
+
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    public EventService(IEventRepository eventRepository)
+    public EventService(IEventRepository eventRepository, IUnitOfWork unitOfWork)
     {
         _eventRepository = eventRepository;
+        _unitOfWork = unitOfWork;
     }
 
 
     /// <inheritdoc />
     public async Task<EventPaginatedResponse> GetAll(GetAllEventsQueryFilter filter, CancellationToken cancellationToken)
     {
-        CollectionResult<Event> collectionResult;
-
-        try
-        {
-            var eventsFilter = GetAllEventsFilterMapper.Map(filter);
-
-            collectionResult = await _eventRepository.GetAll(eventsFilter, cancellationToken);
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(ApplicationErrors.Events.ReceivingAll, ex);
-        }
+        var eventsFilter = GetAllEventsFilterMapper.Map(filter);
+        var collectionResult = await _eventRepository.GetAll(eventsFilter, cancellationToken);
 
         return EventPaginatedResponseMapper.Map(collectionResult, filter);
     }
@@ -51,20 +48,7 @@ internal class EventService : IEventService
     /// <inheritdoc />
     public async Task<EventResponse> GetById(Guid id, CancellationToken cancellationToken)
     {
-        Event @event;
-
-        try
-        {
-            @event = await _eventRepository.GetById(id, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.Events.ReceivingById, id), ex);
-        }
+        var @event = await _eventRepository.GetById(id, cancellationToken);
 
         return EventMapper.Map(@event);
     }
@@ -82,6 +66,7 @@ internal class EventService : IEventService
             @event = new Event(request.Title, request.TotalSeats, request.Description, startAtUtc, endAtUtc);
 
             await _eventRepository.Create(@event, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
         {
@@ -96,37 +81,31 @@ internal class EventService : IEventService
     {
         try
         {
+            var @event = await _eventRepository.GetById(id, cancellationToken);
+
             var startAtUtc = request.StartAt.ToUniversalTime();
             var endAtUtc = request.EndAt.ToUniversalTime();
 
-            var @event = new Event(request.Title, request.TotalSeats, request.Description, startAtUtc, endAtUtc);
+            @event.ChangeTitle(request.Title);
+            @event.ChangeDescription(request.Description);
+            @event.ChangeTotalSeats(request.TotalSeats);
+            @event.ChangeStartAndEndAt(startAtUtc, endAtUtc);
 
-            await _eventRepository.Update(id, @event, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
-        catch (NotFoundException)
+        catch (DbUpdateConcurrencyException)
         {
-            throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
+            throw new ConflictException(string.Format(ApplicationErrors.Events.ModifiedByAnotherUserOrSystem, id));
         }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken) && ex is not NotFoundException)
         {
             throw new LogicException(string.Format(ApplicationErrors.Events.Update, id), ex);
         }
     }
 
     /// <inheritdoc />
-    public async Task Remove(Guid id, CancellationToken cancellationToken)
+    public Task Remove(Guid id, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _eventRepository.Remove(id, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.Events.Deletion, id), ex);
-        }
+        return _eventRepository.Remove(id, cancellationToken);
     }
 }

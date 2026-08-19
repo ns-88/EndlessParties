@@ -20,19 +20,14 @@ public interface IEventRepository
     Task<Event> GetById(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Получение признака наличия события с указанным идентификатором
+    /// Получение события по идентификатору с блокировкой таблицы на уровне строки
     /// </summary>
-    Task<bool> Exists(Guid id, CancellationToken cancellationToken);
+    Task<Event> GetByIdWithLock(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Создание события
     /// </summary>
     Task Create(Event model, CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Обновление события
-    /// </summary>
-    Task Update(Guid id, Event model, CancellationToken cancellationToken);
 
     /// <summary>
     /// Удаление события

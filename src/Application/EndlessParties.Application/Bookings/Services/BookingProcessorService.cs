@@ -1,12 +1,14 @@
 ﻿using System.Runtime.ExceptionServices;
 using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
 using EndlessParties.Domain.Enums;
-using EndlessParties.Domain.Errors;
 using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
-using EndlessParties.Shared.Utils;
+using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -18,14 +20,9 @@ namespace EndlessParties.Application.Bookings.Services;
 internal partial class BookingProcessorService : BackgroundService
 {
     /// <summary>
-    /// Репозиторий <see cref="IBookingRepository"/>
+    /// Фабрика <see cref="IServiceScopeFactory"/>
     /// </summary>
-    private readonly IBookingRepository _bookingRepository;
-
-    /// <summary>
-    /// Репозиторий <see cref="IEventRepository"/>
-    /// </summary>
-    private readonly IEventRepository _eventRepository;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
     /// <summary>
     /// Подписчик на сообщения <see cref="ISubscriber{T}"/>
@@ -37,26 +34,18 @@ internal partial class BookingProcessorService : BackgroundService
     /// </summary>
     private readonly ILogger _logger;
 
-    /// <summary>
-    /// Семафор <see cref="SemaphoreSlim"/>
-    /// </summary>
-    private readonly SemaphoreSlim _semaphore;
-
 
     /// <summary>
     /// Конструктор
     /// </summary>
     public BookingProcessorService(
-        IBookingRepository bookingRepository,
-        IEventRepository eventRepository,
+        IServiceScopeFactory serviceScopeFactory,
         ISubscriber<BookingCreatedMessage> subscriber,
         ILoggerFactory loggerFactory)
     {
-        _bookingRepository = bookingRepository;
-        _eventRepository = eventRepository;
+        _serviceScopeFactory = serviceScopeFactory;
         _subscriber = subscriber;
         _logger = loggerFactory.CreateLogger(nameof(BookingProcessorService));
-        _semaphore = new SemaphoreSlim(1, 1);
     }
 
 
@@ -97,7 +86,6 @@ internal partial class BookingProcessorService : BackgroundService
             LogNewBooking(request.Id);
 
             await Task.Delay(TimeSpan.FromSeconds(15), innerCancellationToken);
-            await _semaphore.WaitAsync(innerCancellationToken);
 
             try
             {
@@ -109,10 +97,6 @@ internal partial class BookingProcessorService : BackgroundService
             {
                 LogBookingErrorProcessed(request.Id, ex);
             }
-            finally
-            {
-                _semaphore.Release();
-            }
         });
     }
 
@@ -121,104 +105,72 @@ internal partial class BookingProcessorService : BackgroundService
     /// </summary>
     private async Task<BookingStatus> BookingProcessing(Guid bookingId, CancellationToken cancellationToken)
     {
-        var booking = await GetBookingById(bookingId, cancellationToken);
-        Event @event;
+        await using var scope = _serviceScopeFactory.CreateAsyncScope();
+        var serviceProvider = scope.ServiceProvider;
 
-        try
-        {
-            @event = await GetEventById(booking.EventId, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            LogEventNotFound(booking.EventId);
+        var bookingRepository = serviceProvider.GetRequiredService<IBookingRepository>();
+        var eventRepository = serviceProvider.GetRequiredService<IEventRepository>();
+        var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
+        var strategy = unitOfWork.CreateExecutionStrategy();
 
-            booking.Reject();
-            await _bookingRepository.Update(bookingId, booking, cancellationToken);
+        return await strategy.ExecuteAsync(Operation, cancellationToken);
+
+        async Task<BookingStatus> Operation(CancellationToken cancellationTokenLocal)
+        {
+            var booking = await bookingRepository.GetById(bookingId, cancellationTokenLocal);
+
+            await using var transaction = await unitOfWork.BeginTransaction(cancellationTokenLocal);
+            Event? @event = null;
+
+            try
+            {
+                @event = await eventRepository.GetByIdWithLock(booking.EventId, cancellationTokenLocal);
+            }
+            catch (NotFoundException)
+            {
+                LogEventNotFound(booking.EventId);
+                booking.Reject();
+            }
+
+            ExceptionDispatchInfo? capturedException = null;
+
+            if (@event != null)
+            {
+                bool isConfirmed;
+
+                try
+                {
+                    isConfirmed = await ValidateEvent(@event, cancellationTokenLocal);
+
+                    if (!isConfirmed)
+                    {
+                        LogEventValidationFailed(@event.Id);
+                    }
+                }
+                catch (Exception ex) when (!ex.IsCancelled(cancellationTokenLocal))
+                {
+                    isConfirmed = false;
+                    capturedException = ExceptionDispatchInfo.Capture(ex);
+                }
+
+                if (isConfirmed)
+                {
+                    booking.Confirm();
+                }
+                else
+                {
+                    booking.Reject();
+                    @event.ReleaseSeats();
+                }
+            }
+
+            await unitOfWork.SaveChangesAsync(cancellationTokenLocal);
+            await transaction.CommitAsync(cancellationTokenLocal);
+
+            capturedException?.Throw();
 
             return booking.Status;
         }
-
-        bool isConfirmed;
-        ExceptionDispatchInfo? capturedException = null;
-
-        try
-        {
-            isConfirmed = await ValidateEvent(@event, cancellationToken);
-
-            if (!isConfirmed)
-            {
-                LogEventValidationFailed(@event.Id);
-            }
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            isConfirmed = false;
-            capturedException = ExceptionDispatchInfo.Capture(ex);
-        }
-
-        if (isConfirmed)
-        {
-            booking.Confirm();
-        }
-        else
-        {
-            booking.Reject();
-            @event.ReleaseSeats();
-
-            await _eventRepository.Update(booking.EventId, @event, cancellationToken);
-        }
-
-        await _bookingRepository.Update(bookingId, booking, cancellationToken);
-
-        capturedException?.Throw();
-
-        return booking.Status;
-    }
-
-    /// <summary>
-    /// Получение бронирования по идентификатору
-    /// </summary>
-    private async Task<Booking> GetBookingById(Guid id, CancellationToken cancellationToken)
-    {
-        Booking booking;
-
-        try
-        {
-            booking = await _bookingRepository.GetById(id, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.Bookings.NotFound, id));
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.Bookings.ReceivingById, id), ex);
-        }
-
-        return booking;
-    }
-
-    /// <summary>
-    /// Получение бронирования по идентификатору
-    /// </summary>
-    private async Task<Event> GetEventById(Guid id, CancellationToken cancellationToken)
-    {
-        Event @event;
-
-        try
-        {
-            @event = await _eventRepository.GetById(id, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, id));
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.Events.ReceivingById, id), ex);
-        }
-
-        return @event;
     }
 
     /// <summary>

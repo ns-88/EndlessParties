@@ -5,10 +5,4 @@
 		<ProjectReference Include="..\Core\EndlessParties.Domain\EndlessParties.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Models\GetAllEventsFilterExtensions.cs">
-			<DependentUpon>GetAllEventsFilter.cs</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
 </Project>

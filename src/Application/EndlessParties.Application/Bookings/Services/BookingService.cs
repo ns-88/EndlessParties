@@ -7,7 +7,9 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
-using EndlessParties.Shared.Utils;
+using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EndlessParties.Application.Bookings.Services;
 
@@ -30,9 +32,9 @@ internal class BookingService : IBookingService
     private readonly IPublisher<BookingCreatedMessage> _publisher;
 
     /// <summary>
-    /// Семафор <see cref="SemaphoreSlim"/>
+    /// Единица работы <see cref="IUnitOfWork"/>
     /// </summary>
-    private readonly SemaphoreSlim _semaphore;
+    private readonly IUnitOfWork _unitOfWork;
 
 
     /// <summary>
@@ -41,32 +43,20 @@ internal class BookingService : IBookingService
     public BookingService(
         IBookingRepository bookingRepository,
         IEventRepository eventRepository,
+        IUnitOfWork unitOfWork,
         IPublisher<BookingCreatedMessage> publisher)
     {
         _bookingRepository = bookingRepository;
         _eventRepository = eventRepository;
+        _unitOfWork = unitOfWork;
         _publisher = publisher;
-        _semaphore = new SemaphoreSlim(1, 1);
     }
 
 
     /// <inheritdoc />
     public async Task<BookingResponse> GetById(Guid id, CancellationToken cancellationToken)
     {
-        Booking booking;
-
-        try
-        {
-            booking = await _bookingRepository.GetById(id, cancellationToken);
-        }
-        catch (NotFoundException)
-        {
-            throw new NotFoundException(string.Format(ApplicationErrors.Bookings.NotFound, id));
-        }
-        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-        {
-            throw new LogicException(string.Format(ApplicationErrors.Bookings.ReceivingById, id), ex);
-        }
+        var booking = await _bookingRepository.GetById(id, cancellationToken);
 
         return BookingMapper.Map(booking);
     }
@@ -74,63 +64,47 @@ internal class BookingService : IBookingService
     /// <inheritdoc />
     public async Task<BookingResponse> Create(Guid eventId, CancellationToken cancellationToken)
     {
-        Booking booking;
-        
-        await _semaphore.WaitAsync(cancellationToken);
+        var strategy = _unitOfWork.CreateExecutionStrategy();
 
-        try
+        return await strategy.ExecuteAsync(Operation, cancellationToken);
+
+        async Task<BookingResponse> Operation(CancellationToken cancellationTokenLocal)
         {
-            var @event = await GetEvent();
+            Booking booking;
 
-            if (!@event.TryReserveSeats())
-            {
-                throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
-            }
+            await using var transaction = await _unitOfWork.BeginTransaction(cancellationTokenLocal);
 
             try
             {
+                var @event = await _eventRepository.GetByIdWithLock(eventId, cancellationTokenLocal);
+
+                if (!@event.TryReserveSeats())
+                {
+                    throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
+                }
+
                 booking = new Booking(eventId);
 
-                await _bookingRepository.Create(booking, cancellationToken);
-                await _eventRepository.Update(eventId, @event, cancellationToken);
+                await _bookingRepository.Create(booking, cancellationTokenLocal);
+                await _unitOfWork.SaveChangesAsync(cancellationTokenLocal);
+
+                await transaction.CommitAsync(cancellationTokenLocal);
 
                 if (!_publisher.TryPublish(new BookingCreatedMessage(booking.Id)))
                 {
                     throw new LogicException(ApplicationErrors.Bookings.ProcessingNotPossible);
                 }
             }
-            catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
+            catch (Exception ex) when (ex is NotFoundException or ConflictException)
+            {
+                throw;
+            }
+            catch (Exception ex) when (!ex.IsCancelled(cancellationTokenLocal))
             {
                 throw new LogicException(ApplicationErrors.Bookings.Creation, ex);
             }
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
 
-        return BookingMapper.Map(booking);
-
-        async Task<Event> GetEvent()
-        {
-            try
-            {
-                return await _eventRepository.GetById(eventId, cancellationToken);
-            }
-            catch (NotFoundException)
-            {
-                throw new NotFoundException(string.Format(ApplicationErrors.Events.NotFound, eventId));
-            }
-            catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
-            {
-                throw new LogicException(ApplicationErrors.Bookings.Creation, ex);
-            }
+            return BookingMapper.Map(booking);
         }
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        _semaphore.Dispose();
     }
 }

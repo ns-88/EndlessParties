@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndlessParties.Infrastructure.Events.Data {
+namespace EndlessParties.Database.Data {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace EndlessParties.Infrastructure.Events.Data {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EndlessParties.Infrastructure.Events.Data.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EndlessParties.Database.Data.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,11 @@ namespace EndlessParties.Infrastructure.Events.Data {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на [
-        ///  {
-        ///    &quot;Id&quot;: &quot;f29e4be5-074f-4260-8627-17e2a52e7b34&quot;,
-        ///    &quot;Title&quot;: &quot;Рок-концерт &apos;Огни города&apos;&quot;,
-        ///    &quot;Description&quot;: &quot;Выступление местных рок-групп на открытой площадке парка.&quot;,
-        ///    &quot;StartAt&quot;: &quot;2024-06-15T18:00:00&quot;,
-        ///    &quot;EndAt&quot;: &quot;2024-06-15T22:30:00&quot;
-        ///  },
-        ///  {
-        ///    &quot;Id&quot;: &quot;73c89c6c-4001-49b7-a3c6-2e759388a67d&quot;,
-        ///    &quot;Title&quot;: &quot;Встреча с Виктором Пелевиным&quot;,
-        ///    &quot;Description&quot;: &quot;Презентация новой книги и автограф-сессия в центральном книжном магазине.&quot;,
-        ///    &quot;StartAt&quot;: &quot;2024-06-16T15:00:00&quot;,
-        ///    &quot;EndAt [остаток строки не уместился]&quot;;.
+        ///   Ищет локализованную строку, похожую на INSERT INTO &quot;events&quot; (&quot;id&quot;, &quot;title&quot;, &quot;total_seats&quot;, &quot;description&quot;, &quot;start_at&quot;, &quot;end_at&quot;)
+        ///VALUES
+        ///  (&apos;f29e4be5-074f-4260-8627-17e2a52e7b34&apos;, &apos;Рок-концерт &apos;&apos;Огни города&apos;&apos;&apos;, 10, &apos;Выступление местных рок-групп на открытой площадке парка.&apos;, &apos;2024-06-15T18:00:00Z&apos;, &apos;2024-06-15T22:30:00Z&apos;),
+        ///  (&apos;73c89c6c-4001-49b7-a3c6-2e759388a67d&apos;, &apos;Встреча с Виктором Пелевиным&apos;, 10, &apos;Презентация новой книги и автограф-сессия в центральном книжном магазине.&apos;, &apos;2024-06-16T15:00:00Z&apos;, &apos;2024-06-16T17:00:00Z&apos;),
+        ///  (&apos;bd3d53fd-cd98-4 [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Events {
             get {

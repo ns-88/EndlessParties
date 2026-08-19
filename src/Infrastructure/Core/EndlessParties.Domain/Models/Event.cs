@@ -6,7 +6,7 @@ namespace EndlessParties.Domain.Models;
 /// <summary>
 /// Мероприятие (событие)
 /// </summary>
-public class Event
+public partial class Event
 {
     /// <summary>
     /// Максимальная длина наименования
@@ -19,11 +19,6 @@ public class Event
     public const int MaxDescriptionLength = 100;
 
     /// <summary>
-    /// Временная блокировка методов объекта до перехода на БД
-    /// </summary>
-    private readonly Lock _lock;
-
-    /// <summary>
     /// Идентификатор
     /// </summary>
     public Guid Id { get; }
@@ -31,12 +26,12 @@ public class Event
     /// <summary>
     /// Наименование
     /// </summary>
-    public string Title { get; }
+    public string Title { get; private set; }
 
     /// <summary>
     /// Общее количество мест
     /// </summary>
-    public int TotalSeats { get; }
+    public int TotalSeats { get; private set; }
 
     /// <summary>
     /// Текущее количество свободных мест
@@ -46,35 +41,54 @@ public class Event
     /// <summary>
     /// Описание
     /// </summary>
-    public string? Description { get; }
+    public string? Description { get; private set; }
 
     /// <summary>
     /// Дата и время начала
     /// </summary>
-    public DateTimeOffset StartAt { get; }
+    public DateTimeOffset StartAt { get; private set; }
 
     /// <summary>
     /// Дата и время завершения
     /// </summary>
-    public DateTimeOffset EndAt { get; }
+    public DateTimeOffset EndAt { get; private set; }
 
+    /// <summary>
+    /// Список связанных сущностей <see cref="Booking"/>
+    /// </summary>
+    public ICollection<Booking> Bookings { get; }
+
+    /// <summary>
+    /// Токен конкуренции для оптимистичной блокировки
+    /// </summary>
+    public uint RowVersion { get; }
+
+
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    private Event()
+    {
+        Title = null!;
+        Bookings = new HashSet<Booking>();
+    }
 
     /// <summary>
     /// Конструктор
     /// </summary>
     public Event(string title, int totalSeats, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
     {
-        Validation(title, totalSeats, description, startAt, endAt);
-
-        _lock = new Lock();
-
         Id = Guid.NewGuid();
-        Title = title;
-        TotalSeats = totalSeats;
+        Title = ValidateTitle(title);
+        TotalSeats = ValidateTotalSeats(totalSeats);
         AvailableSeats = totalSeats;
-        Description = description;
+        Description = ValidateDescription(description);
         StartAt = startAt;
         EndAt = endAt;
+        RowVersion = 0;
+        Bookings = new HashSet<Booking>();
+
+        ValidateStartAndEndAt(startAt, endAt);
     }
 
 
@@ -88,17 +102,14 @@ public class Event
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
         }
 
-        using (_lock.EnterScope())
+        if (count > TotalSeats || count > AvailableSeats)
         {
-            if (count > TotalSeats || count > AvailableSeats)
-            {
-                return false;
-            }
-
-            AvailableSeats -= count;
-
-            return true;
+            return false;
         }
+
+        AvailableSeats -= count;
+
+        return true;
     }
 
     /// <summary>
@@ -116,55 +127,46 @@ public class Event
             throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanTotalCount);
         }
 
-        using (_lock.EnterScope())
+        if (count > TotalSeats - AvailableSeats)
         {
-            if (count > TotalSeats - AvailableSeats)
-            {
-                throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
-            }
-
-            AvailableSeats += count;
+            throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
         }
+
+        AvailableSeats += count;
     }
 
     /// <summary>
-    /// Валидация доменной сущности
+    /// Изменение <see cref="Title"/>
     /// </summary>
-    private static void Validation(string title, int totalSeats, string? description, DateTimeOffset startAt, DateTimeOffset endAt)
+    public void ChangeTitle(string title)
     {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            throw new LogicException(ApplicationErrors.Events.NameNotSpecified);
-        }
+        Title = ValidateTitle(title);
+    }
 
-        if (totalSeats <= 0)
-        {
-            throw new LogicException(ApplicationErrors.Events.TotalSeatsLessAllowed);
-        }
+    /// <summary>
+    /// Изменение <see cref="TotalSeats"/>
+    /// </summary>
+    public void ChangeTotalSeats(int totalSeats)
+    {
+        TotalSeats = ValidateTotalSeats(totalSeats);
+    }
 
-        if (title.Length > MaxTitleLength)
-        {
-            throw new LogicException(ApplicationErrors.Events.NameLongerThanAllowed);
-        }
+    /// <summary>
+    /// Изменение <see cref="Description"/>
+    /// </summary>
+    public void ChangeDescription(string? description)
+    {
+        Description = ValidateDescription(description);
+    }
 
-        if (description is { Length: > MaxDescriptionLength })
-        {
-            throw new LogicException(ApplicationErrors.Events.DescriptionLongerThanAllowed);
-        }
+    /// <summary>
+    /// Изменение <see cref="StartAt"/> и <see cref="EndAt"/>
+    /// </summary>
+    public void ChangeStartAndEndAt(DateTimeOffset startAt, DateTimeOffset endAt)
+    {
+        ValidateStartAndEndAt(startAt, endAt);
 
-        if (startAt == default)
-        {
-            throw new LogicException(ApplicationErrors.Events.DateAndTimeStartNotSet);
-        }
-
-        if (endAt == default)
-        {
-            throw new LogicException(ApplicationErrors.Events.DateAndTimeCompletionNotSet);
-        }
-
-        if (startAt >= endAt)
-        {
-            throw new LogicException(ApplicationErrors.Events.StartCannotLaterCompletion);
-        }
+        StartAt = startAt;
+        EndAt = endAt;
     }
 }

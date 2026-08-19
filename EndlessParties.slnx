@@ -15,7 +15,8 @@
     <Project Path="src/..Shared/MessageBus/EndlessParties.Shared.MessageBus.Abstractions/EndlessParties.Shared.MessageBus.Abstractions.csproj" Id="77cc755c-942e-421d-ba8e-dbd6c59bd7d9" />
   </Folder>
   <Folder Name="/..Shared/Utils/">
-    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils/EndlessParties.Shared.Utils.csproj" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" Id="fc0813a9-609d-4787-9123-7a44abee73b6" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils/EndlessParties.Shared.Utils.Exceptions.csproj" />
   </Folder>
   <Folder Name="/..Shared/Validations/">
     <Project Path="src/..Shared/Validations/EndlessParties.Shared.Validations/EndlessParties.Shared.Validations.csproj" Id="266d0242-016f-4fc4-9441-c1441e856dea" />
@@ -31,11 +32,13 @@
   <Folder Name="/Infrastructure/Core/">
     <Project Path="src/Infrastructure/Core/EndlessParties.Domain/EndlessParties.Domain.csproj" Id="c1a4a99f-7577-4546-a577-aeb669c54a30" />
   </Folder>
+  <Folder Name="/Infrastructure/Database/">
+    <Project Path="src/Infrastructure/Database/EndlessParties.Database/EndlessParties.Database.csproj" Id="ba9bbd66-fecc-45dd-b2fa-63c6bd88f96f" />
+  </Folder>
   <Folder Name="/Presentation/">
     <Project Path="src/Presentation/EndlessParties.Presentation/EndlessParties.Presentation.csproj" Id="838d44a0-b57d-4553-94a0-0f63b9cc327e" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="src/Tests/EndlessParties.Tests.Application/EndlessParties.Tests.Application.csproj" Id="ab75f2ff-5955-4aa9-909d-51bcf6f6e03b" />
-    <Project Path="src/Tests/EndlessParties.Tests.Infrastructure/EndlessParties.Tests.Infrastructure.csproj" Id="409d91a2-bbe6-4522-9fff-0ceb77e07b90" />
   </Folder>
 </Solution>

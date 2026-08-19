@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="EFCore.NamingConventions" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Settings\DatabaseSettingsValidator.cs">
+			<DependentUpon>DatabaseSettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

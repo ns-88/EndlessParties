@@ -6,6 +6,8 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Contracts.Models;
+using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Tests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
@@ -91,6 +93,11 @@ public class EventServiceTests
                 .Setup(x => x.Create(It.IsAny<Event>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
+            _autoMocker
+                .GetMock<IUnitOfWork>()
+                .Setup(x => x.SaveChangesAsync(CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
             // #### Act ####
             var actualResult = await eventService.Create(eventRequest, CancellationToken.None);
 
@@ -100,6 +107,10 @@ public class EventServiceTests
             _autoMocker
                 .GetMock<IEventRepository>()
                 .Verify(x => x.Create(It.IsAny<Event>(), CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IUnitOfWork>()
+                .Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }
@@ -228,12 +239,16 @@ public class EventServiceTests
                 .Create();
 
             var @event = new Event(eventRequest.Title, eventRequest.TotalSeats, eventRequest.Description, eventRequest.StartAt, eventRequest.EndAt);
-            Event? actualEvent = null;
+            var actualEvent = new Event("Title", TotalSeats, null, DateTimeOffset.Now, DateTimeOffset.Now);
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None))
-                .Callback((Guid _, Event eventArg, CancellationToken _) => actualEvent = eventArg)
+                .Setup(x => x.GetById(eventId, CancellationToken.None))
+                .ReturnsAsync(actualEvent);
+
+            _autoMocker
+                .GetMock<IUnitOfWork>()
+                .Setup(x => x.SaveChangesAsync(CancellationToken.None))
                 .Returns(Task.CompletedTask);
 
             // #### Act ####
@@ -245,7 +260,11 @@ public class EventServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.Update(eventId, It.IsAny<Event>(), CancellationToken.None), Times.Once);
+                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IUnitOfWork>()
+                .Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }
