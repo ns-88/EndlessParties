@@ -8,6 +8,9 @@ using EndlessParties.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
+using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Tests.Application.Fakes;
+using EndlessParties.Tests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
@@ -51,7 +54,7 @@ public class BookingServiceTests
     /// </summary>
     public BookingServiceTests()
     {
-        _autoMocker = new AutoMocker(MockBehavior.Strict);
+        _autoMocker = new AutoMocker(MockBehavior.Strict).Use<IUnitOfWork>(new FakeUnitOfWork());
         _fixture = new Fixture();
     }
 
@@ -78,7 +81,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
                 .ReturnsAsync(@event);
 
             _autoMocker
@@ -101,7 +104,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
+                .Verify(x => x.GetByIdWithLock(eventId, CancellationToken.None), Times.Once);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -131,7 +134,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
                 .ReturnsAsync(@event);
 
             _autoMocker
@@ -160,7 +163,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Exactly(EventTotalSeats));
+                .Verify(x => x.GetByIdWithLock(eventId, CancellationToken.None), Times.Exactly(EventTotalSeats));
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -192,7 +195,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
                 .ReturnsAsync(@event);
 
             _autoMocker
@@ -232,7 +235,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Exactly(requestCount));
+                .Verify(x => x.GetByIdWithLock(eventId, CancellationToken.None), Times.Exactly(requestCount));
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -330,7 +333,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
                 .ThrowsAsync(new NotFoundException(string.Empty));
 
             // #### Act ####
@@ -341,7 +344,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None), Times.Once);
+                .Verify(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }
@@ -391,7 +394,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Setup(x => x.GetById(It.IsAny<Guid>(), CancellationToken.None))
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
                 .ReturnsAsync(@event);
 
             _autoMocker
@@ -417,7 +420,7 @@ public class BookingServiceTests
 
             _autoMocker
                 .GetMock<IEventRepository>()
-                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Exactly(EventTotalSeats + 1));
+                .Verify(x => x.GetByIdWithLock(eventId, CancellationToken.None), Times.Exactly(EventTotalSeats + 1));
 
             _autoMocker
                 .GetMock<IBookingRepository>()

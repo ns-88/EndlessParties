@@ -40,6 +40,5 @@
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="src/Tests/EndlessParties.Tests.Application/EndlessParties.Tests.Application.csproj" Id="ab75f2ff-5955-4aa9-909d-51bcf6f6e03b" />
-    <Project Path="src/Tests/EndlessParties.Tests.Infrastructure/EndlessParties.Tests.Infrastructure.csproj" Id="409d91a2-bbe6-4522-9fff-0ceb77e07b90" />
   </Folder>
 </Solution>
