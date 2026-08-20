@@ -15,7 +15,7 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
     {
         builder
             .ToTable("events");
-
+        
         builder
             .HasKey(x => x.Id);
         builder
@@ -69,5 +69,13 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
         builder
             .Property(x => x.RowVersion)
             .IsRowVersion();
+
+        builder
+            .ToTable(x => x.HasCheckConstraint("ck_events_seats",
+                "available_seats >= 0 AND total_seats >= 0 AND available_seats <= total_seats"));
+
+        builder
+            .ToTable(x => x.HasCheckConstraint("ck_events_dates",
+                "end_at >= start_at"));
     }
 }
