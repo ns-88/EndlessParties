@@ -17,6 +17,7 @@ namespace EndlessParties.Database.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
         }
     }
 }
