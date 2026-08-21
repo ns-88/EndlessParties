@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="EndlessParties.Tests.Infrastructure" />
+		<InternalsVisibleTo Include="EndlessParties.IntegrationTests.Infrastructure" />
 	</ItemGroup>
 
 </Project>

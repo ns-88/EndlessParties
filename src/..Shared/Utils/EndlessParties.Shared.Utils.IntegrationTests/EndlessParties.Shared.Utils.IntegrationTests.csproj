@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Respawn" />
+		<PackageReference Include="Testcontainers.PostgreSql" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Testcontainers.XunitV3" />
+		<PackageReference Include="EFCore.NamingConventions" />
+	</ItemGroup>
+
+</Project>

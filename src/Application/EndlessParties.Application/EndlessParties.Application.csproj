@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="EndlessParties.Tests.Application" />
+		<InternalsVisibleTo Include="EndlessParties.UnitTests.Application" />
 	</ItemGroup>
 
 </Project>
