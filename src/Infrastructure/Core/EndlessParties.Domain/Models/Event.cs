@@ -18,6 +18,12 @@ public partial class Event
     /// </summary>
     public const int MaxDescriptionLength = 100;
 
+
+    /// <summary>
+    /// Количество занятых мест
+    /// </summary>
+    private int BookedSeats => TotalSeats - AvailableSeats;
+
     /// <summary>
     /// Идентификатор
     /// </summary>
@@ -127,7 +133,7 @@ public partial class Event
             throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanTotalCount);
         }
 
-        if (count > TotalSeats - AvailableSeats)
+        if (count > BookedSeats)
         {
             throw new LogicException(ApplicationErrors.Events.SeatsCountGreaterThanOccupiedCount);
         }
@@ -148,7 +154,15 @@ public partial class Event
     /// </summary>
     public void ChangeTotalSeats(int totalSeats)
     {
-        TotalSeats = ValidateTotalSeats(totalSeats);
+        ValidateTotalSeats(totalSeats);
+
+        if (totalSeats < BookedSeats)
+        {
+            throw new LogicException(ApplicationErrors.Events.NotPossibleDecreaseTotalSeats);
+        }
+
+        AvailableSeats = totalSeats - BookedSeats;
+        TotalSeats = totalSeats;
     }
 
     /// <summary>

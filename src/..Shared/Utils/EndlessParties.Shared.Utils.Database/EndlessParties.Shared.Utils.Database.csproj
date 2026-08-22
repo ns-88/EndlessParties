@@ -12,4 +12,8 @@
 		</Compile>
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="EndlessParties.IntegrationTests.Infrastructure" />
+	</ItemGroup>
+
 </Project>

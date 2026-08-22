@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace EndlessParties.Tests.Application.Fakes;
+namespace EndlessParties.UnitTests.Application.Fakes;
 
 /// <summary>
 /// Фейковая реализация <see cref="IExecutionStrategy"/>

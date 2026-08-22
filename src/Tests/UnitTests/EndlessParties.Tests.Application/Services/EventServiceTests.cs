@@ -7,13 +7,13 @@ using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Contracts.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
-using EndlessParties.Tests.Application.Infrastructure;
+using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
 
-namespace EndlessParties.Tests.Application.Services;
+namespace EndlessParties.UnitTests.Application.Services;
 
 /// <summary>
 /// Тесты для сервиса <see cref="EventService"/>
