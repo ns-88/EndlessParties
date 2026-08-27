@@ -18,6 +18,7 @@ namespace EndlessParties.UnitTests.Application.Services;
 /// <summary>
 /// Тесты для сервиса <see cref="EventService"/>
 /// </summary>
+[Trait("Category", "Unit")]
 public class EventServiceTests
 {
     /// <summary>

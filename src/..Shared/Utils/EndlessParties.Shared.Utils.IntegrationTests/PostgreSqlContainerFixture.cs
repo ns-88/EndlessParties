@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using EndlessParties.Shared.Utils.Database;
+using EndlessParties.Shared.Utils.Database.Settings;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
@@ -12,7 +13,7 @@ namespace EndlessParties.Shared.Utils.IntegrationTests;
 /// <summary>
 /// Фикстура для получения контейнера <see cref="PostgreSqlContainer"/>
 /// </summary>
-public class PostgreSqlContainerFixture<TContext> : ContainerFixture<PostgreSqlBuilder, PostgreSqlContainer>
+public abstract class PostgreSqlContainerFixture<TContext> : ContainerFixture<PostgreSqlBuilder, PostgreSqlContainer>
     where TContext : DbContext
 {
     /// <summary>
@@ -25,17 +26,17 @@ public class PostgreSqlContainerFixture<TContext> : ContainerFixture<PostgreSqlB
     }
 
     /// <summary>
-    /// Фабрика <see cref="IDbContextFactory{T}"/>
+    /// Провайдер <see cref="IServiceProvider"/>
     /// </summary>
-    public IDbContextFactory<TContext> DbContextFactory
+    public IServiceProvider ServiceProvider
     {
-        get => field ?? throw new InvalidOperationException("Значение фабрики \"DbContextFactory\" не задано");
+        get => field ?? throw new InvalidOperationException("Значение провайдера \"ServiceProvider\" не задано");
         private set;
     }
 
 
     /// <inheritdoc />
-    public PostgreSqlContainerFixture(IMessageSink messageSink) : base(messageSink)
+    protected PostgreSqlContainerFixture(IMessageSink messageSink) : base(messageSink)
     {
     }
 
@@ -47,9 +48,8 @@ public class PostgreSqlContainerFixture<TContext> : ContainerFixture<PostgreSqlB
     {
         var connectionString = Container.GetConnectionString();
         await using var connection = new NpgsqlConnection(connectionString);
-
+        
         await connection.OpenAsync();
-
         await Respawner.ResetAsync(connection);
     }
 
@@ -65,22 +65,36 @@ public class PostgreSqlContainerFixture<TContext> : ContainerFixture<PostgreSqlB
             .WithPassword("test_password");
     }
 
+    /// <summary>
+    /// Регистрация зависимостей для теста
+    /// </summary>
+    protected virtual void ConfigureServices(ServiceCollection serviceCollection)
+    {
+    }
+
     /// <inheritdoc />
     protected override async ValueTask InitializeAsync()
     {
         await base.InitializeAsync();
+        
+        var serviceCollection = new ServiceCollection();
 
         var connectionString = Container.GetConnectionString();
-        var options = new DbContextOptionsBuilder<TContext>()
-            .UseNpgsql(connectionString)
-            .UseSnakeCaseNamingConvention()
-            .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
-            .Options;
+        var databaseSettings = new DatabaseSettings
+        {
+            ConnectionString = connectionString,
+            RetryReconnectDatabaseCount = 3
+        };
+        serviceCollection.AddDatabase<TContext>(databaseSettings, false, true);
 
-        DbContextFactory = new PooledDbContextFactory<TContext>(options, 1);
+        ConfigureServices(serviceCollection);
+        ServiceProvider = serviceCollection.BuildServiceProvider();
 
-        await using var context = await DbContextFactory.CreateDbContextAsync();
-        await context.Database.MigrateAsync();
+        await using (var scope = ServiceProvider.CreateAsyncScope())
+        {
+            await using var context = scope.ServiceProvider.GetRequiredService<TContext>();
+            await context.Database.MigrateAsync();
+        }
 
         await using var connection = new NpgsqlConnection(connectionString);
         var respawnerOptions = new RespawnerOptions

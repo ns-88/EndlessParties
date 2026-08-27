@@ -2,6 +2,7 @@
   <Folder Name="/..Shared/">
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" Id="19509c7d-b55d-415d-b009-21e2616179a5" />
@@ -41,6 +42,7 @@
   </Folder>
   <Folder Name="/Tests/" />
   <Folder Name="/Tests/IntegrationTests/">
+    <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Application/EndlessParties.IntegrationTests.Application.csproj" Id="7b190670-2e67-40f9-9d72-e79c8d928cfe" />
     <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Infrastructure/EndlessParties.IntegrationTests.Infrastructure.csproj" Id="902edfbc-157f-4bc0-b138-e65e21502b13" />
   </Folder>
   <Folder Name="/Tests/UnitTests/">

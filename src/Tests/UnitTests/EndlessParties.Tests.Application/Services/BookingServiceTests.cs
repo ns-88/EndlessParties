@@ -21,6 +21,7 @@ namespace EndlessParties.UnitTests.Application.Services;
 /// <summary>
 /// Тесты для сервиса <see cref="BookingService"/>
 /// </summary>
+[Trait("Category", "Unit")]
 public class BookingServiceTests
 {
     /// <summary>

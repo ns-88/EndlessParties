@@ -1,11 +1,14 @@
 ﻿using AutoFixture;
 using EndlessParties.Database.Database;
 using EndlessParties.Domain.Models;
+using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Infrastructure.Events.Repositories;
-using EndlessParties.Shared.Utils.Database;
+using EndlessParties.IntegrationTests.Infrastructure.Fixtures;
+using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.IntegrationTests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace EndlessParties.IntegrationTests.Infrastructure.Repositories;
@@ -13,7 +16,8 @@ namespace EndlessParties.IntegrationTests.Infrastructure.Repositories;
 /// <summary>
 /// Тесты для репозитория <see cref="EventRepository"/>
 /// </summary>
-public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
+[Trait("Category", "Integration")]
+public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFixture>
 {
     /// <summary>
     /// Дата и время начала события
@@ -39,7 +43,7 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
     /// <summary>
     /// Конструктор
     /// </summary>
-    public EventRepositoryTests(PostgreSqlContainerFixture<EventsDbContext> fixture)
+    public EventRepositoryTests(EventFixture fixture)
         : base(fixture)
     {
         _fixture = new Fixture();
@@ -52,9 +56,10 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
     public class Positive : EventRepositoryTests
     {
         /// <inheritdoc />
-        public Positive(PostgreSqlContainerFixture<EventsDbContext> fixture) : base(fixture)
+        public Positive(EventFixture fixture) : base(fixture)
         {
         }
+
 
         /// <summary>
         /// Создание события для корректных данных
@@ -65,25 +70,38 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
+                .FromFactory((string title, string? description) =>
+                {
+                    var localEvent = new Event(title, TotalSeats, description, StartAt, EndAt);
+                    var booking = new Booking(localEvent.Id);
+                    localEvent.Bookings.Add(booking);
+
+                    return localEvent;
+                })
                 .Create();
 
             // #### Act ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var eventRepository = new EventRepository(context);
-                var unitOfWork = new DefaultUnitOfWork<EventsDbContext>(context);
+                var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
+                var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
                 await eventRepository.Create(@event, TestCancellationToken);
                 await unitOfWork.SaveChangesAsync(TestCancellationToken);
             }
 
             // #### Assert ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var actualResult = await context.Events.FindAsync([@event.Id], TestCancellationToken);
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+                var actualResult = await context.Events
+                    .Include(x => x.Bookings)
+                    .SingleOrDefaultAsync(x => x.Id == @event.Id, TestCancellationToken);
 
-                actualResult.Should().BeEquivalentTo(@event);
+                actualResult.Should().BeEquivalentTo(@event, x => x.Excluding(e => e.Bookings));
+                actualResult.Bookings.Should().BeEquivalentTo(@event.Bookings, x => x
+                    .Excluding(e => e.Event)
+                    .Excluding(e => e.CreatedAt));
             }
         }
 
@@ -99,15 +117,17 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
                 context.Events.Add(@event);
+
                 await context.SaveChangesAsync(TestCancellationToken);
             }
 
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var eventRepository = new EventRepository(context);
+                var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
 
                 // #### Act ####
                 var actualResult = await eventRepository.GetById(@event.Id, CancellationToken.None);
@@ -134,17 +154,19 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats + 5, description, StartAt.AddDays(1), EndAt.AddDays(1)))
                 .Create();
 
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
                 context.Events.Add(@event);
+
                 await context.SaveChangesAsync(TestCancellationToken);
             }
 
             // #### Act ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var eventRepository = new EventRepository(context);
-                var unitOfWork = new DefaultUnitOfWork<EventsDbContext>(context);
+                var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
+                var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                 var existingEvent = await eventRepository.GetById(@event.Id, TestCancellationToken);
 
                 existingEvent.ChangeTitle(newEvent.Title);
@@ -156,8 +178,9 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
             }
 
             // #### Assert ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
                 var actualResult = await context.Events.FindAsync([@event.Id], TestCancellationToken);
 
                 actualResult.Should().BeEquivalentTo(newEvent, x => x.Excluding(e => e.Id).Excluding(e => e.RowVersion));
@@ -183,25 +206,28 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
                 })
                 .Create();
 
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
                 context.Events.Add(@event);
+
                 await context.SaveChangesAsync(TestCancellationToken);
             }
 
             // #### Act ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var eventRepository = new EventRepository(context);
-                var unitOfWork = new DefaultUnitOfWork<EventsDbContext>(context);
+                var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
+                var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
                 await eventRepository.Remove(@event.Id, TestCancellationToken);
                 await unitOfWork.SaveChangesAsync(TestCancellationToken);
             }
 
             // #### Assert ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
                 var deletedEvent = await context.Events.FindAsync([@event.Id], TestCancellationToken);
 
                 deletedEvent.Should().BeNull();
@@ -222,8 +248,10 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
         public async Task GetAll_CorrectFilter_ReturnsValidCollectionResult(EventFilterTestCase testCase)
         {
             // #### Arrange ####
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+
                 foreach (var @event in testCase.Events)
                 {
                     context.Events.Add(@event);
@@ -232,10 +260,10 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext>
                 await context.SaveChangesAsync(TestCancellationToken);
             }
 
-            await using (var context = await DbContextFactory.CreateDbContextAsync(TestCancellationToken))
+            await using (var scope = ServiceProvider.CreateAsyncScope())
             {
                 // #### Act ####
-                var eventRepository = new EventRepository(context);
+                var eventRepository = scope.ServiceProvider.GetRequiredService<IEventRepository>();
                 var actualResult = await eventRepository.GetAll(testCase.Filter, TestCancellationToken);
 
                 // #### Assert ####

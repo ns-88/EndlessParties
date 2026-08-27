@@ -6,18 +6,19 @@ namespace EndlessParties.Shared.Utils.IntegrationTests;
 /// <summary>
 /// Базовый класс интеграционных тестов
 /// </summary>
-public class BaseIntegrationTest<TContext> : IClassFixture<PostgreSqlContainerFixture<TContext>>, IAsyncLifetime
+public class BaseIntegrationTest<TContext, TFixture> : IClassFixture<TFixture>, IAsyncLifetime
     where TContext : DbContext
+    where TFixture : PostgreSqlContainerFixture<TContext>
 {
     /// <summary>
-    /// Фикстура <see cref="PostgreSqlContainerFixture{T}"/>
+    /// Фикстура <typeparamref name="TFixture"/>
     /// </summary>
-    private readonly PostgreSqlContainerFixture<TContext> _fixture;
+    protected readonly TFixture Fixture;
 
     /// <summary>
-    /// Фабрика <see cref="IDbContextFactory{T}"/>
+    /// Провайдер <see cref="IServiceProvider"/>
     /// </summary>
-    protected IDbContextFactory<TContext> DbContextFactory { get; }
+    protected readonly IServiceProvider ServiceProvider;
 
     /// <summary>
     /// Токен отмены
@@ -28,17 +29,17 @@ public class BaseIntegrationTest<TContext> : IClassFixture<PostgreSqlContainerFi
     /// <summary>
     /// Конструктор
     /// </summary>
-    protected BaseIntegrationTest(PostgreSqlContainerFixture<TContext> fixture)
+    protected BaseIntegrationTest(TFixture fixture)
     {
-        _fixture = fixture;
-        DbContextFactory = fixture.DbContextFactory;
+        Fixture = fixture;
+        ServiceProvider = fixture.ServiceProvider;
     }
 
 
     /// <inheritdoc />
     public async ValueTask InitializeAsync()
     {
-        await _fixture.ResetDb();
+        await Fixture.ResetDb();
     }
 
     /// <inheritdoc />
