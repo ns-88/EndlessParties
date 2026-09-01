@@ -13,7 +13,7 @@ using NpgsqlTypes;
 namespace EndlessParties.Database.Migrations
 {
     [DbContext(typeof(EventsDbContext))]
-    [Migration("20260816115440_Initial")]
+    [Migration("20260820194043_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -82,6 +82,12 @@ namespace EndlessParties.Database.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_at");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<DateTimeOffset>("StartAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_at");
@@ -96,11 +102,17 @@ namespace EndlessParties.Database.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("total_seats");
 
-                    b.Property<NpgsqlTsVector>("search_vector")
+                    b.Property<NpgsqlTsVector>("description_search_vector")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tsvector")
-                        .HasColumnName("search_vector")
-                        .HasComputedColumnSql("to_tsvector('russian', coalesce(title, '') || ' ' || coalesce(description, ''))", true);
+                        .HasColumnName("description_search_vector")
+                        .HasComputedColumnSql("to_tsvector('russian', coalesce(description, ''))", true);
+
+                    b.Property<NpgsqlTsVector>("title_search_vector")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasColumnName("title_search_vector")
+                        .HasComputedColumnSql("to_tsvector('russian', coalesce(title, ''))", true);
 
                     b.HasKey("Id")
                         .HasName("pk_events");
@@ -111,12 +123,22 @@ namespace EndlessParties.Database.Migrations
                     b.HasIndex("StartAt")
                         .HasDatabaseName("ix_events_start_at");
 
-                    b.HasIndex("search_vector")
-                        .HasDatabaseName("ix_events_search_vector");
+                    b.HasIndex("description_search_vector")
+                        .HasDatabaseName("ix_events_description_search_vector");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("search_vector"), "GIN");
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("description_search_vector"), "GIN");
 
-                    b.ToTable("events", (string)null);
+                    b.HasIndex("title_search_vector")
+                        .HasDatabaseName("ix_events_title_search_vector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("title_search_vector"), "GIN");
+
+                    b.ToTable("events", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_events_dates", "end_date >= start_date");
+
+                            t.HasCheckConstraint("ck_events_seats", "available_seats >= 0 AND total_seats >= 0 AND available_seats <= total_seats");
+                        });
                 });
 
             modelBuilder.Entity("EndlessParties.Domain.Models.Booking", b =>

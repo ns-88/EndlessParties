@@ -1,9 +1,8 @@
 ﻿using EndlessParties.Shared.Utils.Database.Abstractions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 
-namespace EndlessParties.Tests.Application.Fakes;
+namespace EndlessParties.UnitTests.Application.Fakes;
 
 /// <summary>
 /// Фейковая реализация <see cref="IUnitOfWork"/>

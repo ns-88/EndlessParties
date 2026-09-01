@@ -130,7 +130,12 @@ namespace EndlessParties.Database.Migrations
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("title_search_vector"), "GIN");
 
-                    b.ToTable("events", (string)null);
+                    b.ToTable("events", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_events_dates", "end_at >= start_at");
+
+                            t.HasCheckConstraint("ck_events_seats", "available_seats >= 0 AND total_seats >= 0 AND available_seats <= total_seats");
+                        });
                 });
 
             modelBuilder.Entity("EndlessParties.Domain.Models.Booking", b =>

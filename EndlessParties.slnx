@@ -2,6 +2,7 @@
   <Folder Name="/..Shared/">
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" Id="19509c7d-b55d-415d-b009-21e2616179a5" />
@@ -16,6 +17,7 @@
   </Folder>
   <Folder Name="/..Shared/Utils/">
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" Id="fc0813a9-609d-4787-9123-7a44abee73b6" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.IntegrationTests/EndlessParties.Shared.Utils.IntegrationTests.csproj" Id="4486edcb-72b4-4ef9-896c-4fef937a913e" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils/EndlessParties.Shared.Utils.Exceptions.csproj" />
   </Folder>
   <Folder Name="/..Shared/Validations/">
@@ -38,7 +40,12 @@
   <Folder Name="/Presentation/">
     <Project Path="src/Presentation/EndlessParties.Presentation/EndlessParties.Presentation.csproj" Id="838d44a0-b57d-4553-94a0-0f63b9cc327e" />
   </Folder>
-  <Folder Name="/Tests/">
-    <Project Path="src/Tests/EndlessParties.Tests.Application/EndlessParties.Tests.Application.csproj" Id="ab75f2ff-5955-4aa9-909d-51bcf6f6e03b" />
+  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/IntegrationTests/">
+    <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Application/EndlessParties.IntegrationTests.Application.csproj" Id="7b190670-2e67-40f9-9d72-e79c8d928cfe" />
+    <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Infrastructure/EndlessParties.IntegrationTests.Infrastructure.csproj" Id="902edfbc-157f-4bc0-b138-e65e21502b13" />
+  </Folder>
+  <Folder Name="/Tests/UnitTests/">
+    <Project Path="src/Tests/UnitTests/EndlessParties.Tests.Application/EndlessParties.UnitTests.Application.csproj" />
   </Folder>
 </Solution>

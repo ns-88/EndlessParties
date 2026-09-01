@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Application\EndlessParties.Application\EndlessParties.Application.csproj" />
+		<ProjectReference Include="..\..\..\Application\EndlessParties.Application\EndlessParties.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

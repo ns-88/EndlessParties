@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Respawn" />
+		<PackageReference Include="Testcontainers.PostgreSql" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+		<PackageReference Include="Testcontainers.XunitV3" />
+		<PackageReference Include="EFCore.NamingConventions" />
+	</ItemGroup>
+
+</Project>

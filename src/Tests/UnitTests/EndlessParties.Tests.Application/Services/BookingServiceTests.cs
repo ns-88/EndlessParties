@@ -9,18 +9,19 @@ using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
 using EndlessParties.Shared.Utils.Database.Abstractions;
-using EndlessParties.Tests.Application.Fakes;
-using EndlessParties.Tests.Application.Infrastructure;
+using EndlessParties.UnitTests.Application.Fakes;
+using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
 
-namespace EndlessParties.Tests.Application.Services;
+namespace EndlessParties.UnitTests.Application.Services;
 
 /// <summary>
 /// Тесты для сервиса <see cref="BookingService"/>
 /// </summary>
+[Trait("Category", "Unit")]
 public class BookingServiceTests
 {
     /// <summary>

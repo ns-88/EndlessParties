@@ -21,6 +21,11 @@ public static partial class ApplicationErrors
         public const string TotalSeatsLessAllowed = "Общее количество мест меньше допустимого";
 
         /// <summary>
+        /// Невозможно уменьшить общее количество мест
+        /// </summary>
+        public const string NotPossibleDecreaseTotalSeats = "Невозможно уменьшить общее количество мест, т.к. оно меньше числа занятых мест";
+
+        /// <summary>
         /// Количество свободных мест имеет неверное значение
         /// </summary>
         public const string SeatsCountWrongValue = "Количество свободных мест имеет неверное значение";
