@@ -2,7 +2,7 @@
 using EndlessParties.Application.Abstractions.Events.Models.Requests;
 using EndlessParties.Application.Abstractions.Events.Models.Responses;
 using EndlessParties.Application.Events.Services;
-using EndlessParties.Domain.Models;
+using EndlessParties.Events.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Contracts.Models;

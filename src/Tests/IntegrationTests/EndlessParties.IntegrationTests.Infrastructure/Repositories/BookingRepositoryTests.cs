@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using EndlessParties.Database.Database;
-using EndlessParties.Domain.Models;
+using EndlessParties.Events.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Infrastructure.Bookings.Repositories;
 using EndlessParties.IntegrationTests.Infrastructure.Fixtures;

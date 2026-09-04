@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
+		<ProjectReference Include="..\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Npgsql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="GetAllEventsFilterExtensions.cs">
+			<DependentUpon>EventRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

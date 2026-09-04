@@ -1,6 +1,4 @@
-﻿using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
-
-namespace EndlessParties.Application.Abstractions.Bookings.Services;
+﻿namespace EndlessParties.Application.Abstractions.Bookings.Services;
 
 /// <summary>
 /// Сервис для работы с бронированиями

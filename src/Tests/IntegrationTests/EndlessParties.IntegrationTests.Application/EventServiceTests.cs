@@ -4,7 +4,7 @@ using EndlessParties.Application.Abstractions.Events.Models.Responses;
 using EndlessParties.Application.Abstractions.Events.Services;
 using EndlessParties.Application.Events.Services;
 using EndlessParties.Database.Database;
-using EndlessParties.Domain.Models;
+using EndlessParties.Events.Domain.Models;
 using EndlessParties.IntegrationTests.Application.Fixtures;
 using EndlessParties.Shared.Utils.IntegrationTests;
 using FluentAssertions;

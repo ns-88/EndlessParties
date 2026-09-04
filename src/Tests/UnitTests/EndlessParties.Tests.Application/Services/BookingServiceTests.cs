@@ -4,7 +4,7 @@ using EndlessParties.Application.Abstractions.Bookings.Models.Messages;
 using EndlessParties.Application.Abstractions.Bookings.Models.Responses;
 using EndlessParties.Application.Bookings.Services;
 using EndlessParties.Domain.Enums;
-using EndlessParties.Domain.Models;
+using EndlessParties.Events.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Repositories;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.MessageBus.Abstractions;
