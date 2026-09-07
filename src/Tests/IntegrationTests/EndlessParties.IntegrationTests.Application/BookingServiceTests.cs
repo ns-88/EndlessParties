@@ -5,7 +5,7 @@ using EndlessParties.Application.Abstractions.Bookings.Services;
 using EndlessParties.Application.Bookings.Services;
 using EndlessParties.Database.Database;
 using EndlessParties.Domain.Enums;
-using EndlessParties.Domain.Models;
+using EndlessParties.Events.Domain.Models;
 using EndlessParties.IntegrationTests.Application.Fixtures;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;

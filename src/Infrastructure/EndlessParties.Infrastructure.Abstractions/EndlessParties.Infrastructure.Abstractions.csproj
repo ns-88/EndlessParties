@@ -2,7 +2,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
-		<ProjectReference Include="..\Core\EndlessParties.Domain\EndlessParties.Domain.csproj" />
+		<ProjectReference Include="..\Core\EndlessParties.Domain\EndlessParties.Events.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
 </Project>

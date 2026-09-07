@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\MessageBus\EndlessParties.Shared.ChannelMessageBus\EndlessParties.Shared.ChannelMessageBus.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
+		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories\EndlessParties.Events.Repositories.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="InfrastructureSettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="InfrastructureSettingsValidator.cs">
+			<DependentUpon>InfrastructureSettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

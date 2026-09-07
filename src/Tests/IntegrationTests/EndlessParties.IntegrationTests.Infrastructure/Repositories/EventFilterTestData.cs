@@ -1,4 +1,4 @@
-﻿using EndlessParties.Domain.Models;
+﻿using EndlessParties.Events.Domain.Models;
 using EndlessParties.Infrastructure.Abstractions.Models;
 using EndlessParties.Shared.Contracts;
 using EndlessParties.Shared.Contracts.Models;

@@ -7,8 +7,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructure\Database\EndlessParties.Database\EndlessParties.Database.csproj" />
-		<ProjectReference Include="..\..\..\Infrastructure\EndlessParties.Infrastructure\EndlessParties.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\Infrastructure\Database\EndlessParties.Database\EndlessParties.Events.Database.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
