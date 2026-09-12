@@ -1,7 +1,6 @@
 using EndlessParties.Events.Database;
-using EndlessParties.Events.Domain.Messages;
 using EndlessParties.Events.Repositories;
-using EndlessParties.Shared.ChannelMessageBus;
+using EndlessParties.Shared.EventBus.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Events.Worker.Infrastructure;
@@ -20,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         services
             .AddRepositories()
-            .AddChannelMessageBus<BookingCreatedMessage>()
+            .AddKafkaEventBus(settings.KafkaEventBus)
             .AddEventsDatabase(settings.EventsDatabase);
 
         return services;

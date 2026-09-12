@@ -1,4 +1,4 @@
-﻿using EndlessParties.Infrastructure;
+﻿using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Utils.Database.Settings;
 using FluentValidation;
 
@@ -13,6 +13,11 @@ public class InfrastructureSettings
     /// Настройки подключения к базе данных "Events"
     /// </summary>
     public required DatabaseSettings EventsDatabase { get; init; }
+
+    /// <summary>
+    /// Настройки шины событий на основе очереди Kafka
+    /// </summary>
+    public required KafkaEventBusSettings KafkaEventBus { get; init; }
 
 
     /// <summary>

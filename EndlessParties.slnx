@@ -5,15 +5,16 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
+    <Project Path="EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" Id="94e1edac-5a62-4274-8b52-eaa7e1e44e64" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" Id="19509c7d-b55d-415d-b009-21e2616179a5" />
+  </Folder>
+  <Folder Name="/..Shared/EventBus/">
+    <Project Path="src/..Shared/EventBus/EndlessParties.Shared.EventBus.Abstractions/EndlessParties.Shared.EventBus.Abstractions.csproj" Id="06850000-c1ba-4b51-adfd-ed50090d0b64" />
+    <Project Path="src/..Shared/EventBus/EndlessParties.Shared.EventBus.Kafka/EndlessParties.Shared.EventBus.Kafka.csproj" Id="8191e689-7aab-4276-b91b-381e2fc4dd08" />
   </Folder>
   <Folder Name="/..Shared/Exceptions/">
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions.Models/EndlessParties.Shared.Exceptions.Models.csproj" Id="c74e9d32-fa61-4013-9869-d529b88ef9b5" />
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions/EndlessParties.Shared.Exceptions.csproj" Id="52d2faef-d251-42be-bf25-da16acc9da40" />
-  </Folder>
-  <Folder Name="/..Shared/MessageBus/">
-    <Project Path="src/..Shared/MessageBus/EndlessParties.Shared.ChannelMessageBus/EndlessParties.Shared.ChannelMessageBus.csproj" />
-    <Project Path="src/..Shared/MessageBus/EndlessParties.Shared.MessageBus.Abstractions/EndlessParties.Shared.MessageBus.Abstractions.csproj" Id="77cc755c-942e-421d-ba8e-dbd6c59bd7d9" />
   </Folder>
   <Folder Name="/..Shared/Utils/">
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" Id="fc0813a9-609d-4787-9123-7a44abee73b6" />

@@ -1,10 +1,8 @@
 ﻿using System.Runtime.ExceptionServices;
 using EndlessParties.Events.Domain.Enums;
-using EndlessParties.Events.Domain.Messages;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
-using EndlessParties.Shared.MessageBus.Abstractions;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.Exceptions;
 using Mediator;
@@ -15,19 +13,14 @@ using Microsoft.Extensions.Logging;
 namespace EndlessParties.Events.Worker.App.Features.Bookings;
 
 /// <summary>
-/// Обработчик <see cref="BookingProcessorCommand"/>
+/// Обработчик <see cref="BookingsCreatedNewCommand"/>
 /// </summary>
-internal class BookingProcessorHandler : IRequestHandler<BookingProcessorCommand>
+internal class BookingsCreatedNewHandler : IRequestHandler<BookingsCreatedNewCommand>
 {
     /// <summary>
     /// Фабрика <see cref="IServiceScopeFactory"/>
     /// </summary>
     private readonly IServiceScopeFactory _serviceScopeFactory;
-
-    /// <summary>
-    /// Подписчик на сообщения <see cref="ISubscriber{T}"/>
-    /// </summary>
-    private readonly ISubscriber<BookingCreatedMessage> _subscriber;
 
     /// <summary>
     /// Логгер <see cref="ILogger"/>
@@ -38,19 +31,17 @@ internal class BookingProcessorHandler : IRequestHandler<BookingProcessorCommand
     /// <summary>
     /// Конструктор
     /// </summary>
-    public BookingProcessorHandler(
+    public BookingsCreatedNewHandler(
         IServiceScopeFactory serviceScopeFactory,
-        ISubscriber<BookingCreatedMessage> subscriber,
         ILoggerFactory loggerFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
-        _subscriber = subscriber;
-        _logger = loggerFactory.CreateLogger(nameof(BookingProcessorHandler));
+        _logger = loggerFactory.CreateLogger(nameof(BookingsCreatedNewHandler));
     }
 
 
     /// <inheritdoc />
-    public async ValueTask<Unit> Handle(BookingProcessorCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(BookingsCreatedNewCommand request, CancellationToken cancellationToken)
     {
         var parallelOptions = new ParallelOptions
         {
@@ -58,23 +49,21 @@ internal class BookingProcessorHandler : IRequestHandler<BookingProcessorCommand
             MaxDegreeOfParallelism = Environment.ProcessorCount
         };
 
-        var requests = _subscriber.ReadAll(cancellationToken);
-
-        await Parallel.ForEachAsync(requests, parallelOptions, async (createdRequest, innerCancellationToken) =>
+        await Parallel.ForEachAsync(request.CreatedEvents, parallelOptions, async (createdEvent, innerCancellationToken) =>
         {
-            _logger.LogNewBooking(createdRequest.Id);
+            _logger.LogNewBooking(createdEvent.Id);
 
             await Task.Delay(TimeSpan.FromSeconds(15), innerCancellationToken);
 
             try
             {
-                var bookingStatus = await BookingProcessing(createdRequest.Id, innerCancellationToken);
+                var bookingStatus = await BookingProcessing(createdEvent.Id, innerCancellationToken);
 
-                _logger.LogBookingProcessingCompleted(createdRequest.Id, bookingStatus);
+                _logger.LogBookingProcessingCompleted(createdEvent.Id, bookingStatus);
             }
             catch (Exception ex) when (!ex.IsCancelled(innerCancellationToken))
             {
-                _logger.LogBookingErrorProcessed(createdRequest.Id, ex);
+                _logger.LogBookingErrorProcessed(createdEvent.Id, ex);
             }
         });
 

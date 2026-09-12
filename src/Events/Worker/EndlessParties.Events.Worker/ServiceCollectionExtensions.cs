@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using EndlessParties.Events.Worker.Services;
 
 namespace EndlessParties.Events.Worker;
 
@@ -14,7 +13,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddWorker(this IServiceCollection services)
     {
         services
-            .AddHostedService<BookingProcessorService>()
             .AddHealthChecks();
 
         services

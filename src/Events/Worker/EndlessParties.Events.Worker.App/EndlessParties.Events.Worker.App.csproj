@@ -2,9 +2,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\MessageBus\EndlessParties.Shared.MessageBus.Abstractions\EndlessParties.Shared.MessageBus.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\..\EndlessParties.Shared.Contracts.Events\EndlessParties.Shared.Contracts.Events.csproj" />
 		<ProjectReference Include="..\..\.Shared\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 	</ItemGroup>
@@ -16,10 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Features\Bookings\BookingProcessorCommand.cs">
+		<Compile Update="Features\Bookings\BookingsCreatedNewCommand.cs">
 			<DependentUpon>BookingProcessorHandler.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Bookings\BookingProcessorHandlerExtensions.cs">
+		<Compile Update="Features\Bookings\BookingsCreatedNewHandlerExtensions.cs">
 			<DependentUpon>BookingProcessorHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>

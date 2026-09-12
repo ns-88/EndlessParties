@@ -1,10 +1,10 @@
 ﻿using EndlessParties.Events.Api.App.Features.Bookings.Mappers;
 using EndlessParties.Events.Domain.Errors;
-using EndlessParties.Events.Domain.Messages;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
+using EndlessParties.Shared.Contracts.Events;
+using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
-using EndlessParties.Shared.MessageBus.Abstractions;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.Exceptions;
 using Mediator;
@@ -28,9 +28,9 @@ internal class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Book
     private readonly IEventRepository _eventRepository;
 
     /// <summary>
-    /// Публикатор сообщений <see cref="IPublisher{T}"/>
+    /// Шина событий <see cref="IEventBus"/>
     /// </summary>
-    private readonly IPublisher<BookingCreatedMessage> _publisher;
+    private readonly IEventBus _eventBus;
 
     /// <summary>
     /// Единица работы <see cref="IUnitOfWork"/>
@@ -44,12 +44,12 @@ internal class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Book
     public CreateBookingHandler(
         IBookingRepository bookingRepository,
         IEventRepository eventRepository,
-        IPublisher<BookingCreatedMessage> publisher,
+        IEventBus eventBus,
         IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _eventRepository = eventRepository;
-        _publisher = publisher;
+        _eventBus = eventBus;
         _unitOfWork = unitOfWork;
     }
 
@@ -83,10 +83,7 @@ internal class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Book
 
                 await transaction.CommitAsync(cancellationTokenLocal);
 
-                if (!_publisher.TryPublish(new BookingCreatedMessage(booking.Id)))
-                {
-                    throw new LogicException(ApplicationErrors.Bookings.ProcessingNotPossible);
-                }
+                await _eventBus.Publish(new BookingCreatedEvent(booking.Id), cancellationTokenLocal);
             }
             catch (Exception ex) when (ex is NotFoundException or ConflictException)
             {

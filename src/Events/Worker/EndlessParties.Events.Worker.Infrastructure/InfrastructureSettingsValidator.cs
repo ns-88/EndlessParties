@@ -16,5 +16,8 @@ public class InfrastructureSettingsValidator : AbstractValidator<InfrastructureS
         RuleFor(x => x.EventsDatabase)
             .NotEmpty()
             .SetValidator(new DatabaseSettingsValidator());
+
+        RuleFor(x => x.KafkaEventBus)
+            .NotEmpty();
     }
 }

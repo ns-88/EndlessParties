@@ -2,9 +2,10 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\MessageBus\EndlessParties.Shared.MessageBus.Abstractions\EndlessParties.Shared.MessageBus.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\..\EndlessParties.Shared.Contracts.Events\EndlessParties.Shared.Contracts.Events.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 	</ItemGroup>
 
