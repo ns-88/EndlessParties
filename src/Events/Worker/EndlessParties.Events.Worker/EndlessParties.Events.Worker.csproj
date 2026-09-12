@@ -23,9 +23,6 @@
 		<Compile Update="WebApplicationExtensions.cs">
 			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Services\BookingProcessorServiceExtensions.cs">
-			<DependentUpon>BookingProcessorService.cs</DependentUpon>
-		</Compile>
 	</ItemGroup>
 
 </Project>

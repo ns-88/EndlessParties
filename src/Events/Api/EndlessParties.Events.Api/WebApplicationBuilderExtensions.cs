@@ -1,5 +1,7 @@
 ﻿using EndlessParties.Events.Api.App;
 using EndlessParties.Events.Api.Infrastructure;
+using EndlessParties.Shared.Contracts.Events;
+using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
 using EndlessParties.Shared.Validations;
@@ -70,13 +72,21 @@ public static class WebApplicationBuilderExtensions
     /// </summary>
     private static InfrastructureSettings GetInfrastructureSettings(IConfiguration config)
     {
+        var kafkaEnvironment = config["Kafka:Environment"]!;
+        var kafkaEventBus = config
+            .GetRequiredSection("Kafka")
+            .Get<KafkaEventBusSettings>();
+
+        kafkaEventBus?.AddProducer<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1");
+
         return new InfrastructureSettings
         {
             EventsDatabase = new DatabaseSettings
             {
                 ConnectionString = config.GetConnectionString("Postgres:Events")!,
                 RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
-            }
+            },
+            KafkaEventBus = kafkaEventBus!
         };
     }
 }

@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace EndlessParties.Events.Worker.App.Features.Bookings;
 
 /// <summary>
-/// Набор методов-расширений для класса <see cref="BookingProcessorHandler"/>
+/// Набор методов-расширений для класса <see cref="BookingsCreatedNewHandler"/>
 /// </summary>
-internal static partial class BookingProcessorHandlerExtensions
+internal static partial class BookingsCreatedNewHandlerExtensions
 {
     /// <summary>
     /// Полученно бронирование для обработки

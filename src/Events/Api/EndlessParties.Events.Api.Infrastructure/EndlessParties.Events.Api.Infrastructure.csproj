@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..Shared\MessageBus\EndlessParties.Shared.ChannelMessageBus\EndlessParties.Shared.ChannelMessageBus.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Kafka\EndlessParties.Shared.EventBus.Kafka.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories\EndlessParties.Events.Repositories.csproj" />

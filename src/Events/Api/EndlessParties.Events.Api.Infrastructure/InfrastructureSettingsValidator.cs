@@ -1,8 +1,7 @@
-﻿using EndlessParties.Events.Api.Infrastructure;
-using EndlessParties.Shared.Utils.Database.Settings;
+﻿using EndlessParties.Shared.Utils.Database.Settings;
 using FluentValidation;
 
-namespace EndlessParties.Infrastructure;
+namespace EndlessParties.Events.Api.Infrastructure;
 
 /// <summary>
 /// Валидатор <see cref="InfrastructureSettings"/>
@@ -17,5 +16,8 @@ public class InfrastructureSettingsValidator : AbstractValidator<InfrastructureS
         RuleFor(x => x.EventsDatabase)
             .NotEmpty()
             .SetValidator(new DatabaseSettingsValidator());
+
+        RuleFor(x => x.KafkaEventBus)
+            .NotEmpty();
     }
 }
