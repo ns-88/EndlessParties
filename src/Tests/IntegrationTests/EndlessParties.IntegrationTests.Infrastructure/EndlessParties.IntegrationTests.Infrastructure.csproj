@@ -19,19 +19,4 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Repositories\EventFilterTestCase.cs">
-			<DependentUpon>EventRepositoryTests.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Repositories\EventFilterTestData.cs">
-			<DependentUpon>EventRepositoryTests.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Migrations\DatabaseSchemaTestCase.cs">
-			<DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
-		</Compile>
-		<Compile Update="Migrations\DatabaseSchemaTestData.cs">
-			<DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
 </Project>

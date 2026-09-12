@@ -8,7 +8,7 @@ namespace EndlessParties.Events.Api.App.Features.Bookings.GetById;
 /// <summary>
 /// Обработчик <see cref="GetByIdQuery"/>
 /// </summary>
-internal class GetByIdHandler : IRequestHandler<GetByIdQuery, BookingResponse>
+public class GetByIdHandler : IRequestHandler<GetByIdQuery, BookingResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IBookingRepository"/>

@@ -6,7 +6,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.Remove;
 /// <summary>
 /// Обработчик <see cref="DeleteEventCommand"/>
 /// </summary>
-internal class DeleteEventHandler : IRequestHandler<DeleteEventCommand>
+public class DeleteEventHandler : IRequestHandler<DeleteEventCommand>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>

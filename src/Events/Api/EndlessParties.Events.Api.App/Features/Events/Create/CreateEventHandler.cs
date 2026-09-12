@@ -12,7 +12,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.Create;
 /// <summary>
 /// Обработчик <see cref="CreateEventCommand"/>
 /// </summary>
-internal class CreateEventHandler : IRequestHandler<CreateEventCommand, EventResponse>
+public class CreateEventHandler : IRequestHandler<CreateEventCommand, EventResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>

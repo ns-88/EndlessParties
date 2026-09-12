@@ -15,7 +15,7 @@ namespace EndlessParties.Events.Api.App.Features.Bookings.Create;
 /// <summary>
 /// Обработчик <see cref="CreateBookingCommand"/>
 /// </summary>
-internal class CreateBookingHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
+public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IBookingRepository"/>
