@@ -6,7 +6,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.GetAll;
 /// <summary>
 /// Обработчик <see cref="GetAllEventsQuery"/>
 /// </summary>
-internal class GetAllEventsHandler : IRequestHandler<GetAllEventsQuery, EventPaginatedResponse>
+public class GetAllEventsHandler : IRequestHandler<GetAllEventsQuery, EventPaginatedResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>

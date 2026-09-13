@@ -17,4 +17,9 @@
 		</Compile>
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="EndlessParties.Events.Api.Infrastructure.IntegrationTests" />
+		<InternalsVisibleTo Include="EndlessParties.Events.Api.App.IntegrationTests" />
+	</ItemGroup>
+
 </Project>

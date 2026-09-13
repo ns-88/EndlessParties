@@ -11,7 +11,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.Update;
 /// <summary>
 /// Обработчик <see cref="UpdateEventCommand"/>
 /// </summary>
-internal class UpdateEventHandler : IRequestHandler<UpdateEventCommand>
+public class UpdateEventHandler : IRequestHandler<UpdateEventCommand>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>

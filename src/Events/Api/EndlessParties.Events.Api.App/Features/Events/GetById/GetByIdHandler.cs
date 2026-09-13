@@ -7,7 +7,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.GetById;
 /// <summary>
 /// Обработчик <see cref="GetByIdQuery"/>
 /// </summary>
-internal class GetByIdHandler : IRequestHandler<GetByIdQuery, EventResponse>
+public class GetByIdHandler : IRequestHandler<GetByIdQuery, EventResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>
