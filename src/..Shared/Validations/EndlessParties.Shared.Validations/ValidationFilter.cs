@@ -15,6 +15,7 @@ internal class ValidationFilter : IAsyncActionFilter
     /// </summary>
     private readonly ValidationDispatcher _dispatcher;
 
+
     /// <summary>
     /// Конструктор
     /// </summary>
@@ -22,6 +23,7 @@ internal class ValidationFilter : IAsyncActionFilter
     {
         _dispatcher = dispatcher;
     }
+
 
     /// <inheritdoc />
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

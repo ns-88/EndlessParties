@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="KafkaFlow" />
+		<PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" />
+		<PackageReference Include="KafkaFlow.Serializer.JsonCore" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="MessageBatchMiddleware.Logging.cs">
+			<DependentUpon>MessageBatchMiddleware.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

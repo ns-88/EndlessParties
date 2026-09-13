@@ -5,15 +5,16 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
+    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" Id="19509c7d-b55d-415d-b009-21e2616179a5" />
+  </Folder>
+  <Folder Name="/..Shared/EventBus/">
+    <Project Path="src/..Shared/EventBus/EndlessParties.Shared.EventBus.Abstractions/EndlessParties.Shared.EventBus.Abstractions.csproj" Id="06850000-c1ba-4b51-adfd-ed50090d0b64" />
+    <Project Path="src/..Shared/EventBus/EndlessParties.Shared.EventBus.Kafka/EndlessParties.Shared.EventBus.Kafka.csproj" Id="8191e689-7aab-4276-b91b-381e2fc4dd08" />
   </Folder>
   <Folder Name="/..Shared/Exceptions/">
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions.Models/EndlessParties.Shared.Exceptions.Models.csproj" Id="c74e9d32-fa61-4013-9869-d529b88ef9b5" />
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions/EndlessParties.Shared.Exceptions.csproj" Id="52d2faef-d251-42be-bf25-da16acc9da40" />
-  </Folder>
-  <Folder Name="/..Shared/MessageBus/">
-    <Project Path="src/..Shared/MessageBus/EndlessParties.Shared.ChannelMessageBus/EndlessParties.Shared.ChannelMessageBus.csproj" />
-    <Project Path="src/..Shared/MessageBus/EndlessParties.Shared.MessageBus.Abstractions/EndlessParties.Shared.MessageBus.Abstractions.csproj" Id="77cc755c-942e-421d-ba8e-dbd6c59bd7d9" />
   </Folder>
   <Folder Name="/..Shared/Utils/">
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" Id="fc0813a9-609d-4787-9123-7a44abee73b6" />
@@ -23,29 +24,34 @@
   <Folder Name="/..Shared/Validations/">
     <Project Path="src/..Shared/Validations/EndlessParties.Shared.Validations/EndlessParties.Shared.Validations.csproj" Id="266d0242-016f-4fc4-9441-c1441e856dea" />
   </Folder>
-  <Folder Name="/Application/">
-    <Project Path="src/Application/EndlessParties.Application.Abstractions/EndlessParties.Application.Abstractions.csproj" Id="26f67793-4183-41ae-bda7-6f9355f0189c" />
-    <Project Path="src/Application/EndlessParties.Application/EndlessParties.Application.csproj" Id="9eafb6d0-8cae-4292-b367-f44b7e12d00f" />
+  <Folder Name="/Events/" />
+  <Folder Name="/Events/.Shared/" />
+  <Folder Name="/Events/.Shared/Database/">
+    <Project Path="src/Events/.Shared/Database/EndlessParties.Events.Database/EndlessParties.Events.Database.csproj" />
   </Folder>
-  <Folder Name="/Infrastructure/">
-    <Project Path="src/Infrastructure/EndlessParties.Infrastructure.Abstractions/EndlessParties.Infrastructure.Abstractions.csproj" Id="24cedb9e-e66e-4b91-b219-037d53d2724e" />
-    <Project Path="src/Infrastructure/EndlessParties.Infrastructure/EndlessParties.Infrastructure.csproj" Id="f04bd548-9ee8-42f5-a789-9dd533d10a24" />
+  <Folder Name="/Events/.Shared/Domain/">
+    <Project Path="src/Events/.Shared/Domain/EndlessParties.Events.Domain/EndlessParties.Events.Domain.csproj" />
   </Folder>
-  <Folder Name="/Infrastructure/Core/">
-    <Project Path="src/Infrastructure/Core/EndlessParties.Domain/EndlessParties.Domain.csproj" Id="c1a4a99f-7577-4546-a577-aeb669c54a30" />
+  <Folder Name="/Events/.Shared/Repositories/">
+    <Project Path="src/Events/.Shared/Repositories/EndlessParties.Events.Repositories.Abstractions/EndlessParties.Events.Repositories.Abstractions.csproj" Id="ea583ecc-868d-419f-a8d8-a4e7facc7526" />
+    <Project Path="src/Events/.Shared/Repositories/EndlessParties.Events.Repositories/EndlessParties.Events.Repositories.csproj" Id="7d620a7e-ceef-4c6c-8664-2c10341a2fe8" />
   </Folder>
-  <Folder Name="/Infrastructure/Database/">
-    <Project Path="src/Infrastructure/Database/EndlessParties.Database/EndlessParties.Database.csproj" Id="ba9bbd66-fecc-45dd-b2fa-63c6bd88f96f" />
+  <Folder Name="/Events/.Tests/" />
+  <Folder Name="/Events/.Tests/IntegrationTests/">
+    <Project Path="src/Events/.Tests/IntegrationTests/EndlessParties.Events.Api.App.IntegrationTests/EndlessParties.Events.Api.App.IntegrationTests.csproj" Id="476609dc-f094-45ad-bc0a-3f56c1aab753" />
+    <Project Path="src/Events/.Tests/IntegrationTests/EndlessParties.Events.Api.Infrastructure.IntegrationTests/EndlessParties.Events.Api.Infrastructure.IntegrationTests.csproj" />
   </Folder>
-  <Folder Name="/Presentation/">
-    <Project Path="src/Presentation/EndlessParties.Presentation/EndlessParties.Presentation.csproj" Id="838d44a0-b57d-4553-94a0-0f63b9cc327e" />
+  <Folder Name="/Events/.Tests/UnitTests/">
+    <Project Path="src/Events/.Tests/UnitTests/EndlessParties.Events.Api.App.UnitTests/EndlessParties.Events.Api.App.UnitTests.csproj" />
   </Folder>
-  <Folder Name="/Tests/" />
-  <Folder Name="/Tests/IntegrationTests/">
-    <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Application/EndlessParties.IntegrationTests.Application.csproj" Id="7b190670-2e67-40f9-9d72-e79c8d928cfe" />
-    <Project Path="src/Tests/IntegrationTests/EndlessParties.IntegrationTests.Infrastructure/EndlessParties.IntegrationTests.Infrastructure.csproj" Id="902edfbc-157f-4bc0-b138-e65e21502b13" />
+  <Folder Name="/Events/Api/">
+    <Project Path="src/Events/Api/EndlessParties.Events.Api.App/EndlessParties.Events.Api.App.csproj" Id="e287640a-9bc5-4ff8-a30f-3a673e4e9654" />
+    <Project Path="src/Events/Api/EndlessParties.Events.Api.Infrastructure/EndlessParties.Events.Api.Infrastructure.csproj" Id="66065ac4-2097-4096-9f6c-d606f5d30ae2" />
+    <Project Path="src/Events/Api/EndlessParties.Events.Api/EndlessParties.Events.Api.csproj" />
   </Folder>
-  <Folder Name="/Tests/UnitTests/">
-    <Project Path="src/Tests/UnitTests/EndlessParties.Tests.Application/EndlessParties.UnitTests.Application.csproj" />
+  <Folder Name="/Events/Worker/">
+    <Project Path="src/Events/Worker/EndlessParties.Events.Worker.App/EndlessParties.Events.Worker.App.csproj" Id="ec44a8ef-4eba-4c86-a209-0f5b01083cfa" />
+    <Project Path="src/Events/Worker/EndlessParties.Events.Worker.Infrastructure/EndlessParties.Events.Worker.Infrastructure.csproj" Id="d6b72f86-e745-4ff8-9ff5-678d2546edcc" />
+    <Project Path="src/Events/Worker/EndlessParties.Events.Worker/EndlessParties.Events.Worker.csproj" Id="c6b90907-fb01-40ba-bf56-ac172e4fbf7f" />
   </Folder>
 </Solution>

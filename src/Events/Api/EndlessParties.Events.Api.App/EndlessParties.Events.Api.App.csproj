@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Events\EndlessParties.Shared.Contracts.Events.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Mediator.Abstractions" />
+		<PackageReference Include="Mediator.SourceGenerator" PrivateAssets="all" />
+		<PackageReference Include="Riok.Mapperly" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Features\Events\GetAll\GetAllEventsQuery.cs">
+			<DependentUpon>GetAllEventsHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\GetAll\EventSearchFilterValidator.cs">
+			<DependentUpon>EventSearchFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\GetAll\EventPaginatedResponseMapper.cs">
+			<DependentUpon>EventPaginatedResponse.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\GetAll\EventSearchFilterMapper.cs">
+			<DependentUpon>EventSearchFilter.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\Create\CreateEventCommand.cs">
+			<DependentUpon>CreateEventHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\Create\CreateEventRequestValidator.cs">
+			<DependentUpon>CreateEventRequest.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\GetById\GetByIdQuery.cs">
+			<DependentUpon>GetByIdHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\Update\UpdateEventCommand.cs">
+			<DependentUpon>UpdateEventHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\Update\UpdateEventRequestValidator.cs">
+			<DependentUpon>UpdateEventRequest.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\Remove\DeleteEventCommand.cs">
+			<DependentUpon>DeleteEventHandler.cs</DependentUpon>
+		</Compile>
+
+		<Compile Update="Features\Bookings\Create\CreateBookingCommand.cs">
+			<DependentUpon>CreateBookingHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Bookings\GetById\GetByIdQuery.cs">
+			<DependentUpon>GetByIdHandler.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="**/.*/**/*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Features\Events\.Shared\EventDataValidator.cs">
+			<DependentUpon>EventData.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Events\.Shared\EventMapper.cs">
+			<DependentUpon>EventResponse.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
+		<ProjectReference Include="..\..\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
+	</ItemGroup>
+
+</Project>
