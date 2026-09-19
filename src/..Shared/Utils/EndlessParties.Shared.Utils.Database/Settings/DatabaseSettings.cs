@@ -1,4 +1,6 @@
-﻿namespace EndlessParties.Shared.Utils.Database.Settings;
+﻿using FluentValidation;
+
+namespace EndlessParties.Shared.Utils.Database.Settings;
 
 /// <summary>
 /// Настройки подключения к БД
@@ -14,4 +16,10 @@ public class DatabaseSettings
     /// Количество попыток подключения к БД
     /// </summary>
     public required int RetryReconnectDatabaseCount { get; init; }
+
+
+    /// <summary>
+    /// Валидация
+    /// </summary>
+    internal void Validate() => new DatabaseSettingsValidator().ValidateAndThrow(this);
 }

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\.Shared\Database\EndlessParties.Identity.Database\EndlessParties.Identity.Database.csproj" />
+	  <ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Identity.Repositories\EndlessParties.Identity.Repositories.csproj" />
+	  <ProjectReference Include="..\..\.Shared\Services\Cryptography\EndlessParties.Identity.Cryptography\EndlessParties.Identity.Cryptography.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="InfrastructureSettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="InfrastructureSettingsValidator.cs">
+			<DependentUpon>InfrastructureSettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

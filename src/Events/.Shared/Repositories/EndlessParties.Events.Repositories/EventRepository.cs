@@ -15,7 +15,7 @@ namespace EndlessParties.Events.Repositories;
 internal class EventRepository : IEventRepository
 {
     /// <summary>
-    /// Таблица <see cref="ApplicationErrors.Events"/>
+    /// Таблица <see cref="Event"/>
     /// </summary>
     private readonly DbSet<Event> _events;
 

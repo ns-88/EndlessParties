@@ -39,16 +39,18 @@ public static class WebApplicationExtensions
     /// </summary>
     private static WebApplication AddSwagger(this WebApplication application)
     {
-        if (application.Environment.IsEnvironment("local"))
+        if (!application.Environment.IsEnvironment("local"))
         {
-            application
-                .UseSwagger()
-                .UseSwaggerUI(x =>
-                {
-                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "EndlessParties API V1");
-                    x.RoutePrefix = string.Empty;
-                });
+            return application;
         }
+
+        application
+            .UseSwagger()
+            .UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API V1");
+                x.RoutePrefix = string.Empty;
+            });
 
         return application;
     }

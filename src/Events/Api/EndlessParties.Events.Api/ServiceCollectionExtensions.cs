@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSwaggerGen(setup =>
         {
-            setup.SwaggerDoc("v1", new OpenApiInfo { Title = "EndlessParties API V1", Version = "v1" });
+            setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Events API V1", Version = "v1" });
 
             foreach (var filePath in filePaths)
             {

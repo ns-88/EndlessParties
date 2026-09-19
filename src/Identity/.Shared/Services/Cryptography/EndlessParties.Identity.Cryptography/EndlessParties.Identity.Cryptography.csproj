@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\EndlessParties.Identity.Cryptography.Abstractions\EndlessParties.Identity.Cryptography.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Settings\JwtTokenSettingsValidator.cs">
+			<DependentUpon>JwtTokenSettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

@@ -4,8 +4,8 @@ using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
+using EndlessParties.Shared.Utils.Logger;
 using EndlessParties.Shared.Validations;
-using Serilog;
 
 namespace EndlessParties.Events.Api;
 
@@ -50,21 +50,6 @@ public static class WebApplicationBuilderExtensions
             setup.ValidateScopes = true;
             setup.ValidateOnBuild = true;
         });
-    }
-
-    /// <summary>
-    /// Добавление логгера Serilog
-    /// </summary>
-    private static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddSerilog((services, loggerConfiguration) =>
-        {
-            loggerConfiguration
-                .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services);
-        });
-
-        return builder;
     }
 
     /// <summary>

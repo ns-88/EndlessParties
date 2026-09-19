@@ -13,7 +13,7 @@ public class UpdateEventCommand(Guid id, UpdateEventRequest updateRequest) : IRe
     public Guid Id { get; } = id;
 
     /// <summary>
-    /// Запрос обновления события (мероприятия)
+    /// Данные запроса обновления события (мероприятия)
     /// </summary>
     public UpdateEventRequest UpdateRequest { get; } = updateRequest;
 }

@@ -11,10 +11,11 @@ internal class EventDataValidator : AbstractValidator<EventData>
     /// <inheritdoc />
     public EventDataValidator()
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(x => x.Title)
             .NotEmpty()
-            .MaximumLength(Event.MaxTitleLength)
-            .When(x => !string.IsNullOrWhiteSpace(x.Title), ApplyConditionTo.CurrentValidator);
+            .MaximumLength(Event.MaxTitleLength);
 
         RuleFor(x => x.TotalSeats)
             .GreaterThan(0);

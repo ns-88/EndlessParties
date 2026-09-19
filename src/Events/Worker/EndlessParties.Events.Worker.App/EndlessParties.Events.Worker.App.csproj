@@ -17,10 +17,10 @@
 
 	<ItemGroup>
 		<Compile Update="Features\Bookings\BookingsCreatedNewCommand.cs">
-			<DependentUpon>BookingProcessorHandler.cs</DependentUpon>
+			<DependentUpon>BookingsCreatedNewHandler.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Features\Bookings\BookingsCreatedNewHandlerExtensions.cs">
-			<DependentUpon>BookingProcessorHandler.cs</DependentUpon>
+			<DependentUpon>BookingsCreatedNewHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
