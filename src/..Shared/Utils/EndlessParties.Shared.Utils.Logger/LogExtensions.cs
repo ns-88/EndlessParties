@@ -1,11 +1,11 @@
 ﻿using Serilog;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Shared.Utils.Logger;
 
 /// <summary>
 /// Набор методов-расширений для класса <see cref="Log"/>
 /// </summary>
-internal static class LogExtensions
+public static class LogExtensions
 {
     extension(Log)
     {

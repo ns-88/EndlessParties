@@ -6,12 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace EndlessParties.Events.Database;
 
 /// <summary>
-/// Класс-расширение <see cref="IServiceCollection"/> для добавления базы данных событий (мероприятий)
+/// Класс-расширение <see cref="IServiceCollection"/> для добавления базы данных "Events"
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Добавление базы данных событий (мероприятий)
+    /// Добавление базы данных "Events"
     /// </summary>
     public static IServiceCollection AddEventsDatabase(this IServiceCollection services, DatabaseSettings settings)
     {

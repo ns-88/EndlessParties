@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "EndlessParties.Events.Api": {
+    "EndlessParties.Identity.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

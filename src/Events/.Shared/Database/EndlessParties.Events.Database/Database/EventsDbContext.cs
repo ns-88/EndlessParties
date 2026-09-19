@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EndlessParties.Events.Database.Database;
 
 /// <summary>
-/// Контекст базы данных "Events"
+/// Контекст базы данных "Events" - хранение данных мероприятий (событий) и бронирований
 /// </summary>
 public class EventsDbContext : DbContext
 {

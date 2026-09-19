@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using Microsoft.OpenApi;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Identity.Api;
 
 /// <summary>
 /// Класс-расширение <see cref="IServiceCollection"/> для добавления сервисов презентационного слоя
@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSwaggerGen(setup =>
         {
-            setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Events API V1", Version = "v1" });
+            setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity API V1", Version = "v1" });
 
             foreach (var filePath in filePaths)
             {

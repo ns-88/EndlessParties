@@ -1,7 +1,7 @@
 using EndlessParties.Shared.Utils.Logger;
 using Serilog;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Identity.Api;
 
 /// <summary>
 /// Основной класс приложения
