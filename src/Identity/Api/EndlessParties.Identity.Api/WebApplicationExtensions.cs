@@ -1,8 +1,8 @@
-﻿using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Identity.Database.Database;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Identity.Api;
 
 /// <summary>
 /// Класс-расширение <see cref="WebApplication"/> для конфигурации приложения
@@ -48,7 +48,7 @@ public static class WebApplicationExtensions
             .UseSwagger()
             .UseSwaggerUI(x =>
             {
-                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API V1");
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity API V1");
                 x.RoutePrefix = string.Empty;
             });
 
@@ -66,7 +66,7 @@ public static class WebApplicationExtensions
         }
 
         using var scope = application.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
 
         dbContext.Database.Migrate();
     }

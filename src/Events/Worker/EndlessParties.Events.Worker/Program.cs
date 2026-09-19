@@ -1,3 +1,4 @@
+using EndlessParties.Shared.Utils.Logger;
 using Serilog;
 
 namespace EndlessParties.Events.Worker;
