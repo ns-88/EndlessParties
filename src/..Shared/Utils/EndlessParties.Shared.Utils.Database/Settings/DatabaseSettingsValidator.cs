@@ -5,7 +5,7 @@ namespace EndlessParties.Shared.Utils.Database.Settings;
 /// <summary>
 /// Валидатор <see cref="DatabaseSettings"/>
 /// </summary>
-public class DatabaseSettingsValidator : AbstractValidator<DatabaseSettings>
+internal class DatabaseSettingsValidator : AbstractValidator<DatabaseSettings>
 {
     /// <summary>
     /// Конструктор

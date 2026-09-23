@@ -1,5 +1,7 @@
 ﻿using EndlessParties.Identity.Api.App;
 using EndlessParties.Identity.Api.Infrastructure;
+using EndlessParties.Identity.Cryptography.Abstractions.Models;
+using EndlessParties.Identity.Cryptography.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
 using EndlessParties.Shared.Utils.Logger;
@@ -61,7 +63,10 @@ public static class WebApplicationBuilderExtensions
             {
                 ConnectionString = config.GetConnectionString("Postgres:Identity")!,
                 RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
-            }
+            },
+            JwtToken = config
+                .GetRequiredSection("JwtToken")
+                .Get<JwtTokenSettings>()!
         };
     }
 }

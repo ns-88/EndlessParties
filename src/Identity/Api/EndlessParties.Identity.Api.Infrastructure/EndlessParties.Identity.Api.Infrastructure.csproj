@@ -3,6 +3,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\.Shared\Database\EndlessParties.Identity.Database\EndlessParties.Identity.Database.csproj" />
 	  <ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Identity.Repositories\EndlessParties.Identity.Repositories.csproj" />
+	  <ProjectReference Include="..\..\.Shared\Services\Cryptography\EndlessParties.Identity.Cryptography\EndlessParties.Identity.Cryptography.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

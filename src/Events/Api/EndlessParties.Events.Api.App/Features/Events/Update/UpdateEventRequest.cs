@@ -3,6 +3,6 @@
 namespace EndlessParties.Events.Api.App.Features.Events.Update;
 
 /// <summary>
-/// Данные обновления мероприятия (события)
+/// Данные запроса обновления мероприятия (события)
 /// </summary>
 public class UpdateEventRequest : EventData;

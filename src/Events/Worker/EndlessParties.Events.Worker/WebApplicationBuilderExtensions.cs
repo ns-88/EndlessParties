@@ -4,7 +4,7 @@ using EndlessParties.Events.Worker.Infrastructure;
 using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Utils.Database.Settings;
-using Serilog;
+using EndlessParties.Shared.Utils.Logger;
 
 namespace EndlessParties.Events.Worker;
 
@@ -47,21 +47,6 @@ public static class WebApplicationBuilderExtensions
             setup.ValidateScopes = true;
             setup.ValidateOnBuild = true;
         });
-    }
-
-    /// <summary>
-    /// Добавление логгера Serilog
-    /// </summary>
-    private static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddSerilog((services, loggerConfiguration) =>
-        {
-            loggerConfiguration
-                .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services);
-        });
-
-        return builder;
     }
 
     /// <summary>

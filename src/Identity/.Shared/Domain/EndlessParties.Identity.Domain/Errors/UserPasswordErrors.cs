@@ -19,5 +19,10 @@ public static partial class ApplicationErrors
         /// Соль пароля пользователя не задана
         /// </summary>
         public const string SaltNotSpecified = "Соль пароля пользователя не задана";
+
+        /// <summary>
+        /// Неверные учетные данные пользователя
+        /// </summary>
+        public const string IncorrectCredentials = "Неверные учетные данные пользователя. Логин: \"{0}\"";
     }
 }

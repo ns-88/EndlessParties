@@ -9,6 +9,11 @@ namespace EndlessParties.Identity.Domain.Models;
 public record UserPassword
 {
     /// <summary>
+    /// Максимальная длина пароля
+    /// </summary>
+    public const int MaxLength = 20;
+
+    /// <summary>
     /// Максимальная длина строки хэша
     /// </summary>
     public const int MaxHashLength = 50;

@@ -1,10 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\.Shared\Domain\EndlessParties.Identity.Domain\EndlessParties.Identity.Domain.csproj" />
+		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Identity.Repositories.Abstractions\EndlessParties.Identity.Repositories.Abstractions.csproj" />
+		<ProjectReference Include="..\..\.Shared\Services\Cryptography\EndlessParties.Identity.Cryptography.Abstractions\EndlessParties.Identity.Cryptography.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 		<PackageReference Include="Mediator.Abstractions" />
 		<PackageReference Include="Mediator.SourceGenerator" PrivateAssets="all" />
 		<PackageReference Include="Riok.Mapperly" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Features\Register\RegisterUserCommand.cs">
+			<DependentUpon>RegisterUserHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Register\RegisterUserRequestValidator.cs">
+			<DependentUpon>RegisterUserRequest.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Login\LoginUserQuery.cs">
+			<DependentUpon>LoginUserHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Login\LoginUserRequestValidator.cs">
+			<DependentUpon>LoginUserRequest.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>

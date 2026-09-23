@@ -1,3 +1,4 @@
+using EndlessParties.Identity.Cryptography;
 using EndlessParties.Identity.Database;
 using EndlessParties.Identity.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,8 @@ public static class ServiceCollectionExtensions
 
         services
             .AddRepositories()
-            .AddIdentityDatabase(settings.IdentityDatabase);
+            .AddIdentityDatabase(settings.IdentityDatabase)
+            .AddCryptographyServices(settings.JwtToken);
 
         return services;
     }

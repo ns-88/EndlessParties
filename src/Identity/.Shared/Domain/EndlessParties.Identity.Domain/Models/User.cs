@@ -12,7 +12,7 @@ public class User
     /// <summary>
     /// Максимальная длина имени (логина)
     /// </summary>
-    public const int MaxNameLength = 50;
+    public const int MaxNameLength = 30;
 
 
     /// <summary>
@@ -53,17 +53,17 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new LogicException(ApplicationErrors.UsersErrors.NameNotSpecified);
+            throw new LogicException(ApplicationErrors.UserErrors.NameNotSpecified);
         }
 
         if (role == default || !Enum.IsDefined(role))
         {
-            throw new LogicException(ApplicationErrors.UsersErrors.RoleHasWrongValue);
+            throw new LogicException(ApplicationErrors.UserErrors.RoleHasWrongValue);
         }
 
         if (password == null!)
         {
-            throw new LogicException(ApplicationErrors.UsersErrors.PasswordNotSpecified);
+            throw new LogicException(ApplicationErrors.UserErrors.PasswordNotSpecified);
         }
 
         Id = Guid.NewGuid();

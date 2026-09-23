@@ -18,6 +18,8 @@ public static class ServiceCollectionExtensions
         DatabaseSettings settings, bool usePooling = true, bool ignorePendingModelChanges = false)
         where TContext : DbContext
     {
+        settings.Validate();
+
         if (usePooling)
         {
             services.AddDbContextPool<TContext>(ConfigureContext);

@@ -1,5 +1,4 @@
-﻿using EndlessParties.Shared.Utils.Database.Settings;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace EndlessParties.Identity.Api.Infrastructure;
 
@@ -8,13 +7,13 @@ namespace EndlessParties.Identity.Api.Infrastructure;
 /// </summary>
 public class InfrastructureSettingsValidator : AbstractValidator<InfrastructureSettings>
 {
-    /// <summary>
-    /// Конструктор
-    /// </summary>
+    /// <inheritdoc />
     public InfrastructureSettingsValidator()
     {
         RuleFor(x => x.IdentityDatabase)
-            .NotEmpty()
-            .SetValidator(new DatabaseSettingsValidator());
+            .NotEmpty();
+
+        RuleFor(x => x.JwtToken)
+            .NotEmpty();
     }
 }

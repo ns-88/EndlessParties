@@ -16,7 +16,7 @@ namespace EndlessParties.Identity.Database.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     role = table.Column<int>(type: "integer", nullable: false),
                     password_hash = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     password_salt = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)

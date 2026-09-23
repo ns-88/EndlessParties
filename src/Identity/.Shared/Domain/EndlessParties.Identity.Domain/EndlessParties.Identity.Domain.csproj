@@ -5,7 +5,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Errors\UsersErrors.cs">
+		<Compile Update="Errors\UserErrors.cs">
 			<DependentUpon>ApplicationErrors.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Errors\UserPasswordErrors.cs">

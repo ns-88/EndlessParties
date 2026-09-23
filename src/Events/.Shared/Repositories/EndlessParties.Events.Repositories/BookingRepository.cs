@@ -12,7 +12,7 @@ namespace EndlessParties.Events.Repositories;
 internal class BookingRepository : IBookingRepository
 {
     /// <summary>
-    /// Таблица <see cref="ApplicationErrors.Bookings"/>
+    /// Таблица <see cref="Booking"/>
     /// </summary>
     private readonly DbSet<Booking> _bookings;
 
