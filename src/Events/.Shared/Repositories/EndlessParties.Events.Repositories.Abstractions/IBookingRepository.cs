@@ -8,12 +8,17 @@ namespace EndlessParties.Events.Repositories.Abstractions;
 public interface IBookingRepository
 {
     /// <summary>
+    /// Создание бронирования
+    /// </summary>
+    Task Create(Booking model, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Получение бронирования по идентификатору
     /// </summary>
     Task<Booking> GetById(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Создание бронирования
+    /// Получение числа активных бронирований указанного пользователя
     /// </summary>
-    Task Create(Booking model, CancellationToken cancellationToken);
+    Task<int> GetActiveCountByUserId(Guid id, CancellationToken cancellationToken);
 }

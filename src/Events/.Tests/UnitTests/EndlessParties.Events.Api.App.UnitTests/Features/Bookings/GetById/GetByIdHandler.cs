@@ -48,7 +48,7 @@ public class GetByIdHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<GetByIdHandler>();
             var bookingId = Guid.NewGuid();
-            var booking = new Booking(Guid.NewGuid());
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
             var query = new GetByIdQuery(bookingId);
 
             _autoMocker
@@ -79,7 +79,7 @@ public class GetByIdHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<GetByIdHandler>();
             var bookingId = Guid.NewGuid();
-            var booking = new Booking(Guid.NewGuid());
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
             var query = new GetByIdQuery(bookingId);
 
             _autoMocker

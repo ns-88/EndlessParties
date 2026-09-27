@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Mediator.Abstractions" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 
@@ -20,6 +21,21 @@
 		</Compile>
 		<Compile Update="WebApplicationExtensions.cs">
 			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="ClaimsPrincipalExtensions.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="PresentationSettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="PresentationSettingsValidator.cs">
+			<DependentUpon>PresentationSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IdentitySettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IdentitySettingsValidator.cs">
+			<DependentUpon>IdentitySettings.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

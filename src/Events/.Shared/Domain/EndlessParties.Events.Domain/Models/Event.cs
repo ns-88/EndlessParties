@@ -142,6 +142,14 @@ public partial class Event
     }
 
     /// <summary>
+    /// Получение признака начала события на основе переданного текущего времени
+    /// </summary>
+    public bool HasStarted(DateTimeOffset currentTime)
+    {
+        return currentTime >= StartAt;
+    }
+
+    /// <summary>
     /// Изменение <see cref="Title"/>
     /// </summary>
     public void ChangeTitle(string title)

@@ -28,16 +28,27 @@ public static partial class ApplicationErrors
         /// <summary>
         /// Ошибка создания
         /// </summary>
-        public const string Creation = "Ошибка создания бронирования";
-
-        /// <summary>
-        /// Обработка бронирования невозможна
-        /// </summary>
-        public const string ProcessingNotPossible = "Обработка бронирования невозможна";
+        public const string Creation = "Ошибка создания бронирования. Id события: \"{0}\", id пользователя: \"{1}\"";
 
         /// <summary>
         /// Нет доступных мест для бронирования
         /// </summary>
         public const string NoAvailableSeats = "Нет доступных мест для бронирования";
+
+        /// <summary>
+        /// Событие уже началось
+        /// </summary>
+        public const string EventAlreadyStarted = "Событие уже началось";
+
+        /// <summary>
+        /// Превышено максимальное число доступных мест для бронирования пользователем
+        /// </summary>
+        public const string AvailableSeatsExceeded = "Превышено максимальное число доступных мест для бронирования пользователем. " +
+                                                     "Максимальное число бронирований: \"{0}\"";
+
+        /// <summary>
+        /// Получение числа активных бронирований указанного пользователя
+        /// </summary>
+        public const string ReceivingActiveBookingsCount = "Ошибка получения числа активных бронирований пользователя. Id пользователя: \"{0}\"";
     }
 }

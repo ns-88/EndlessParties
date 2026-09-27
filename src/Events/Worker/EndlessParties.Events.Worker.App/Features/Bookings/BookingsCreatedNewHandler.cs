@@ -51,10 +51,10 @@ internal class BookingsCreatedNewHandler : IRequestHandler<BookingsCreatedNewCom
 
         await Parallel.ForEachAsync(request.CreatedEvents, parallelOptions, async (createdEvent, innerCancellationToken) =>
         {
-            _logger.LogNewBooking(createdEvent.Id);
+            _logger.LogNewBooking(createdEvent.Id, createdEvent.UserId);
 
             await Task.Delay(TimeSpan.FromSeconds(15), innerCancellationToken);
-
+            
             try
             {
                 var bookingStatus = await BookingProcessing(createdEvent.Id, innerCancellationToken);

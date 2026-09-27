@@ -19,4 +19,9 @@ internal static class TestConstants
     /// Общее количество мест
     /// </summary>
     public const int TotalSeats = 3;
+
+    /// <summary>
+    /// Число активных бронирований пользователя
+    /// </summary>
+    public const int ActiveCount = 5;
 }

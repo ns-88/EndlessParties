@@ -60,7 +60,7 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFi
                 .FromFactory((string title, string? description) =>
                 {
                     var localEvent = new Event(title, TotalSeats, description, StartAt, EndAt);
-                    var booking = new Booking(localEvent.Id);
+                    var booking = new Booking(localEvent.Id, Guid.NewGuid());
                     localEvent.Bookings.Add(booking);
 
                     return localEvent;
@@ -186,7 +186,7 @@ public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFi
                 .FromFactory((string title, string? description) =>
                 {
                     var localEvent = new Event(title, TotalSeats, description, StartAt, EndAt);
-                    var booking = new Booking(localEvent.Id);
+                    var booking = new Booking(localEvent.Id, Guid.NewGuid());
                     localEvent.Bookings.Add(booking);
 
                     return localEvent;
