@@ -27,6 +27,14 @@ internal class BookingRepository : IBookingRepository
 
 
     /// <inheritdoc />
+    public Task Create(Booking model, CancellationToken cancellationToken)
+    {
+        _bookings.Add(model);
+
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
     public async Task<Booking> GetById(Guid id, CancellationToken cancellationToken)
     {
         Booking? booking;
@@ -49,10 +57,21 @@ internal class BookingRepository : IBookingRepository
     }
 
     /// <inheritdoc />
-    public Task Create(Booking model, CancellationToken cancellationToken)
+    public async Task<int> GetActiveCountByUserId(Guid id, CancellationToken cancellationToken)
     {
-        _bookings.Add(model);
+        int bookingCount;
 
-        return Task.CompletedTask;
+        try
+        {
+            bookingCount = await _bookings
+                .Where(x => x.UserId == id)
+                .CountAsync(Booking.Active, cancellationToken);
+        }
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
+        {
+            throw new LogicException(string.Format(ApplicationErrors.Bookings.ReceivingActiveBookingsCount, id));
+        }
+
+        return bookingCount;
     }
 }

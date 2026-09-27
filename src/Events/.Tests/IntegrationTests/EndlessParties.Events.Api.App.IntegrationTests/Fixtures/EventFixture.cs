@@ -2,6 +2,7 @@
 using EndlessParties.Events.Repositories;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.EventBus.Abstractions;
+using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.Shared.Utils.IntegrationTests;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -24,15 +25,21 @@ public class EventFixture<THandler> : PostgreSqlContainerFixture<EventsDbContext
     protected override void ConfigureServices(ServiceCollection serviceCollection)
     {
         var eventBusMock = new Mock<IEventBus>();
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
         eventBusMock
             .Setup(x => x.Publish(It.IsAny<object>(), CancellationToken.None))
             .Returns(Task.CompletedTask);
 
+        dateTimeProviderMock
+            .Setup(x => x.UtcNow())
+            .Returns(TestConstants.StartAt.AddDays(-1));
+
         serviceCollection
             .AddScoped<IEventRepository, EventRepository>()
             .AddScoped<IBookingRepository, BookingRepository>()
             .AddScoped<IEventBus>(_ => eventBusMock.Object)
+            .AddScoped<IDateTimeProvider>(_ => dateTimeProviderMock.Object)
             .AddScoped<THandler>();
     }
 }

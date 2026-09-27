@@ -53,6 +53,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
+            var userId = Guid.NewGuid();
 
             BookingResponse actualResponse;
             var expectedResponse = new BookingResponse
@@ -61,8 +62,8 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 EventId = @event.Id,
                 Status = BookingStatus.Pending
             };
-            var expectedbooking = new Booking(@event.Id);
-            var command = new CreateBookingCommand(@event.Id);
+            var expectedbooking = new Booking(@event.Id, userId);
+            var command = new CreateBookingCommand(@event.Id, userId);
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
@@ -111,7 +112,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-            var command = new CreateBookingCommand(@event.Id);
+            var command = new CreateBookingCommand(@event.Id, Guid.NewGuid());
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
@@ -160,7 +161,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, totalSeats, description, StartAt, EndAt))
                 .Create();
-            var command = new CreateBookingCommand(@event.Id);
+            var command = new CreateBookingCommand(@event.Id, Guid.NewGuid());
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
@@ -218,8 +219,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
         public async Task Create_NonExistingEvent_ThrowNotFoundException()
         {
             // #### Arrange ####
-            var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var command = new CreateBookingCommand(Guid.NewGuid(), Guid.NewGuid());
 
             // #### Act ####
             var action = async () =>
@@ -245,7 +245,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-            var command = new CreateBookingCommand(@event.Id);
+            var command = new CreateBookingCommand(@event.Id, Guid.NewGuid());
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {

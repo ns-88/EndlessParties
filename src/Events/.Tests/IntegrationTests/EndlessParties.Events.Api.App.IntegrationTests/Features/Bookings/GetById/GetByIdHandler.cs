@@ -52,7 +52,7 @@ public class GetByIdHandlerTests : BaseIntegrationTest<EventsDbContext, EventFix
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-            var booking = new Booking(@event.Id);
+            var booking = new Booking(@event.Id, Guid.NewGuid());
             var query = new GetByIdQuery(booking.Id);
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
@@ -87,7 +87,7 @@ public class GetByIdHandlerTests : BaseIntegrationTest<EventsDbContext, EventFix
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-            var booking = new Booking(@event.Id);
+            var booking = new Booking(@event.Id, Guid.NewGuid());
             var query = new GetByIdQuery(booking.Id);
 
             BookingResponse actualResultPendingStatus;

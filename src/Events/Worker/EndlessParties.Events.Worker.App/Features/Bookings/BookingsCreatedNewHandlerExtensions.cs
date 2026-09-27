@@ -11,8 +11,8 @@ internal static partial class BookingsCreatedNewHandlerExtensions
     /// <summary>
     /// Полученно бронирование для обработки
     /// </summary>
-    [LoggerMessage(LogLevel.Information, "Получено бронирование для обработки. Id брони: \"{BookingId}\"")]
-    public static partial void LogNewBooking(this ILogger logger, Guid bookingId);
+    [LoggerMessage(LogLevel.Information, "Получено бронирование для обработки. Id брони: \"{BookingId}\", id пользователя: \"{UserId}\"")]
+    public static partial void LogNewBooking(this ILogger logger, Guid bookingId, Guid userId);
 
     /// <summary>
     /// Обработка бронирования завершена

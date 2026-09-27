@@ -1,6 +1,5 @@
 ﻿using EndlessParties.Identity.Api.App;
 using EndlessParties.Identity.Api.Infrastructure;
-using EndlessParties.Identity.Cryptography.Abstractions.Models;
 using EndlessParties.Identity.Cryptography.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;

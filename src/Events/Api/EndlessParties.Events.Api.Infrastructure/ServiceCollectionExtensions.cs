@@ -1,6 +1,8 @@
 using EndlessParties.Events.Database;
 using EndlessParties.Events.Repositories;
 using EndlessParties.Shared.EventBus.Kafka;
+using EndlessParties.Shared.Utils.DateTime;
+using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Events.Api.Infrastructure;
@@ -18,6 +20,7 @@ public static class ServiceCollectionExtensions
         settings.Validate();
 
         services
+            .AddTransient<IDateTimeProvider, DateTimeProvider>()
             .AddRepositories()
             .AddKafkaEventBus(settings.KafkaEventBus)
             .AddEventsDatabase(settings.EventsDatabase);

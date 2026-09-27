@@ -3,6 +3,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
 namespace EndlessParties.Events.Api;
@@ -15,9 +17,12 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Добавление сервисов презентационного слоя
     /// </summary>
-    public static IServiceCollection AddPresentation(this IServiceCollection services)
+    public static IServiceCollection AddPresentation(this IServiceCollection services, PresentationSettings settings)
     {
+        settings.Validate();
+
         services
+            .AddAuthentication(settings.Identity)
             .AddHealthChecks();
 
         services
@@ -42,15 +47,67 @@ public static class ServiceCollectionExtensions
     {
         var filePaths = Directory.EnumerateFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly);
 
-        services.AddSwaggerGen(setup =>
-        {
-            setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Events API V1", Version = "v1" });
-
-            foreach (var filePath in filePaths)
+        services
+            .AddSwaggerGen(setup =>
             {
-                setup.IncludeXmlComments(filePath, true);
-            }
-        });
+                setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Events API V1", Version = "v1" });
+
+                foreach (var filePath in filePaths)
+                {
+                    setup.IncludeXmlComments(filePath, true);
+                }
+
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Укажите JWT-токен"
+                };
+
+                setup
+                    .AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+                setup
+                    .AddSecurityRequirement(document => new OpenApiSecurityRequirement
+                    {
+                        [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
+                    });
+            });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Добавление сервисов авторизации и аутентификации
+    /// </summary>
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IdentitySettings settings)
+    {
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.SecretKey));
+        
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = settings.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = settings.Audience,
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = signingKey,
+
+                    ValidateLifetime = true,
+                    RoleClaimType = "role"
+                };
+            });
+
+        services
+            .AddAuthorization();
 
         return services;
     }

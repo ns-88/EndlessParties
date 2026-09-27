@@ -1,4 +1,5 @@
-﻿using EndlessParties.Events.Domain.Enums;
+﻿using System.Linq.Expressions;
+using EndlessParties.Events.Domain.Enums;
 using EndlessParties.Events.Domain.Errors;
 using EndlessParties.Shared.Exceptions.Models;
 
@@ -10,6 +11,12 @@ namespace EndlessParties.Events.Domain.Models;
 public class Booking
 {
     /// <summary>
+    /// Максимальное число бронирований у пользователя
+    /// </summary>
+    public const int MaxActiveCount = 10;
+
+
+    /// <summary>
     /// Идентификатор
     /// </summary>
     public Guid Id { get; }
@@ -18,6 +25,11 @@ public class Booking
     /// Внешний ключ для родительской сущности <see cref="Models.Event"/>
     /// </summary>
     public Guid EventId { get; }
+
+    /// <summary>
+    /// Идентификатор пользователя, создавшего бронирование
+    /// </summary>
+    public Guid UserId { get; }
 
     /// <summary>
     /// Родительская сущность <see cref="Models.Event"/>
@@ -39,6 +51,12 @@ public class Booking
     /// </summary>
     public DateTimeOffset? ProcessedAt { get; private set; }
 
+    /// <summary>
+    /// Получение списка активных бронирований
+    /// </summary>
+    public static Expression<Func<Booking, bool>> Active =>
+        x => x.Status == BookingStatus.Pending || x.Status == BookingStatus.Confirmed;
+
 
     /// <summary>
     /// Конструктор
@@ -51,10 +69,11 @@ public class Booking
     /// <summary>
     /// Конструктор
     /// </summary>
-    public Booking(Guid eventId)
+    public Booking(Guid eventId, Guid userId)
     {
         Id = Guid.NewGuid();
         EventId = eventId;
+        UserId = userId;
         Status = BookingStatus.Pending;
         CreatedAt = DateTimeOffset.UtcNow;
         Event = null!;

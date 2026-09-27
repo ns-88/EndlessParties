@@ -25,10 +25,11 @@ public static class WebApplicationBuilderExtensions
             .AddApplicationValidations()
             .AddDependencyValidation();
 
+        var presentationSettings = GetPresentationSettings(builder.Configuration);
         var infrastructureSettings = GetInfrastructureSettings(builder.Configuration);
 
         builder.Services
-            .AddPresentation()
+            .AddPresentation(presentationSettings)
             .AddApplication()
             .AddInfrastructure(infrastructureSettings);
 
@@ -50,6 +51,21 @@ public static class WebApplicationBuilderExtensions
             setup.ValidateScopes = true;
             setup.ValidateOnBuild = true;
         });
+    }
+
+    /// <summary>
+    /// Получение настроек <see cref="PresentationSettings"/>
+    /// </summary>
+    private static PresentationSettings GetPresentationSettings(IConfiguration config)
+    {
+        var identitySettings = config
+            .GetRequiredSection("Identity:JwtToken")
+            .Get<IdentitySettings>()!;
+
+        return new PresentationSettings
+        {
+            Identity = identitySettings
+        };
     }
 
     /// <summary>

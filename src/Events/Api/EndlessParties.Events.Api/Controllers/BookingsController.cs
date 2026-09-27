@@ -1,6 +1,7 @@
 ﻿using EndlessParties.Events.Api.App.Features.Bookings.Create;
 using EndlessParties.Events.Api.App.Features.Bookings.GetById;
 using Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EndlessParties.Events.Api.Controllers;
@@ -11,6 +12,7 @@ namespace EndlessParties.Events.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class BookingsController : ControllerBase
 {
     /// <summary>
@@ -34,6 +36,7 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("{id:guid}")]
+    [Authorize]
     public async Task<ActionResult<BookingResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var query = new GetByIdQuery(id);

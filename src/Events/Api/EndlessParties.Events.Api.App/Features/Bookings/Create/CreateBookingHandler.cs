@@ -6,6 +6,7 @@ using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.Shared.Utils.Exceptions;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,11 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     private readonly IEventRepository _eventRepository;
 
     /// <summary>
+    /// Провайдер <see cref="IDateTimeProvider"/>
+    /// </summary>
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    /// <summary>
     /// Шина событий <see cref="IEventBus"/>
     /// </summary>
     private readonly IEventBus _eventBus;
@@ -44,11 +50,13 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     public CreateBookingHandler(
         IBookingRepository bookingRepository,
         IEventRepository eventRepository,
+        IDateTimeProvider dateTimeProvider,
         IEventBus eventBus,
         IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _eventRepository = eventRepository;
+        _dateTimeProvider = dateTimeProvider;
         _eventBus = eventBus;
         _unitOfWork = unitOfWork;
     }
@@ -71,19 +79,30 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
             {
                 var @event = await _eventRepository.GetByIdWithLock(request.EventId, cancellationTokenLocal);
 
+                if (@event.HasStarted(_dateTimeProvider.UtcNow()))
+                {
+                    throw new LogicException(ApplicationErrors.Bookings.EventAlreadyStarted);
+                }
+
                 if (!@event.TryReserveSeats())
                 {
                     throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
                 }
 
-                booking = new Booking(request.EventId);
+                var activeCount = await _bookingRepository.GetActiveCountByUserId(request.UserId, cancellationTokenLocal);
+
+                if (activeCount >= Booking.MaxActiveCount)
+                {
+                    throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
+                }
+
+                booking = new Booking(request.EventId, request.UserId);
 
                 await _bookingRepository.Create(booking, cancellationTokenLocal);
                 await _unitOfWork.SaveChangesAsync(cancellationTokenLocal);
-
                 await transaction.CommitAsync(cancellationTokenLocal);
 
-                await _eventBus.Publish(new BookingCreatedEvent(booking.Id), cancellationTokenLocal);
+                await _eventBus.Publish(new BookingCreatedEvent(booking.Id, request.UserId), cancellationTokenLocal);
             }
             catch (Exception ex) when (ex is NotFoundException or ConflictException)
             {
@@ -91,7 +110,7 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
             }
             catch (Exception ex) when (!ex.IsCancelled(cancellationTokenLocal))
             {
-                throw new LogicException(ApplicationErrors.Bookings.Creation, ex);
+                throw new LogicException(string.Format(ApplicationErrors.Bookings.Creation, request.EventId, request.EventId), ex);
             }
 
             return BookingMapper.Map(booking);

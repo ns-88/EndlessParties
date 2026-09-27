@@ -8,6 +8,7 @@ using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.UnitTests.Application.Fakes;
 using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
@@ -60,7 +61,8 @@ public class CreateBookingHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
             var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var userId = Guid.NewGuid();
+            var command = new CreateBookingCommand(eventId, userId);
 
             var @event = _fixture
                 .Build<Event>()
@@ -76,6 +78,16 @@ public class CreateBookingHandlerTests
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(ActiveCount);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Setup(x => x.UtcNow())
+                .Returns(StartAt.AddDays(-1));
 
             _autoMocker
                 .GetMock<IEventBus>()
@@ -99,6 +111,14 @@ public class CreateBookingHandlerTests
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Once);
 
             _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Verify(x => x.UtcNow(), Times.Once);
+
+            _autoMocker
                 .GetMock<IEventBus>()
                 .Verify(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None), Times.Once);
 
@@ -114,7 +134,8 @@ public class CreateBookingHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
             var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var userId = Guid.NewGuid();
+            var command = new CreateBookingCommand(eventId, userId);
 
             var @event = _fixture
                 .Build<Event>()
@@ -130,6 +151,16 @@ public class CreateBookingHandlerTests
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(ActiveCount);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Setup(x => x.UtcNow())
+                .Returns(StartAt.AddDays(-1));
 
             _autoMocker
                 .GetMock<IEventBus>()
@@ -158,6 +189,14 @@ public class CreateBookingHandlerTests
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(TotalSeats));
 
             _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None), Times.Exactly(TotalSeats));
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Verify(x => x.UtcNow(), Times.Exactly(TotalSeats));
+
+            _autoMocker
                 .GetMock<IEventBus>()
                 .Verify(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None), Times.Exactly(TotalSeats));
 
@@ -175,7 +214,8 @@ public class CreateBookingHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
             var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var userId = Guid.NewGuid();
+            var command = new CreateBookingCommand(eventId, userId);
 
             var @event = _fixture
                 .Build<Event>()
@@ -191,6 +231,16 @@ public class CreateBookingHandlerTests
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(ActiveCount);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Setup(x => x.UtcNow())
+                .Returns(StartAt.AddDays(-1));
 
             _autoMocker
                 .GetMock<IEventBus>()
@@ -231,6 +281,14 @@ public class CreateBookingHandlerTests
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(totalSeats));
 
             _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None), Times.Exactly(totalSeats));
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Verify(x => x.UtcNow(), Times.Exactly(requestCount));
+
+            _autoMocker
                 .GetMock<IEventBus>()
                 .Verify(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None), Times.Exactly(totalSeats));
 
@@ -252,7 +310,8 @@ public class CreateBookingHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
             var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var userId = Guid.NewGuid();
+            var command = new CreateBookingCommand(eventId, userId);
 
             _autoMocker
                 .GetMock<IEventRepository>()
@@ -281,7 +340,8 @@ public class CreateBookingHandlerTests
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
             var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var userId = Guid.NewGuid();
+            var command = new CreateBookingCommand(eventId, userId);
 
             var @event = _fixture
                 .Build<Event>()
@@ -297,6 +357,16 @@ public class CreateBookingHandlerTests
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
                 .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(ActiveCount);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Setup(x => x.UtcNow())
+                .Returns(StartAt.AddDays(-1));
 
             _autoMocker
                 .GetMock<IEventBus>()
@@ -321,6 +391,14 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Exactly(TotalSeats));
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(userId, CancellationToken.None), Times.Exactly(TotalSeats));
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Verify(x => x.UtcNow(), Times.Exactly(TotalSeats + 1));
 
             _autoMocker
                 .GetMock<IEventBus>()
