@@ -6,9 +6,9 @@ using Mediator;
 namespace EndlessParties.Events.Api.App.Features.Bookings.GetById;
 
 /// <summary>
-/// Обработчик <see cref="GetByIdQuery"/>
+/// Обработчик <see cref="GetBookingByIdQuery"/>
 /// </summary>
-public class GetByIdHandler : IRequestHandler<GetByIdQuery, BookingResponse>
+public class GetBookingByIdHandler : IRequestHandler<GetBookingByIdQuery, BookingResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IBookingRepository"/>
@@ -19,14 +19,14 @@ public class GetByIdHandler : IRequestHandler<GetByIdQuery, BookingResponse>
     /// <summary>
     /// Конструктор
     /// </summary>
-    public GetByIdHandler(IBookingRepository bookingRepository)
+    public GetBookingByIdHandler(IBookingRepository bookingRepository)
     {
         _bookingRepository = bookingRepository;
     }
 
 
     /// <inheritdoc />
-    public async ValueTask<BookingResponse> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetById(request.Id, cancellationToken);
 

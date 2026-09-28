@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using EndlessParties.Shared.Utils.HttpUserContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -26,6 +27,7 @@ public static class ServiceCollectionExtensions
             .AddHealthChecks();
 
         services
+            .AddHttpUserContextAccessor()
             .AddEndpointsApiExplorer()
             .AddRouting(setup => setup.LowercaseUrls = true)
             .AddSwagger()

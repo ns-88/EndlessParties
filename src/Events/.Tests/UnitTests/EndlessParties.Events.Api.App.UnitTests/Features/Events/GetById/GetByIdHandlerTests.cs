@@ -14,7 +14,7 @@ namespace EndlessParties.Events.Api.App.UnitTests.Features.Events.GetById;
 using static TestConstants;
 
 /// <summary>
-/// Тесты для обработчика <see cref="GetByIdHandler"/>
+/// Тесты для обработчика <see cref="GetEventByIdHandler"/>
 /// </summary>
 [Trait("Category", "Unit")]
 public class GetByIdHandlerTests
@@ -52,9 +52,9 @@ public class GetByIdHandlerTests
         public async Task GetById_CorrectFilter_ReturnsValidEventResponse()
         {
             // #### Arrange ####
-            var handler = _autoMocker.CreateInstance<GetByIdHandler>();
+            var handler = _autoMocker.CreateInstance<GetEventByIdHandler>();
             var eventId = Guid.NewGuid();
-            var query = new GetByIdQuery(eventId);
+            var query = new GetEventByIdQuery(eventId);
 
             var @event = _fixture
                 .Build<Event>()

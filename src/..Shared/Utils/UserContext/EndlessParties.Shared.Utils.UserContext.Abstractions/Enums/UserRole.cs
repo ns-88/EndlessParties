@@ -1,4 +1,4 @@
-﻿namespace EndlessParties.Identity.Domain.Enums;
+﻿namespace EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 
 /// <summary>
 /// Роль пользователя

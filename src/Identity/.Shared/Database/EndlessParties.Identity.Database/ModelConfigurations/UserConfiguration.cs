@@ -1,5 +1,5 @@
-﻿using EndlessParties.Identity.Domain.Enums;
-using EndlessParties.Identity.Domain.Models;
+﻿using EndlessParties.Identity.Domain.Models;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

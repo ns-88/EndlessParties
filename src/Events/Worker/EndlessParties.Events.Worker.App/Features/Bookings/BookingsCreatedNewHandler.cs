@@ -88,7 +88,6 @@ internal class BookingsCreatedNewHandler : IRequestHandler<BookingsCreatedNewCom
         async Task<BookingStatus> Operation(CancellationToken cancellationTokenLocal)
         {
             var booking = await bookingRepository.GetById(bookingId, cancellationTokenLocal);
-
             await using var transaction = await unitOfWork.BeginTransaction(cancellationTokenLocal);
             Event? @event = null;
 

@@ -1,6 +1,6 @@
-﻿using EndlessParties.Identity.Domain.Enums;
-using EndlessParties.Identity.Domain.Errors;
+﻿using EndlessParties.Identity.Domain.Errors;
 using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 
 namespace EndlessParties.Identity.Domain.Models;
 
