@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
 using EndlessParties.Events.Api.App.Features.Events.GetById;
 using EndlessParties.Events.Api.App.Features.Events.Shared;
+using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
-using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
@@ -17,7 +17,7 @@ using static TestConstants;
 /// Тесты для обработчика <see cref="GetEventByIdHandler"/>
 /// </summary>
 [Trait("Category", "Unit")]
-public class GetByIdHandlerTests
+public class GetEventByIdHandlerTests
 {
     /// <summary>
     /// Контейнер <see cref="AutoMocker"/>
@@ -33,7 +33,7 @@ public class GetByIdHandlerTests
     /// <summary>
     /// Конструктор
     /// </summary>
-    public GetByIdHandlerTests()
+    public GetEventByIdHandlerTests()
     {
         _autoMocker = new AutoMocker(MockBehavior.Strict);
         _fixture = new Fixture();
@@ -43,7 +43,7 @@ public class GetByIdHandlerTests
     /// <summary>
     /// Позитивные тесты
     /// </summary>
-    public class Positive : GetByIdHandlerTests
+    public class Positive : GetEventByIdHandlerTests
     {
         /// <summary>
         /// Получение события по идентификатору для корректного фильтра с возвратом ожидаемого ответа

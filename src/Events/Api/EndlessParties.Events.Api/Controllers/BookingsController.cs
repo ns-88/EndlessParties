@@ -46,7 +46,7 @@ public class BookingsController : ControllerBase
     }
 
     /// <summary>
-    /// Отмена бронирования
+    /// Отмена бронирования по идентификатору
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

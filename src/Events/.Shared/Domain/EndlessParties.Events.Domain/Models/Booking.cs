@@ -52,7 +52,7 @@ public class Booking
     public DateTimeOffset? ProcessedAt { get; private set; }
 
     /// <summary>
-    /// Получение списка активных бронирований
+    /// Признак активного бронирования
     /// </summary>
     public static Expression<Func<Booking, bool>> Active =>
         x => x.Status == BookingStatus.Pending || x.Status == BookingStatus.Confirmed;

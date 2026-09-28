@@ -23,6 +23,6 @@ public static partial class ApplicationErrors
         /// <summary>
         /// Неверные учетные данные пользователя
         /// </summary>
-        public const string IncorrectCredentials = "Неверные учетные данные пользователя. Логин: \"{0}\"";
+        public const string IncorrectCredentials = "Неверные учетные данные пользователя";
     }
 }
