@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.UserContext.Abstractions\EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

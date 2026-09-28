@@ -1,4 +1,6 @@
-﻿namespace EndlessParties.Events.Domain.Errors;
+﻿using EndlessParties.Events.Domain.Models;
+
+namespace EndlessParties.Events.Domain.Errors;
 
 /// <summary>
 /// Ошибки приложения
@@ -28,7 +30,12 @@ public static partial class ApplicationErrors
         /// <summary>
         /// Ошибка создания
         /// </summary>
-        public const string Creation = "Ошибка создания бронирования. Id события: \"{0}\", id пользователя: \"{1}\"";
+        public const string Creation = "Ошибка создания бронирования. Id события: \"{0}\"";
+
+        /// <summary>
+        /// Ошибки отмены бронирования
+        /// </summary>
+        public const string Cancel = "Ошибка отмены бронирования. Id: \"{0}\"";
 
         /// <summary>
         /// Нет доступных мест для бронирования
@@ -50,5 +57,10 @@ public static partial class ApplicationErrors
         /// Получение числа активных бронирований указанного пользователя
         /// </summary>
         public const string ReceivingActiveBookingsCount = "Ошибка получения числа активных бронирований пользователя. Id пользователя: \"{0}\"";
+
+        /// <summary>
+        /// Отмена бронирования невозможна, т.к. оно принадлежит другому пользователю
+        /// </summary>
+        public const string NotPossibleCancelBookingFromAnotherUser = "Отмена бронирования невозможна, т.к. оно принадлежит другому пользователю";
     }
 }

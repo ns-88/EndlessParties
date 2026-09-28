@@ -1,4 +1,4 @@
-﻿using EndlessParties.Identity.Domain.Enums;
+﻿using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 
 namespace EndlessParties.Identity.Api.App.Features.Login;
 

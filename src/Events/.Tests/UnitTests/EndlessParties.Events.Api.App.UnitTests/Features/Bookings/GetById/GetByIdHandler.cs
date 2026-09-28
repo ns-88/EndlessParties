@@ -14,7 +14,7 @@ using Xunit;
 namespace EndlessParties.Events.Api.App.UnitTests.Features.Bookings.GetById;
 
 /// <summary>
-/// Тесты для обработчика <see cref="GetByIdHandler"/>
+/// Тесты для обработчика <see cref="GetBookingByIdHandler"/>
 /// </summary>
 [Trait("Category", "Unit")]
 public class GetByIdHandlerTests
@@ -46,10 +46,10 @@ public class GetByIdHandlerTests
         public async Task GetById_CorrectData_ReturnsValidBookingResponse()
         {
             // #### Arrange ####
-            var handler = _autoMocker.CreateInstance<GetByIdHandler>();
+            var handler = _autoMocker.CreateInstance<GetBookingByIdHandler>();
             var bookingId = Guid.NewGuid();
             var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
-            var query = new GetByIdQuery(bookingId);
+            var query = new GetBookingByIdQuery(bookingId);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -77,10 +77,10 @@ public class GetByIdHandlerTests
         public async Task GetById_ChangeStatus_ReturnsValidBookingResponse()
         {
             // #### Arrange ####
-            var handler = _autoMocker.CreateInstance<GetByIdHandler>();
+            var handler = _autoMocker.CreateInstance<GetBookingByIdHandler>();
             var bookingId = Guid.NewGuid();
             var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
-            var query = new GetByIdQuery(bookingId);
+            var query = new GetBookingByIdQuery(bookingId);
 
             _autoMocker
                 .GetMock<IBookingRepository>()
@@ -121,9 +121,9 @@ public class GetByIdHandlerTests
         public async Task GetById_NonExistingBooking_ThrowNotFoundException()
         {
             // #### Arrange ####
-            var handler = _autoMocker.CreateInstance<GetByIdHandler>();
+            var handler = _autoMocker.CreateInstance<GetBookingByIdHandler>();
             var bookingId = Guid.NewGuid();
-            var query = new GetByIdQuery(bookingId);
+            var query = new GetBookingByIdQuery(bookingId);
 
             _autoMocker
                 .GetMock<IBookingRepository>()

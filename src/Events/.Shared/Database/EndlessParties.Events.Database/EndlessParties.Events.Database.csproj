@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database.Migrations\EndlessParties.Shared.Utils.Database.Migrations.csproj" />
-		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database.Migrations\EndlessParties.Shared.Utils.Database.Migrations.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
 	</ItemGroup>
 

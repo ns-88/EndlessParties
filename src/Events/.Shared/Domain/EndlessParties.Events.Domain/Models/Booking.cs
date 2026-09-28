@@ -81,7 +81,7 @@ public class Booking
 
 
     /// <summary>
-    /// Переводит бронирование в статус <see cref="BookingStatus.Confirmed"/>
+    /// Подтверждение бронирования
     /// </summary>
     public void Confirm()
     {
@@ -95,7 +95,7 @@ public class Booking
     }
 
     /// <summary>
-    /// Переводит бронирование в статус <see cref="BookingStatus.Rejected"/>
+    /// Отклонение бронирования
     /// </summary>
     public void Reject()
     {
@@ -106,5 +106,18 @@ public class Booking
 
         Status = BookingStatus.Rejected;
         ProcessedAt = DateTimeOffset.UtcNow;
+    }
+
+    /// <summary>
+    /// Отмена бронирования
+    /// </summary>
+    public void Cancel()
+    {
+        if (Status != BookingStatus.Confirmed)
+        {
+            throw new LogicException(string.Format(ApplicationErrors.Bookings.StatusNotAcceptable, Status));
+        }
+
+        Status = BookingStatus.Canceled;
     }
 }

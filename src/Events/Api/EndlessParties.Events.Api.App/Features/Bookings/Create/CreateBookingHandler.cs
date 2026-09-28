@@ -8,6 +8,7 @@ using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.Shared.Utils.Exceptions;
+using EndlessParties.Shared.Utils.UserContext.Abstractions;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,11 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     private readonly IDateTimeProvider _dateTimeProvider;
 
     /// <summary>
+    /// Сервис <see cref="IUserContextAccessor"/>
+    /// </summary>
+    private readonly IUserContextAccessor _userContextAccessor;
+
+    /// <summary>
     /// Шина событий <see cref="IEventBus"/>
     /// </summary>
     private readonly IEventBus _eventBus;
@@ -51,12 +57,14 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
         IBookingRepository bookingRepository,
         IEventRepository eventRepository,
         IDateTimeProvider dateTimeProvider,
+        IUserContextAccessor userContextAccessor,
         IEventBus eventBus,
         IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _eventRepository = eventRepository;
         _dateTimeProvider = dateTimeProvider;
+        _userContextAccessor = userContextAccessor;
         _eventBus = eventBus;
         _unitOfWork = unitOfWork;
     }
@@ -65,55 +73,60 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     /// <inheritdoc />
     public async ValueTask<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
-        var strategy = _unitOfWork.CreateExecutionStrategy();
+        BookingResponse bookingResponse;
 
-        return await strategy.ExecuteAsync(Operation, cancellationToken);
-
-        async Task<BookingResponse> Operation(CancellationToken cancellationTokenLocal)
+        try
         {
-            Booking booking;
+            var strategy = _unitOfWork.CreateExecutionStrategy();
 
-            await using var transaction = await _unitOfWork.BeginTransaction(cancellationTokenLocal);
-
-            try
-            {
-                var @event = await _eventRepository.GetByIdWithLock(request.EventId, cancellationTokenLocal);
-
-                if (@event.HasStarted(_dateTimeProvider.UtcNow()))
-                {
-                    throw new LogicException(ApplicationErrors.Bookings.EventAlreadyStarted);
-                }
-
-                if (!@event.TryReserveSeats())
-                {
-                    throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
-                }
-
-                var activeCount = await _bookingRepository.GetActiveCountByUserId(request.UserId, cancellationTokenLocal);
-
-                if (activeCount >= Booking.MaxActiveCount)
-                {
-                    throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
-                }
-
-                booking = new Booking(request.EventId, request.UserId);
-
-                await _bookingRepository.Create(booking, cancellationTokenLocal);
-                await _unitOfWork.SaveChangesAsync(cancellationTokenLocal);
-                await transaction.CommitAsync(cancellationTokenLocal);
-
-                await _eventBus.Publish(new BookingCreatedEvent(booking.Id, request.UserId), cancellationTokenLocal);
-            }
-            catch (Exception ex) when (ex is NotFoundException or ConflictException)
-            {
-                throw;
-            }
-            catch (Exception ex) when (!ex.IsCancelled(cancellationTokenLocal))
-            {
-                throw new LogicException(string.Format(ApplicationErrors.Bookings.Creation, request.EventId, request.EventId), ex);
-            }
-
-            return BookingMapper.Map(booking);
+            bookingResponse = await strategy.ExecuteAsync(ct => CreateBooking(request, ct), cancellationToken);
         }
+        catch (Exception ex) when (ex is NotFoundException or ConflictException)
+        {
+            throw;
+        }
+        catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
+        {
+            throw new LogicException(string.Format(ApplicationErrors.Bookings.Creation, request.EventId), ex);
+        }
+
+        return bookingResponse;
+    }
+
+    /// <summary>
+    /// Создание бронирования
+    /// </summary>
+    private async Task<BookingResponse> CreateBooking(CreateBookingCommand request, CancellationToken cancellationToken)
+    {
+        var user = _userContextAccessor.Current;
+        await using var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
+        var @event = await _eventRepository.GetByIdWithLock(request.EventId, cancellationToken);
+
+        if (@event.HasStarted(_dateTimeProvider.UtcNow()))
+        {
+            throw new LogicException(ApplicationErrors.Bookings.EventAlreadyStarted);
+        }
+
+        if (!@event.TryReserveSeats())
+        {
+            throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
+        }
+
+        var activeCount = await _bookingRepository.GetActiveCountByUserId(user.Id, cancellationToken);
+
+        if (activeCount >= Booking.MaxActiveCount)
+        {
+            throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
+        }
+
+        var booking = new Booking(request.EventId, user.Id);
+
+        await _bookingRepository.Create(booking, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
+        await _eventBus.Publish(new BookingCreatedEvent(booking.Id, user.Id), cancellationToken);
+
+        return BookingMapper.Map(booking);
     }
 }

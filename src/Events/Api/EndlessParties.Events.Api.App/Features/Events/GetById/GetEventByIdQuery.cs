@@ -6,7 +6,7 @@ namespace EndlessParties.Events.Api.App.Features.Events.GetById;
 /// <summary>
 /// Запрос получения мероприятия (события) по идентификатору
 /// </summary>
-public class GetByIdQuery(Guid id) : IRequest<EventResponse>
+public class GetEventByIdQuery(Guid id) : IRequest<EventResponse>
 {
     /// <summary>
     /// Идентификатор

@@ -1,4 +1,7 @@
-﻿namespace EndlessParties.Events.Api.App.UnitTests;
+﻿using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Models;
+
+namespace EndlessParties.Events.Api.App.UnitTests;
 
 /// <summary>
 /// Константы для теста
@@ -24,4 +27,14 @@ internal static class TestConstants
     /// Число активных бронирований пользователя
     /// </summary>
     public const int ActiveCount = 5;
+
+    /// <summary>
+    /// Контекст пользователя с ролью "Admin"
+    /// </summary>
+    public static UserContext AdminUserContext => new()
+    {
+        Id = Guid.Parse("d1fabb5a-2238-4887-b6b7-f9ff61daa487"),
+        Name = "Admin",
+        Role = UserRole.Admin
+    };
 }

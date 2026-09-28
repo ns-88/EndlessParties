@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using EndlessParties.Events.Api.App.Features.Bookings.Create;
+﻿using EndlessParties.Events.Api.App.Features.Bookings.Create;
 using EndlessParties.Events.Api.App.Features.Events.Create;
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
 using EndlessParties.Events.Api.App.Features.Events.GetById;
@@ -57,7 +56,7 @@ public class EventsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<EventResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetByIdQuery(id);
+        var query = new GetEventByIdQuery(id);
         var eventModel = await _mediator.Send(query, cancellationToken);
 
         return Ok(eventModel);
@@ -87,8 +86,7 @@ public class EventsController : ControllerBase
     [HttpPost("{id:guid}/book")]
     public async Task<ActionResult<BookingResponse>> CreateBooking([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
-        var command = new CreateBookingCommand(id, userId);
+        var command = new CreateBookingCommand(id);
         var bookingModel = await _mediator.Send(command, cancellationToken);
         
         return AcceptedAtAction(nameof(BookingsController.GetById), "Bookings", new { id = bookingModel.Id }, bookingModel);

@@ -5,9 +5,9 @@ using Mediator;
 namespace EndlessParties.Events.Api.App.Features.Events.GetById;
 
 /// <summary>
-/// Обработчик <see cref="GetByIdQuery"/>
+/// Обработчик <see cref="GetEventByIdQuery"/>
 /// </summary>
-public class GetByIdHandler : IRequestHandler<GetByIdQuery, EventResponse>
+public class GetEventByIdHandler : IRequestHandler<GetEventByIdQuery, EventResponse>
 {
     /// <summary>
     /// Репозиторий <see cref="IEventRepository"/>
@@ -18,14 +18,14 @@ public class GetByIdHandler : IRequestHandler<GetByIdQuery, EventResponse>
     /// <summary>
     /// Конструктор
     /// </summary>
-    public GetByIdHandler(IEventRepository eventRepository)
+    public GetEventByIdHandler(IEventRepository eventRepository)
     {
         _eventRepository = eventRepository;
     }
 
 
     /// <inheritdoc />
-    public async ValueTask<EventResponse> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<EventResponse> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
     {
         var @event = await _eventRepository.GetById(request.Id, cancellationToken);
 
