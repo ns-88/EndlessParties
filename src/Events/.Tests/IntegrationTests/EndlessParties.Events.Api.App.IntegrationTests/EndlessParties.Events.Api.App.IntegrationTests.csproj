@@ -7,7 +7,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
-		<ProjectReference Include="..\..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Events.Repositories\EndlessParties.Events.Repositories.csproj" />
 		<ProjectReference Include="..\..\..\Api\EndlessParties.Events.Api.App\EndlessParties.Events.Api.App.csproj" />

@@ -2,7 +2,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
-		<ProjectReference Include="..\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,11 +1,11 @@
 ﻿using EndlessParties.Events.Api.App.Features.Bookings.GetById;
+using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Enums;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.UnitTests.Application.Fakes;
-using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

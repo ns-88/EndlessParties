@@ -1,11 +1,11 @@
 ﻿using AutoFixture;
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
 using EndlessParties.Events.Api.App.Features.Events.Shared;
+using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Events.Repositories.Abstractions.Models;
 using EndlessParties.Shared.Contracts.Models;
-using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

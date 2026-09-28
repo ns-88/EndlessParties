@@ -56,7 +56,7 @@ public class LoginUserHandler : IRequestHandler<LoginUserQuery, LoginUserRespons
 
             if (!isValid)
             {
-                throw new LogicException(string.Format(ApplicationErrors.UserPasswordErrors.IncorrectCredentials, user.Name));
+                throw new LogicException(ApplicationErrors.UserPasswordErrors.IncorrectCredentials);
             }
 
             var jwtToken = _jwtTokenGenerator.Generate(user);
