@@ -107,16 +107,16 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
             throw new LogicException(ApplicationErrors.Bookings.EventAlreadyStarted);
         }
 
-        if (!@event.TryReserveSeats())
-        {
-            throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
-        }
-
         var activeCount = await _bookingRepository.GetActiveCountByUserId(user.Id, cancellationToken);
 
         if (activeCount >= Booking.MaxActiveCount)
         {
             throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
+        }
+
+        if (!@event.TryReserveSeats())
+        {
+            throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
         }
 
         var booking = new Booking(request.EventId, user.Id);

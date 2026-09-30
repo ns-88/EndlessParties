@@ -19,7 +19,7 @@ using static TestConstants;
 /// Тесты для обработчика <see cref="GetBookingByIdHandler"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class GetByIdHandlerTests : BaseIntegrationTest<EventsDbContext, EventFixture<GetBookingByIdHandler>>
+public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, EventFixture<GetBookingByIdHandler>>
 {
     /// <summary>
     /// Сервис создания тестовых данных <see cref="Fixture"/>

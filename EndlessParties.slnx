@@ -17,10 +17,10 @@
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions/EndlessParties.Shared.Exceptions.csproj" Id="52d2faef-d251-42be-bf25-da16acc9da40" />
   </Folder>
   <Folder Name="/..Shared/Utils/">
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.DateTime/EndlessParties.Shared.Utils.DateTime.csproj" Id="64618b86-3f99-4412-b39c-2d57c8426589" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.IntegrationTests/EndlessParties.Shared.Utils.IntegrationTests.csproj" Id="4486edcb-72b4-4ef9-896c-4fef937a913e" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Logger/EndlessParties.Shared.Utils.Logger.csproj" Id="12b6f82d-cb11-428d-b65e-e7c228b29786" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils/EndlessParties.Shared.Utils.Exceptions.csproj" />
-    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.DateTime/EndlessParties.Shared.Utils.DateTime.csproj" Id="64618b86-3f99-4412-b39c-2d57c8426589" />
   </Folder>
   <Folder Name="/..Shared/Utils/Database/">
     <Project Path="src/..Shared/Utils/Database/EndlessParties.Shared.Utils.Database.Migrations/EndlessParties.Shared.Utils.Database.Migrations.csproj" />

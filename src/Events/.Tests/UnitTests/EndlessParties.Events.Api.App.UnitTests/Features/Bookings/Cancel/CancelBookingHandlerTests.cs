@@ -118,7 +118,7 @@ public class CancelBookingHandlerTests
         /// Отмена бронирования созданного другим пользователем для пользователя с ролью "User"
         /// </summary>
         [Fact]
-        public async Task Cancel_WhenCancelBookingFromAnotherUser_ThrowForbiddenException()
+        public async Task Cancel_WhenCreateBookingFromAnotherUser_ThrowForbiddenException()
         {
             // #### Arrange ####
             var handler = _autoMocker.CreateInstance<CancelBookingHandler>();

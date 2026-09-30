@@ -20,9 +20,5 @@ internal class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequ
         RuleFor(x => x.Password)
             .NotEmpty()
             .MaximumLength(UserPassword.MaxLength);
-
-        RuleFor(x => x.Role)
-            .NotEmpty()
-            .IsInEnum();
     }
 }

@@ -58,6 +58,11 @@ public static partial class ApplicationErrors
         public const string ReceivingActiveBookingsCount = "Ошибка получения числа активных бронирований пользователя. Id пользователя: \"{0}\"";
 
         /// <summary>
+        /// Получение бронирования невозможно, т.к. оно принадлежит другому пользователю
+        /// </summary>
+        public const string NotPossibleReceivingBookingFromAnotherUser = "Получение бронирования невозможно, т.к. оно принадлежит другому пользователю";
+
+        /// <summary>
         /// Отмена бронирования невозможна, т.к. оно принадлежит другому пользователю
         /// </summary>
         public const string NotPossibleCancelBookingFromAnotherUser = "Отмена бронирования невозможна, т.к. оно принадлежит другому пользователю";

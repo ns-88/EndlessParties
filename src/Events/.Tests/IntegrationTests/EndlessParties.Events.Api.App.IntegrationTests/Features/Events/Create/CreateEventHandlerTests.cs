@@ -17,7 +17,7 @@ using static TestConstants;
 /// Тесты для обработчика <see cref="CreateEventHandler"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class CreateEventHandlerTests : BaseIntegrationTest<EventsDbContext, EventFixture<CreateEventHandler>>
+public class CreateEventHandlerTests : DatabaseIntegrationTest<EventsDbContext, EventFixture<CreateEventHandler>>
 {
     /// <summary>
     /// Сервис создания тестовых данных <see cref="Fixture"/>

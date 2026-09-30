@@ -12,6 +12,8 @@ using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.Shared.Utils.UserContext.Abstractions;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Models;
 using EndlessParties.UnitTests.Application.Fakes;
 using FluentAssertions;
 using Moq;
@@ -83,7 +85,7 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(ActiveCount);
+                .ReturnsAsync(BookingsActiveCount);
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()
@@ -164,7 +166,7 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(ActiveCount);
+                .ReturnsAsync(BookingsActiveCount);
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()
@@ -252,7 +254,7 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(ActiveCount);
+                .ReturnsAsync(BookingsActiveCount);
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()
@@ -304,7 +306,7 @@ public class CreateBookingHandlerTests
 
             _autoMocker
                 .GetMock<IBookingRepository>()
-                .Verify(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None), Times.Exactly(totalSeats));
+                .Verify(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None), Times.Exactly(requestCount));
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()
@@ -317,6 +319,115 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IEventBus>()
                 .Verify(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None), Times.Exactly(totalSeats));
+
+            _autoMocker.VerifyNoOtherCalls();
+        }
+
+        /// <summary>
+        /// При создании бронирований, ограничения одного пользователя не влияют на ограничения другого
+        /// </summary>
+        [Fact]
+        public async Task Create_ShouldIsolateLimits_AllowingNewBookingEvenIfAnotherUserIsBlocked()
+        {
+            // #### Arrange ####
+            var eventId = Guid.NewGuid();
+            var handler = _autoMocker.CreateInstance<CreateBookingHandler>();
+
+            var @event = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
+                .Create();
+
+            var command = new CreateBookingCommand(eventId);
+            var currentUserContextIdx = 0;
+            var blockedUserContext = new UserContext
+            {
+                Id = Guid.NewGuid(),
+                Name = "BlockedUser",
+                Role = UserRole.User
+            };
+            var activeUserContext = new UserContext
+            {
+                Id = Guid.NewGuid(),
+                Name = "ActiveUser",
+                Role = UserRole.User
+            };
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.GetByIdWithLock(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(@event);
+
+            _autoMocker
+                .GetMock<IUserContextAccessor>()
+                .SetupGet(x => x.Current)
+                .Returns(() => currentUserContextIdx++ == 0 ? blockedUserContext : activeUserContext);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Setup(x => x.UtcNow())
+                .Returns(StartAt.AddDays(-1));
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(blockedUserContext.Id, CancellationToken.None))
+                .ReturnsAsync(Booking.MaxActiveCount + 1);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.Create(It.IsAny<Booking>(), CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Setup(x => x.GetActiveCountByUserId(activeUserContext.Id, CancellationToken.None))
+                .ReturnsAsync(BookingsActiveCount);
+
+            _autoMocker
+                .GetMock<IEventBus>()
+                .Setup(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            // #### Act/Assert ####
+            var action = async () => await handler.Handle(command, CancellationToken.None);
+            await action.Should().ThrowAsync<ConflictException>();
+
+            var actualResult = await handler.Handle(command, CancellationToken.None);
+            actualResult.Should().NotBeNull();
+            actualResult.Status.Should().Be(BookingStatus.Pending);
+            @event.AvailableSeats.Should().Be(TotalSeats - 1);
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.GetByIdWithLock(eventId, CancellationToken.None), Times.Exactly(2));
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(blockedUserContext.Id, CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.GetActiveCountByUserId(activeUserContext.Id, CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IBookingRepository>()
+                .Verify(x => x.Create(It.IsAny<Booking>(), CancellationToken.None), Times.Once);
+
+            _autoMocker
+                .GetMock<IDateTimeProvider>()
+                .Verify(x => x.UtcNow(), Times.Exactly(2));
+
+            _autoMocker
+                .GetMock<IUserContextAccessor>()
+                .VerifyGet(x => x.Current, Times.Exactly(2));
+
+            _autoMocker
+                .GetMock<IEventBus>()
+                .Verify(x => x.Publish(It.IsAny<BookingCreatedEvent>(), CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
         }
@@ -395,7 +506,7 @@ public class CreateBookingHandlerTests
             _autoMocker
                 .GetMock<IBookingRepository>()
                 .Setup(x => x.GetActiveCountByUserId(It.IsAny<Guid>(), CancellationToken.None))
-                .ReturnsAsync(ActiveCount);
+                .ReturnsAsync(BookingsActiveCount);
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()
@@ -433,7 +544,7 @@ public class CreateBookingHandlerTests
 
             _autoMocker
                 .GetMock<IBookingRepository>()
-                .Verify(x => x.GetActiveCountByUserId(userContext.Id, CancellationToken.None), Times.Exactly(TotalSeats));
+                .Verify(x => x.GetActiveCountByUserId(userContext.Id, CancellationToken.None), Times.Exactly(TotalSeats + 1));
 
             _autoMocker
                 .GetMock<IDateTimeProvider>()

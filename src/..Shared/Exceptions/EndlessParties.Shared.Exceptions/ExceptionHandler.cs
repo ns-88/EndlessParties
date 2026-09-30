@@ -140,7 +140,7 @@ internal class ExceptionHandler : IExceptionHandler
     {
         return _factory.CreateProblemDetails(
             httpContext,
-            StatusCodes.Status409Conflict,
+            StatusCodes.Status403Forbidden,
             ForbiddenErrorTitle,
             detail: exception.Message,
             instance: httpContext.Request.Path);

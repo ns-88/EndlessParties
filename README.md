@@ -42,7 +42,6 @@ EndlessParties - простой сервис для организации ме�
   *Параметры метода (Body):*
    - `Name` - имя (логин)
    - `Password` - пароль
-   - `Роль` - Admin - 1, User - 2
 
 - **POST /auth/login**: aутентификация пользователя и выдача JWT-токена
  
@@ -244,9 +243,41 @@ Use Cases находятся в реализации команд и запро�
    ```bash
    dotnet build
    ```
-4. Откройте файл appsettings.json и укажите адрес хоста для подключения к БД Events приложения.
+4. Создайте пользователя с правами администратора:
+  ```bash
+   INSERT INTO "users" ("id", "name", "role", "password_salt", "password_hash")
+   VALUES ('ede8a835-bd95-445e-98a9-5542fdba5104', 'Admin', 1, 'P4tE8EVQ2zt3jgqM1GDbUw==', '3O5dl/deUHoIpsprPBQBuyISkJBtSZ8gzyyDSTFmhZk=');
+   ```
+   Пароль: test
 
-5. Запустите приложение:
+5. Произведите настроки сервисов, указывая значения в файла конфигурации appsettings.json каждого.
+
+   **EndlessParties.Identity.Api**
+   ```bash
+   ConnectionStrings:Postgres:Identity - укажите адрес хоста для подключения к БД;
+   JwtToken:SecretKey - секретный ключ для шифрования JWT-токена, должен быть одинаковый для всех сервисов;
+   JwtToken:Issuer - наименование издателя;
+   JwtToken:Audiences - массив потребителей;
+   JwtToken:Expires - время жизни в минутах
+   ```
+
+   **EndlessParties.Events.Api**
+   ```bash
+   ConnectionStrings:Postgres:Events - укажите адрес хоста для подключения к БД;
+   Kafka:Environment - нанименование окружения;
+   Kafka:BrokerAddress - адрес брокера;
+   Identity:JwtToken:SecretKey - секретный ключ для шифрования JWT-токена;
+   Identity:JwtToken:Issuer - наименование издателя;
+   Identity:JwtToken:Audience - наименование потребителя
+   ```
+
+   **EndlessParties.Events.Worker**
+   ```bash
+   ConnectionStrings:Postgres:Events - укажите адрес хоста для подключения к БД;
+   Kafka:Environment - наименование окружения;
+   Kafka:BrokerAddress - адрес брокера
+   ```
+6. Запустите приложение:
    ```bash
    dotnet run --project src\Presentation\EndlessParties.Presentation
    ```

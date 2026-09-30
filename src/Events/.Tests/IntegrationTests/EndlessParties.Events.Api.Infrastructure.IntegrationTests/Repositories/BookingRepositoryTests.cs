@@ -18,7 +18,7 @@ using static TestConstants;
 /// Тесты для репозитория <see cref="BookingRepository"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class BookingRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFixture>
+public class BookingRepositoryTests : DatabaseIntegrationTest<EventsDbContext, EventFixture>
 {
     /// <summary>
     /// Сервис создания тестовых данных

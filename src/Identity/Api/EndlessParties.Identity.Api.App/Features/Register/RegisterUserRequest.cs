@@ -1,6 +1,4 @@
-﻿using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
-
-namespace EndlessParties.Identity.Api.App.Features.Register;
+﻿namespace EndlessParties.Identity.Api.App.Features.Register;
 
 /// <summary>
 /// Данные запроса регистрации пользователя
@@ -16,9 +14,4 @@ public class RegisterUserRequest
     /// Пароль
     /// </summary>
     public required string Password { get; init; }
-
-    /// <summary>
-    /// Роль
-    /// </summary>
-    public required UserRole Role { get; init; }
 }

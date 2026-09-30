@@ -4,9 +4,9 @@ using Xunit;
 namespace EndlessParties.Shared.Utils.IntegrationTests;
 
 /// <summary>
-/// Базовый класс интеграционных тестов
+/// Базовый класс интеграционных тестов с поддержкой подключения к СУБД PostgreSQL
 /// </summary>
-public class BaseIntegrationTest<TContext, TFixture> : IClassFixture<TFixture>, IAsyncLifetime
+public class DatabaseIntegrationTest<TContext, TFixture> : IClassFixture<TFixture>, IAsyncLifetime
     where TContext : DbContext
     where TFixture : PostgreSqlContainerFixture<TContext>
 {
@@ -29,7 +29,7 @@ public class BaseIntegrationTest<TContext, TFixture> : IClassFixture<TFixture>, 
     /// <summary>
     /// Конструктор
     /// </summary>
-    protected BaseIntegrationTest(TFixture fixture)
+    protected DatabaseIntegrationTest(TFixture fixture)
     {
         Fixture = fixture;
         ServiceProvider = fixture.ServiceProvider;

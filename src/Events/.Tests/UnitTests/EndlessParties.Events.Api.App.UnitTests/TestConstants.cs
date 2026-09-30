@@ -36,7 +36,7 @@ internal static class TestConstants
     /// <summary>
     /// Число активных бронирований пользователя
     /// </summary>
-    public const int ActiveCount = 5;
+    public const int BookingsActiveCount = 5;
 
     /// <summary>
     /// Контекст пользователя с ролью "Admin"

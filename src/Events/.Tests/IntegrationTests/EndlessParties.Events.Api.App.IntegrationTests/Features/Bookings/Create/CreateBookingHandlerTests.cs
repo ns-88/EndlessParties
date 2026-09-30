@@ -20,7 +20,7 @@ using static TestConstants;
 /// Тесты для обработчика <see cref="CreateBookingHandler"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, EventFixture<CreateBookingHandler>>
+public class CreateBookingHandlerTests : DatabaseIntegrationTest<EventsDbContext, EventFixture<CreateBookingHandler>>
 {
     /// <summary>
     /// Сервис создания тестовых данных <see cref="Fixture"/>

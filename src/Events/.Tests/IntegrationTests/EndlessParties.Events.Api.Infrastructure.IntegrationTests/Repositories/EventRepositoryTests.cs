@@ -19,7 +19,7 @@ using static TestConstants;
 /// Тесты для репозитория <see cref="EventRepository"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class EventRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFixture>
+public class EventRepositoryTests : DatabaseIntegrationTest<EventsDbContext, EventFixture>
 {
     /// <summary>
     /// Сервис создания тестовых данных

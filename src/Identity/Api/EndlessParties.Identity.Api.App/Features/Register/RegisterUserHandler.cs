@@ -5,6 +5,7 @@ using EndlessParties.Identity.Repositories.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.Exceptions;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 using Mediator;
 
 namespace EndlessParties.Identity.Api.App.Features.Register;
@@ -58,7 +59,7 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
 
             var passwordData = _passwordManager.CreatePassword(registerRequest.Password);
             var userPassword = new UserPassword(passwordData.Hash, passwordData.Salt);
-            var user = new User(registerRequest.Name, registerRequest.Role, userPassword);
+            var user = new User(registerRequest.Name, UserRole.User, userPassword);
 
             await _userRepository.Create(user, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
