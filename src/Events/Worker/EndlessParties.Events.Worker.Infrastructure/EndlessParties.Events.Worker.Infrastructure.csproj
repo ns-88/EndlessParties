@@ -2,7 +2,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Kafka\EndlessParties.Shared.EventBus.Kafka.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories\EndlessParties.Events.Repositories.csproj" />
 	</ItemGroup>
 

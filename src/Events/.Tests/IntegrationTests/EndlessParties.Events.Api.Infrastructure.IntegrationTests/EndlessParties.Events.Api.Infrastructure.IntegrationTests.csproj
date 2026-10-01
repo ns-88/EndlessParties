@@ -2,12 +2,13 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
+		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 		<NoWarn>1701;1702;NU1608</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
-		<ProjectReference Include="..\..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Events.Repositories\EndlessParties.Events.Repositories.csproj" />
 	</ItemGroup>

@@ -1,6 +1,8 @@
-﻿using EndlessParties.Events.Api.App.Features.Bookings.Create;
+﻿using EndlessParties.Events.Api.App.Features.Bookings.Cancel;
+using EndlessParties.Events.Api.App.Features.Bookings.Create;
 using EndlessParties.Events.Api.App.Features.Bookings.GetById;
 using Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EndlessParties.Events.Api.Controllers;
@@ -11,6 +13,7 @@ namespace EndlessParties.Events.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class BookingsController : ControllerBase
 {
     /// <summary>
@@ -36,9 +39,24 @@ public class BookingsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BookingResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetByIdQuery(id);
+        var query = new GetBookingByIdQuery(id);
         var bookingModel = await _mediator.Send(query, cancellationToken);
 
         return Ok(bookingModel);
+    }
+
+    /// <summary>
+    /// Отмена бронирования по идентификатору
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> Cancel([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var command = new CancelBookingCommand(id);
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }

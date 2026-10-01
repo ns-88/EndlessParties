@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database.Migrations\EndlessParties.Shared.Utils.Database.Migrations.csproj" />
+	  <ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+	  <ProjectReference Include="..\..\Domain\EndlessParties.Identity.Domain\EndlessParties.Identity.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
+</Project>

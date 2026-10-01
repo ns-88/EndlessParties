@@ -29,6 +29,12 @@ internal class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .IsRequired();
 
         builder
+            .HasIndex(x => x.UserId);
+        builder
+            .Property(x => x.UserId)
+            .IsRequired();
+
+        builder
             .Property(x => x.Status)
             .HasConversion(
                 toDb => (int)toDb,

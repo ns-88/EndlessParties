@@ -27,6 +27,10 @@ public static class WebApplicationExtensions
             .ExcludeFromDescription();
 
         application
+            .UseAuthentication()
+            .UseAuthorization();
+
+        application
             .MapControllers();
         application
             .ApplyMigrations();
@@ -39,16 +43,19 @@ public static class WebApplicationExtensions
     /// </summary>
     private static WebApplication AddSwagger(this WebApplication application)
     {
-        if (application.Environment.IsEnvironment("local"))
+        if (!application.Environment.IsEnvironment("local"))
         {
-            application
-                .UseSwagger()
-                .UseSwaggerUI(x =>
-                {
-                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "EndlessParties API V1");
-                    x.RoutePrefix = string.Empty;
-                });
+            return application;
         }
+
+        application
+            .UseSwagger()
+            .UseSwaggerUI(setup =>
+            {
+                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API V1");
+                setup.EnablePersistAuthorization();
+                setup.RoutePrefix = string.Empty;
+            });
 
         return application;
     }

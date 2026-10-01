@@ -9,7 +9,7 @@ namespace EndlessParties.Events.Api.Infrastructure.IntegrationTests.Migrations;
 /// <summary>
 /// Тесты схемы базы данных
 /// </summary>
-public class DatabaseSchemaTests : BaseIntegrationTest<EventsDbContext, DatabaseSchemaFixture>
+public class DatabaseSchemaTests : DatabaseIntegrationTest<EventsDbContext, DatabaseSchemaFixture>
 {
     /// <inheritdoc />
     public DatabaseSchemaTests(DatabaseSchemaFixture fixture) : base(fixture)

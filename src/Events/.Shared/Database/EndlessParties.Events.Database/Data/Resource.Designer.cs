@@ -63,8 +63,8 @@ namespace EndlessParties.Events.Database.Data {
         /// <summary>
         ///   Ищет локализованную строку, похожую на INSERT INTO &quot;events&quot; (&quot;id&quot;, &quot;title&quot;, &quot;total_seats&quot;, &quot;available_seats&quot;, &quot;description&quot;, &quot;start_at&quot;, &quot;end_at&quot;)
         ///VALUES
-        ///  (&apos;f29e4be5-074f-4260-8627-17e2a52e7b34&apos;, &apos;Рок-концерт &apos;&apos;Огни города&apos;&apos;&apos;, 10, 10, &apos;Выступление местных рок-групп на открытой площадке парка.&apos;, &apos;2024-06-15T18:00:00Z&apos;, &apos;2024-06-15T22:30:00Z&apos;),
-        ///  (&apos;73c89c6c-4001-49b7-a3c6-2e759388a67d&apos;, &apos;Встреча с Виктором Пелевиным&apos;, 10, 10, &apos;Презентация новой книги и автограф-сессия в центральном книжном магазине.&apos;, &apos;2024-06-16T15:00:00Z&apos;, &apos;2024-06-16T17:00: [остаток строки не уместился]&quot;;.
+        ///  (&apos;f29e4be5-074f-4260-8627-17e2a52e7b34&apos;, &apos;Рок-концерт &apos;&apos;Огни города&apos;&apos;&apos;, 10, 10, &apos;Выступление местных рок-групп на открытой площадке парка.&apos;, &apos;2027-06-15T18:00:00Z&apos;, &apos;2027-06-15T22:30:00Z&apos;),
+        ///  (&apos;73c89c6c-4001-49b7-a3c6-2e759388a67d&apos;, &apos;Встреча с Виктором Пелевиным&apos;, 10, 10, &apos;Презентация новой книги и автограф-сессия в центральном книжном магазине.&apos;, &apos;2027-06-16T15:00:00Z&apos;, &apos;2027-06-16T17:00: [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string Events {
             get {

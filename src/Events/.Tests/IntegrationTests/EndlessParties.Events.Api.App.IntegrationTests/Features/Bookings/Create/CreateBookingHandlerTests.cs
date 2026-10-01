@@ -20,7 +20,7 @@ using static TestConstants;
 /// Тесты для обработчика <see cref="CreateBookingHandler"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, EventFixture<CreateBookingHandler>>
+public class CreateBookingHandlerTests : DatabaseIntegrationTest<EventsDbContext, EventFixture<CreateBookingHandler>>
 {
     /// <summary>
     /// Сервис создания тестовых данных <see cref="Fixture"/>
@@ -61,7 +61,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 EventId = @event.Id,
                 Status = BookingStatus.Pending
             };
-            var expectedbooking = new Booking(@event.Id);
+            var expectedbooking = new Booking(@event.Id, AdminUserId);
             var command = new CreateBookingCommand(@event.Id);
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
@@ -89,10 +89,11 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
                 var actualEvent = await context.Events.FindAsync([@event.Id], TestCancellationToken);
                 var actualBooking = await context.Bookings.FindAsync([actualResponse.Id], TestCancellationToken);
 
-                actualBooking.Should().BeEquivalentTo(expectedbooking, x => x
-                    .Excluding(e => e.Id)
-                    .Excluding(e => e.Event)
-                    .Excluding(e => e.CreatedAt));
+                actualBooking.Should()
+                    .BeEquivalentTo(expectedbooking, setup => setup
+                        .Excluding(e => e.Id)
+                        .Excluding(e => e.Event)
+                        .Excluding(e => e.CreatedAt));
 
                 actualEvent.Should().NotBeNull();
                 actualEvent.AvailableSeats.Should().Be(TotalSeats - 1);
@@ -218,8 +219,7 @@ public class CreateBookingHandlerTests : BaseIntegrationTest<EventsDbContext, Ev
         public async Task Create_NonExistingEvent_ThrowNotFoundException()
         {
             // #### Arrange ####
-            var eventId = Guid.NewGuid();
-            var command = new CreateBookingCommand(eventId);
+            var command = new CreateBookingCommand(Guid.NewGuid());
 
             // #### Act ####
             var action = async () =>

@@ -2,10 +2,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Events\EndlessParties.Shared.Contracts.Events.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts\EndlessParties.Shared.Contracts.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.DateTime\EndlessParties.Shared.Utils.DateTime.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.UserContext.Abstractions\EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 	</ItemGroup>
 
@@ -35,8 +36,8 @@
 		<Compile Update="Features\Events\Create\CreateEventRequestValidator.cs">
 			<DependentUpon>CreateEventRequest.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Events\GetById\GetByIdQuery.cs">
-			<DependentUpon>GetByIdHandler.cs</DependentUpon>
+		<Compile Update="Features\Events\GetById\GetEventByIdQuery.cs">
+			<DependentUpon>GetEventByIdHandler.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Features\Events\Update\UpdateEventCommand.cs">
 			<DependentUpon>UpdateEventHandler.cs</DependentUpon>
@@ -51,8 +52,11 @@
 		<Compile Update="Features\Bookings\Create\CreateBookingCommand.cs">
 			<DependentUpon>CreateBookingHandler.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Bookings\GetById\GetByIdQuery.cs">
-			<DependentUpon>GetByIdHandler.cs</DependentUpon>
+		<Compile Update="Features\Bookings\GetById\GetBookingByIdQuery.cs">
+			<DependentUpon>GetBookingByIdHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Bookings\Cancel\CancelBookingCommand.cs">
+			<DependentUpon>CancelBookingHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

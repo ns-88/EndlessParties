@@ -4,8 +4,8 @@ using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
+using EndlessParties.Shared.Utils.Logger;
 using EndlessParties.Shared.Validations;
-using Serilog;
 
 namespace EndlessParties.Events.Api;
 
@@ -25,10 +25,11 @@ public static class WebApplicationBuilderExtensions
             .AddApplicationValidations()
             .AddDependencyValidation();
 
+        var presentationSettings = GetPresentationSettings(builder.Configuration);
         var infrastructureSettings = GetInfrastructureSettings(builder.Configuration);
 
         builder.Services
-            .AddPresentation()
+            .AddPresentation(presentationSettings)
             .AddApplication()
             .AddInfrastructure(infrastructureSettings);
 
@@ -53,18 +54,18 @@ public static class WebApplicationBuilderExtensions
     }
 
     /// <summary>
-    /// Добавление логгера Serilog
+    /// Получение настроек <see cref="PresentationSettings"/>
     /// </summary>
-    private static WebApplicationBuilder AddSerilog(this WebApplicationBuilder builder)
+    private static PresentationSettings GetPresentationSettings(IConfiguration config)
     {
-        builder.Services.AddSerilog((services, loggerConfiguration) =>
-        {
-            loggerConfiguration
-                .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services);
-        });
+        var identitySettings = config
+            .GetRequiredSection("Identity:JwtToken")
+            .Get<IdentitySettings>()!;
 
-        return builder;
+        return new PresentationSettings
+        {
+            Identity = identitySettings
+        };
     }
 
     /// <summary>

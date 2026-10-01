@@ -12,6 +12,7 @@ public class ValidationException : Exception
     /// </summary>
     public ModelStateDictionary Errors { get; }
 
+
     /// <inheritdoc />
     public ValidationException(ModelStateDictionary errors) : base("Ошибка валидации модели")
     {

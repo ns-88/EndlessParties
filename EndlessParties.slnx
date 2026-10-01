@@ -6,7 +6,7 @@
   </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
-    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" Id="19509c7d-b55d-415d-b009-21e2616179a5" />
+    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" />
   </Folder>
   <Folder Name="/..Shared/EventBus/">
     <Project Path="src/..Shared/EventBus/EndlessParties.Shared.EventBus.Abstractions/EndlessParties.Shared.EventBus.Abstractions.csproj" Id="06850000-c1ba-4b51-adfd-ed50090d0b64" />
@@ -17,9 +17,18 @@
     <Project Path="src/..Shared/Exceptions/EndlessParties.Shared.Exceptions/EndlessParties.Shared.Exceptions.csproj" Id="52d2faef-d251-42be-bf25-da16acc9da40" />
   </Folder>
   <Folder Name="/..Shared/Utils/">
-    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" Id="fc0813a9-609d-4787-9123-7a44abee73b6" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.DateTime/EndlessParties.Shared.Utils.DateTime.csproj" Id="64618b86-3f99-4412-b39c-2d57c8426589" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.IntegrationTests/EndlessParties.Shared.Utils.IntegrationTests.csproj" Id="4486edcb-72b4-4ef9-896c-4fef937a913e" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Logger/EndlessParties.Shared.Utils.Logger.csproj" Id="12b6f82d-cb11-428d-b65e-e7c228b29786" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils/EndlessParties.Shared.Utils.Exceptions.csproj" />
+  </Folder>
+  <Folder Name="/..Shared/Utils/Database/">
+    <Project Path="src/..Shared/Utils/Database/EndlessParties.Shared.Utils.Database.Migrations/EndlessParties.Shared.Utils.Database.Migrations.csproj" />
+    <Project Path="src/..Shared/Utils/Database/EndlessParties.Shared.Utils.Database/EndlessParties.Shared.Utils.Database.csproj" />
+  </Folder>
+  <Folder Name="/..Shared/Utils/UserContext/">
+    <Project Path="src/..Shared/Utils/UserContext/EndlessParties.Shared.Utils.HttpUserContext/EndlessParties.Shared.Utils.HttpUserContext.csproj" />
+    <Project Path="src/..Shared/Utils/UserContext/EndlessParties.Shared.Utils.UserContext.Abstractions/EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
   </Folder>
   <Folder Name="/..Shared/Validations/">
     <Project Path="src/..Shared/Validations/EndlessParties.Shared.Validations/EndlessParties.Shared.Validations.csproj" Id="266d0242-016f-4fc4-9441-c1441e856dea" />
@@ -53,5 +62,27 @@
     <Project Path="src/Events/Worker/EndlessParties.Events.Worker.App/EndlessParties.Events.Worker.App.csproj" Id="ec44a8ef-4eba-4c86-a209-0f5b01083cfa" />
     <Project Path="src/Events/Worker/EndlessParties.Events.Worker.Infrastructure/EndlessParties.Events.Worker.Infrastructure.csproj" Id="d6b72f86-e745-4ff8-9ff5-678d2546edcc" />
     <Project Path="src/Events/Worker/EndlessParties.Events.Worker/EndlessParties.Events.Worker.csproj" Id="c6b90907-fb01-40ba-bf56-ac172e4fbf7f" />
+  </Folder>
+  <Folder Name="/Identity/" />
+  <Folder Name="/Identity/.Shared/" />
+  <Folder Name="/Identity/.Shared/Database/">
+    <Project Path="src/Identity/.Shared/Database/EndlessParties.Identity.Database/EndlessParties.Identity.Database.csproj" />
+  </Folder>
+  <Folder Name="/Identity/.Shared/Domain/">
+    <Project Path="src/Identity/.Shared/Domain/EndlessParties.Identity.Domain/EndlessParties.Identity.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Identity/.Shared/Repositories/">
+    <Project Path="src/Identity/.Shared/Repositories/EndlessParties.Identity.Repositories.Abstractions/EndlessParties.Identity.Repositories.Abstractions.csproj" />
+    <Project Path="src/Identity/.Shared/Repositories/EndlessParties.Identity.Repositories/EndlessParties.Identity.Repositories.csproj" />
+  </Folder>
+  <Folder Name="/Identity/.Shared/Services/" />
+  <Folder Name="/Identity/.Shared/Services/Cryptography/">
+    <Project Path="src/Identity/.Shared/Services/Cryptography/EndlessParties.Identity.Cryptography.Abstractions/EndlessParties.Identity.Cryptography.Abstractions.csproj" />
+    <Project Path="src/Identity/.Shared/Services/Cryptography/EndlessParties.Identity.Cryptography/EndlessParties.Identity.Cryptography.csproj" />
+  </Folder>
+  <Folder Name="/Identity/Api/">
+    <Project Path="src/Identity/Api/EndlessParties.Identity.Api.App/EndlessParties.Identity.Api.App.csproj" Id="4cd2fa11-9e43-43fe-9125-7e33dead94d1" />
+    <Project Path="src/Identity/Api/EndlessParties.Identity.Api.Infrastructure/EndlessParties.Identity.Api.Infrastructure.csproj" Id="65b01be7-fb25-4d23-9111-31357cb0b8a1" />
+    <Project Path="src/Identity/Api/EndlessParties.Identity.Api/EndlessParties.Identity.Api.csproj" Id="9df6c156-a39e-4677-aa7e-a11608258e65" />
   </Folder>
 </Solution>

@@ -37,6 +37,11 @@ internal class ExceptionHandler : IExceptionHandler
     /// </summary>
     private const string ConflictErrorTitle = "Конфликт состояния данных";
 
+    /// <summary>
+    /// Действие запрещено
+    /// </summary>
+    private const string ForbiddenErrorTitle = "Действие запрещено";
+
 
     /// <summary>
     /// Фабрика <see cref="ProblemDetailsFactory"/>
@@ -68,6 +73,7 @@ internal class ExceptionHandler : IExceptionHandler
             ValidationException validationException => HandleValidationException(validationException, httpContext),
             NotFoundException notFoundException => HandleNotFoundException(notFoundException, httpContext),
             ConflictException conflictException => HandleConflictException(conflictException, httpContext),
+            ForbiddenException forbiddenException => HandleForbiddenException(forbiddenException, httpContext),
             _ => HandleUnknownException(exception, httpContext)
         };
 
@@ -123,6 +129,19 @@ internal class ExceptionHandler : IExceptionHandler
             httpContext,
             StatusCodes.Status409Conflict,
             ConflictErrorTitle,
+            detail: exception.Message,
+            instance: httpContext.Request.Path);
+    }
+
+    /// <summary>
+    /// Обработка исключения с типом <see cref="ForbiddenException"/>
+    /// </summary>
+    private ProblemDetails HandleForbiddenException(ForbiddenException exception, HttpContext httpContext)
+    {
+        return _factory.CreateProblemDetails(
+            httpContext,
+            StatusCodes.Status403Forbidden,
+            ForbiddenErrorTitle,
             detail: exception.Message,
             instance: httpContext.Request.Path);
     }

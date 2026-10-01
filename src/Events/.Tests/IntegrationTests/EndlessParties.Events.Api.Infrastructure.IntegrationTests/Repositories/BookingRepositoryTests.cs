@@ -18,7 +18,7 @@ using static TestConstants;
 /// Тесты для репозитория <see cref="BookingRepository"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class BookingRepositoryTests : BaseIntegrationTest<EventsDbContext, EventFixture>
+public class BookingRepositoryTests : DatabaseIntegrationTest<EventsDbContext, EventFixture>
 {
     /// <summary>
     /// Сервис создания тестовых данных
@@ -55,8 +55,7 @@ public class BookingRepositoryTests : BaseIntegrationTest<EventsDbContext, Event
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-
-            var booking = new Booking(@event.Id);
+            var booking = new Booking(@event.Id, Guid.NewGuid());
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
@@ -99,8 +98,7 @@ public class BookingRepositoryTests : BaseIntegrationTest<EventsDbContext, Event
                 .Build<Event>()
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
-
-            var booking = new Booking(@event.Id);
+            var booking = new Booking(@event.Id, Guid.NewGuid());
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {

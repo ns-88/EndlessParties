@@ -1,6 +1,6 @@
 ﻿using EndlessParties.Events.Api.App.Features.Events.Remove;
+using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Repositories.Abstractions;
-using EndlessParties.UnitTests.Application.Infrastructure;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

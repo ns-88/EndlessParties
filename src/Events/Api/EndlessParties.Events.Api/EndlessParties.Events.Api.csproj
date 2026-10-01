@@ -2,6 +2,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions\EndlessParties.Shared.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Logger\EndlessParties.Shared.Utils.Logger.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.HttpUserContext\EndlessParties.Shared.Utils.HttpUserContext.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Validations\EndlessParties.Shared.Validations\EndlessParties.Shared.Validations.csproj" />
 		<ProjectReference Include="..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\EndlessParties.Events.Api.App\EndlessParties.Events.Api.App.csproj" />
@@ -10,22 +12,28 @@
 
 	<ItemGroup>
 		<PackageReference Include="Mediator.Abstractions" />
-		<PackageReference Include="Serilog" />
-		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="Serilog.Extensions.Hosting" />
-		<PackageReference Include="Serilog.Settings.Configuration" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="LogExtensions.cs">
-			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
-		</Compile>
 		<Compile Update="WebApplicationBuilderExtensions.cs">
 			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
 		</Compile>
 		<Compile Update="WebApplicationExtensions.cs">
 			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="PresentationSettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="PresentationSettingsValidator.cs">
+			<DependentUpon>PresentationSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IdentitySettings.cs">
+			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IdentitySettingsValidator.cs">
+			<DependentUpon>IdentitySettings.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

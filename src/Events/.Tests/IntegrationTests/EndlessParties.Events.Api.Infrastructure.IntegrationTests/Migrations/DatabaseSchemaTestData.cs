@@ -73,7 +73,7 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
         Add(new DatabaseSchemaTestCase
         {
             TableName = "bookings",
-            Columns = ["id", "event_id", "status", "created_at", "processed_at"],
+            Columns = ["id", "event_id", "status", "created_at", "processed_at", "user_id"],
             Constraints = [],
             ForeignKeys =
                 [
@@ -111,6 +111,12 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
                     Name = "ix_bookings_created_at",
                     IsUnique = false,
                     Columns = ["created_at"]
+                },
+                new IndexData
+                {
+                    Name="ix_bookings_user_id",
+                    IsUnique = false,
+                    Columns = ["user_id"]
                 }
             ]
         });

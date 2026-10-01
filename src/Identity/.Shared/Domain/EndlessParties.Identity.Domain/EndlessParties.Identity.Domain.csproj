@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.UserContext.Abstractions\EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Errors\UserErrors.cs">
+			<DependentUpon>ApplicationErrors.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Errors\UserPasswordErrors.cs">
+			<DependentUpon>ApplicationErrors.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Models\UserPassword.cs">
+			<DependentUpon>User.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

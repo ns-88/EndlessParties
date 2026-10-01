@@ -18,12 +18,12 @@ namespace EndlessParties.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EndlessParties.Domain.Models.Booking", b =>
+            modelBuilder.Entity("EndlessParties.Events.Domain.Models.Booking", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -45,6 +45,10 @@ namespace EndlessParties.Database.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_bookings");
 
@@ -57,10 +61,13 @@ namespace EndlessParties.Database.Migrations
                     b.HasIndex("ProcessedAt")
                         .HasDatabaseName("ix_bookings_processed_at");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_bookings_user_id");
+
                     b.ToTable("bookings", (string)null);
                 });
 
-            modelBuilder.Entity("EndlessParties.Domain.Models.Event", b =>
+            modelBuilder.Entity("EndlessParties.Events.Domain.Models.Event", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -138,9 +145,9 @@ namespace EndlessParties.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EndlessParties.Domain.Models.Booking", b =>
+            modelBuilder.Entity("EndlessParties.Events.Domain.Models.Booking", b =>
                 {
-                    b.HasOne("EndlessParties.Domain.Models.Event", "Event")
+                    b.HasOne("EndlessParties.Events.Domain.Models.Event", "Event")
                         .WithMany("Bookings")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -150,7 +157,7 @@ namespace EndlessParties.Database.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("EndlessParties.Domain.Models.Event", b =>
+            modelBuilder.Entity("EndlessParties.Events.Domain.Models.Event", b =>
                 {
                     b.Navigation("Bookings");
                 });

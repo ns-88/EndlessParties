@@ -6,6 +6,7 @@ using EndlessParties.Events.Api.App.Features.Events.Remove;
 using EndlessParties.Events.Api.App.Features.Events.Shared;
 using EndlessParties.Events.Api.App.Features.Events.Update;
 using Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EndlessParties.Events.Api.Controllers;
@@ -16,6 +17,7 @@ namespace EndlessParties.Events.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
+[Authorize]
 public class EventsController : ControllerBase
 {
     /// <summary>
@@ -54,7 +56,7 @@ public class EventsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<EventResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetByIdQuery(id);
+        var query = new GetEventByIdQuery(id);
         var eventModel = await _mediator.Send(query, cancellationToken);
 
         return Ok(eventModel);
@@ -66,6 +68,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<EventResponse>> Create([FromBody] CreateEventRequest request, CancellationToken cancellationToken)
     {
         var command = new CreateEventCommand(request);
@@ -85,7 +88,7 @@ public class EventsController : ControllerBase
     {
         var command = new CreateBookingCommand(id);
         var bookingModel = await _mediator.Send(command, cancellationToken);
-
+        
         return AcceptedAtAction(nameof(BookingsController.GetById), "Bookings", new { id = bookingModel.Id }, bookingModel);
     }
 
@@ -97,6 +100,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateEventRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateEventCommand(id, request);
@@ -111,6 +115,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Remove([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteEventCommand(id);

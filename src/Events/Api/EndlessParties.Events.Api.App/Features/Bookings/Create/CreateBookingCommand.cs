@@ -5,10 +5,10 @@ namespace EndlessParties.Events.Api.App.Features.Bookings.Create;
 /// <summary>
 /// Команда создания бронирования
 /// </summary>
-public class CreateBookingCommand(Guid id) : IRequest<BookingResponse>
+public class CreateBookingCommand(Guid eventId) : IRequest<BookingResponse>
 {
     /// <summary>
     /// Идентификатор мероприятия (события)
     /// </summary>
-    public Guid EventId { get; } = id;
+    public Guid EventId { get; } = eventId;
 }
