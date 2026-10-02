@@ -23,7 +23,7 @@ internal class KafkaEventBus : IEventBus
     /// <summary>
     /// Конструктор
     /// </summary>
-    public KafkaEventBus(KafkaEventBusSettings settings, IProducerAccessor producerAccessor)
+    public KafkaEventBus(KafkaSettings settings, IProducerAccessor producerAccessor)
     {
         _producers = settings.Producers;
         _producerAccessor = producerAccessor;

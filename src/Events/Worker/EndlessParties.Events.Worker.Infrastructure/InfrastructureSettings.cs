@@ -17,7 +17,7 @@ public class InfrastructureSettings
     /// <summary>
     /// Настройки шины событий на основе очереди Kafka
     /// </summary>
-    public required KafkaEventBusSettings KafkaEventBus { get; init; }
+    public required KafkaSettings KafkaEventBus { get; init; }
 
 
     /// <summary>
