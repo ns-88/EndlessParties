@@ -8,7 +8,7 @@ namespace EndlessParties.Events.Worker.Consumers;
 /// <summary>
 /// Обработчик событий создания новых бронирований
 /// </summary>
-public class BookingCreatedNewConsumer : IEventBusBatchConsumer<BookingCreatedEvent>
+internal class BookingCreatedNewConsumer : IEventBusBatchConsumer<BookingCreatedEvent>
 {
     /// <summary>
     /// <see cref="IMediator"/>

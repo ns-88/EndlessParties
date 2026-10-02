@@ -74,11 +74,16 @@ public static class WebApplicationBuilderExtensions
     private static InfrastructureSettings GetInfrastructureSettings(IConfiguration config)
     {
         var kafkaEnvironment = config["Kafka:Environment"]!;
-        var kafkaEventBus = config
+        var kafkaConnectionSettings = config
             .GetRequiredSection("Kafka")
-            .Get<KafkaEventBusSettings>();
+            .Get<KafkaConnectionSettings>()!;
 
-        kafkaEventBus?.AddProducer<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1");
+        var kafkaSettings = new KafkaSettingsBuilder(kafkaConnectionSettings)
+            .WithProducers(setup =>
+            {
+                setup.Add<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1");
+            })
+            .Build();
 
         return new InfrastructureSettings
         {
@@ -87,7 +92,7 @@ public static class WebApplicationBuilderExtensions
                 ConnectionString = config.GetConnectionString("Postgres:Events")!,
                 RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
             },
-            KafkaEventBus = kafkaEventBus!
+            KafkaEventBus = kafkaSettings
         };
     }
 }
