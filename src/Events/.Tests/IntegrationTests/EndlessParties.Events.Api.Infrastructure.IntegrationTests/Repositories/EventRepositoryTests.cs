@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
 using EndlessParties.Events.Api.Infrastructure.IntegrationTests.Fixtures;
-using EndlessParties.Events.Database.Database;
+using EndlessParties.Events.Database;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories;
 using EndlessParties.Events.Repositories.Abstractions;
@@ -57,14 +57,7 @@ public class EventRepositoryTests : DatabaseIntegrationTest<EventsDbContext, Eve
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) =>
-                {
-                    var localEvent = new Event(title, TotalSeats, description, StartAt, EndAt);
-                    var booking = new Booking(localEvent.Id, Guid.NewGuid());
-                    localEvent.Bookings.Add(booking);
-
-                    return localEvent;
-                })
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             // #### Act ####
@@ -81,14 +74,9 @@ public class EventRepositoryTests : DatabaseIntegrationTest<EventsDbContext, Eve
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
-                var actualResult = await context.Events
-                    .Include(x => x.Bookings)
-                    .SingleOrDefaultAsync(x => x.Id == @event.Id, TestCancellationToken);
+                var actualResult = await context.Events.SingleOrDefaultAsync(x => x.Id == @event.Id, TestCancellationToken);
 
-                actualResult.Should().BeEquivalentTo(@event, x => x.Excluding(e => e.Bookings));
-                actualResult.Bookings.Should().BeEquivalentTo(@event.Bookings, x => x
-                    .Excluding(e => e.Event)
-                    .Excluding(e => e.CreatedAt));
+                actualResult.Should().BeEquivalentTo(@event);
             }
         }
 
@@ -183,14 +171,7 @@ public class EventRepositoryTests : DatabaseIntegrationTest<EventsDbContext, Eve
             // #### Arrange ####
             var @event = _fixture
                 .Build<Event>()
-                .FromFactory((string title, string? description) =>
-                {
-                    var localEvent = new Event(title, TotalSeats, description, StartAt, EndAt);
-                    var booking = new Booking(localEvent.Id, Guid.NewGuid());
-                    localEvent.Bookings.Add(booking);
-
-                    return localEvent;
-                })
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
@@ -218,12 +199,6 @@ public class EventRepositoryTests : DatabaseIntegrationTest<EventsDbContext, Eve
                 var deletedEvent = await context.Events.FindAsync([@event.Id], TestCancellationToken);
 
                 deletedEvent.Should().BeNull();
-
-                var actualBookings = await context.Bookings
-                    .Where(x => x.EventId == @event.Id)
-                    .ToListAsync(TestCancellationToken);
-
-                actualBookings.Should().BeEmpty();
             }
         }
 

@@ -6,7 +6,7 @@
 public interface IEventBus
 {
     /// <summary>
-    /// Публикация сообщения в шину
+    /// Публикация события в шину
     /// </summary>
     Task Publish(object @event, CancellationToken cancellationToken);
 }

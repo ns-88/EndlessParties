@@ -1,4 +1,4 @@
-﻿using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Events.Database;
 using EndlessParties.Events.Repositories;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.EventBus.Abstractions;
@@ -43,7 +43,6 @@ public class EventFixture<THandler> : PostgreSqlContainerFixture<EventsDbContext
 
         serviceCollection
             .AddScoped<IEventRepository, EventRepository>()
-            .AddScoped<IBookingRepository, BookingRepository>()
             .AddScoped<IEventBus>(_ => eventBusMock.Object)
             .AddScoped<IDateTimeProvider>(_ => dateTimeProviderMock.Object)
             .AddScoped<IUserContextAccessor>(_ => userContextAccessorMock.Object)

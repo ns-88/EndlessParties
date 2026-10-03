@@ -1,4 +1,4 @@
-using EndlessParties.Shared.Utils.Logger;
+using EndlessParties.Shared.Utils.WebApiExtensions;
 using Serilog;
 
 namespace EndlessParties.Identity.Api;

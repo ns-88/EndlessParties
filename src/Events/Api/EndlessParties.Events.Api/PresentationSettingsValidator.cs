@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Events.Api.Settings;
 
 /// <summary>
 /// Валидатор <see cref="PresentationSettings"/>
@@ -11,7 +11,6 @@ public class PresentationSettingsValidator : AbstractValidator<PresentationSetti
     public PresentationSettingsValidator()
     {
         RuleFor(x => x.Identity)
-            .NotEmpty()
-            .SetValidator(new IdentitySettingsValidator());
+            .NotEmpty();
     }
 }

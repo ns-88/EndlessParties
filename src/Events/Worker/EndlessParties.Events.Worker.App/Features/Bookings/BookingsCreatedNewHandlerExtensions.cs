@@ -1,4 +1,5 @@
-﻿using EndlessParties.Events.Domain.Enums;
+﻿using EndlessParties.Bookings.Domain.Enums;
+using EndlessParties.Events.Domain.Enums;
 using Microsoft.Extensions.Logging;
 
 namespace EndlessParties.Events.Worker.App.Features.Bookings;

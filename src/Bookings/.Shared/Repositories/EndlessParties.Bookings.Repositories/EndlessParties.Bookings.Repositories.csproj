@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
+		<ProjectReference Include="..\..\Database\EndlessParties.Bookings.Database\EndlessParties.Bookings.Database.csproj" />
+		<ProjectReference Include="..\EndlessParties.Bookings.Repositories.Abstractions\EndlessParties.Bookings.Repositories.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="EndlessParties.Bookings.Api.Infrastructure.IntegrationTests" />
+	</ItemGroup>
+
+</Project>

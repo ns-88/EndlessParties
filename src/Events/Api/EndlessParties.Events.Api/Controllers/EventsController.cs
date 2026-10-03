@@ -1,10 +1,11 @@
-﻿using EndlessParties.Events.Api.App.Features.Bookings.Create;
-using EndlessParties.Events.Api.App.Features.Events.Create;
+﻿using EndlessParties.Events.Api.App.Features.Create;
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
-using EndlessParties.Events.Api.App.Features.Events.GetById;
-using EndlessParties.Events.Api.App.Features.Events.Remove;
-using EndlessParties.Events.Api.App.Features.Events.Shared;
 using EndlessParties.Events.Api.App.Features.Events.Update;
+using EndlessParties.Events.Api.App.Features.GetAll;
+using EndlessParties.Events.Api.App.Features.GetById;
+using EndlessParties.Events.Api.App.Features.Remove;
+using EndlessParties.Events.Api.App.Features.Shared;
+using EndlessParties.Events.Api.App.Features.Update;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,21 +76,6 @@ public class EventsController : ControllerBase
         var eventModel = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { id = eventModel.Id }, eventModel);
-    }
-
-    /// <summary>
-    /// Создание бронирования
-    /// </summary>
-    [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
-    [HttpPost("{id:guid}/book")]
-    public async Task<ActionResult<BookingResponse>> CreateBooking([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        var command = new CreateBookingCommand(id);
-        var bookingModel = await _mediator.Send(command, cancellationToken);
-        
-        return AcceptedAtAction(nameof(BookingsController.GetById), "Bookings", new { id = bookingModel.Id }, bookingModel);
     }
 
     /// <summary>

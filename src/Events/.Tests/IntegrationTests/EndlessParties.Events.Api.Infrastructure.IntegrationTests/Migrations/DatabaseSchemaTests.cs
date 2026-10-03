@@ -1,5 +1,4 @@
-﻿using EndlessParties.Events.Api.Infrastructure.IntegrationTests.Fixtures;
-using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Events.Database;
 using EndlessParties.Shared.Utils.IntegrationTests;
 using FluentAssertions;
 using Xunit;
@@ -9,10 +8,10 @@ namespace EndlessParties.Events.Api.Infrastructure.IntegrationTests.Migrations;
 /// <summary>
 /// Тесты схемы базы данных
 /// </summary>
-public class DatabaseSchemaTests : DatabaseIntegrationTest<EventsDbContext, DatabaseSchemaFixture>
+public class DatabaseSchemaTests : DatabaseIntegrationTest<EventsDbContext, DatabaseSchemaFixture<EventsDbContext>>
 {
     /// <inheritdoc />
-    public DatabaseSchemaTests(DatabaseSchemaFixture fixture) : base(fixture)
+    public DatabaseSchemaTests(DatabaseSchemaFixture<EventsDbContext> fixture) : base(fixture)
     {
     }
 
@@ -23,7 +22,7 @@ public class DatabaseSchemaTests : DatabaseIntegrationTest<EventsDbContext, Data
     public class Positive : DatabaseSchemaTests
     {
         /// <inheritdoc />
-        public Positive(DatabaseSchemaFixture fixture) : base(fixture)
+        public Positive(DatabaseSchemaFixture<EventsDbContext> fixture) : base(fixture)
         {
         }
 

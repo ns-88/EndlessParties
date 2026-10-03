@@ -2,8 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions\EndlessParties.Shared.Exceptions.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Logger\EndlessParties.Shared.Utils.Logger.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.WebApiExtensions\EndlessParties.Shared.Utils.WebApiExtensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Validations\EndlessParties.Shared.Validations\EndlessParties.Shared.Validations.csproj" />
 		<ProjectReference Include="..\..\.Shared\Database\EndlessParties.Identity.Database\EndlessParties.Identity.Database.csproj" />
 		<ProjectReference Include="..\EndlessParties.Identity.Api.App\EndlessParties.Identity.Api.App.csproj" />

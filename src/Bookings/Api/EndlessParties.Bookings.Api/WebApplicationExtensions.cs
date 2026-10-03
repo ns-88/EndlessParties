@@ -1,0 +1,78 @@
+﻿using EndlessParties.Bookings.Database;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+
+namespace EndlessParties.Bookings.Api;
+
+/// <summary>
+/// Класс-расширение <see cref="WebApplication"/> для конфигурации приложения
+/// </summary>
+public static class WebApplicationExtensions
+{
+    /// <summary>
+    /// Конфигурирование приложения
+    /// </summary>
+    public static WebApplication ConfigureApp(this WebApplication application)
+    {
+        application
+            .AddSwagger()
+            .UseRouting();
+
+        application
+            .MapHealthChecks("/healthcheck/health", new HealthCheckOptions { AllowCachingResponses = false })
+            .ExcludeFromDescription();
+
+        application
+            .MapGet("/healthcheck/ready", () => "Ready")
+            .ExcludeFromDescription();
+
+        application
+            .UseAuthentication()
+            .UseAuthorization();
+
+        application
+            .MapControllers();
+        application
+            .ApplyMigrations();
+
+        return application;
+    }
+
+    /// <summary>
+    /// Добавление и настройка Swagger
+    /// </summary>
+    private static WebApplication AddSwagger(this WebApplication application)
+    {
+        if (!application.Environment.IsEnvironment("local"))
+        {
+            return application;
+        }
+
+        application
+            .UseSwagger()
+            .UseSwaggerUI(setup =>
+            {
+                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API V1");
+                setup.EnablePersistAuthorization();
+                setup.RoutePrefix = string.Empty;
+            });
+
+        return application;
+    }
+
+    /// <summary>
+    /// Применение миграций
+    /// </summary>
+    private static void ApplyMigrations(this WebApplication application)
+    {
+        if (!application.Environment.IsEnvironment("local"))
+        {
+            return;
+        }
+
+        using var scope = application.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
+
+        dbContext.Database.Migrate();
+    }
+}

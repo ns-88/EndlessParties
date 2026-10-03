@@ -1,0 +1,93 @@
+﻿using AutoFixture;
+using EndlessParties.Events.Api.App.Features.GetById;
+using EndlessParties.Events.Api.App.Features.Shared;
+using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
+using EndlessParties.Events.Domain.Models;
+using EndlessParties.Events.Repositories.Abstractions;
+using FluentAssertions;
+using Moq;
+using Moq.AutoMock;
+using Xunit;
+
+namespace EndlessParties.Events.Api.App.UnitTests.Features.GetById;
+
+using static TestConstants;
+
+/// <summary>
+/// Тесты для обработчика <see cref="GetEventByIdHandler"/>
+/// </summary>
+[Trait("Category", "Unit")]
+public class GetEventByIdHandlerTests
+{
+    /// <summary>
+    /// Контейнер <see cref="AutoMocker"/>
+    /// </summary>
+    private readonly AutoMocker _autoMocker;
+
+    /// <summary>
+    /// Сервис создания тестовых данных <see cref="Fixture"/>
+    /// </summary>
+    private readonly Fixture _fixture;
+
+
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    public GetEventByIdHandlerTests()
+    {
+        _autoMocker = new AutoMocker(MockBehavior.Strict);
+        _fixture = new Fixture();
+    }
+
+
+    /// <summary>
+    /// Позитивные тесты
+    /// </summary>
+    public class Positive : GetEventByIdHandlerTests
+    {
+        /// <summary>
+        /// Получение события по идентификатору для корректного фильтра с возвратом ожидаемого ответа
+        /// </summary>
+        [Fact]
+        public async Task GetById_CorrectFilter_ReturnsValidEventResponse()
+        {
+            // #### Arrange ####
+            var handler = _autoMocker.CreateInstance<GetEventByIdHandler>();
+            var eventId = Guid.NewGuid();
+            var query = new GetEventByIdQuery(eventId);
+
+            var @event = _fixture
+                .Build<Event>()
+                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
+                .Create();
+
+            var eventResponse = new EventResponse
+            {
+                Id = Guid.NewGuid(),
+                Title = @event.Title,
+                TotalSeats = @event.TotalSeats,
+                AvailableSeats = @event.TotalSeats,
+                Description = @event.Description,
+                StartAt = @event.StartAt,
+                EndAt = @event.EndAt
+            };
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Setup(x => x.GetById(eventId, CancellationToken.None))
+                .ReturnsAsync(@event);
+
+            // #### Act ####
+            var actualResult = await handler.Handle(query, CancellationToken.None);
+
+            // #### Assert ####
+            actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
+
+            _autoMocker
+                .GetMock<IEventRepository>()
+                .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
+
+            _autoMocker.VerifyNoOtherCalls();
+        }
+    }
+}

@@ -1,10 +1,11 @@
 ﻿using EndlessParties.Events.Api.App;
 using EndlessParties.Events.Api.Infrastructure;
+using EndlessParties.Events.Api.Settings;
 using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
-using EndlessParties.Shared.Utils.Logger;
+using EndlessParties.Shared.Utils.WebApiExtensions;
 using EndlessParties.Shared.Validations;
 
 namespace EndlessParties.Events.Api;
@@ -81,7 +82,7 @@ public static class WebApplicationBuilderExtensions
         var kafkaSettings = new KafkaSettingsBuilder(kafkaConnectionSettings)
             .WithProducers(setup =>
             {
-                setup.Add<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1");
+                setup.Add<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1", x => x.Id.ToString());
             })
             .Build();
 

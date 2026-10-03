@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.DateTime\EndlessParties.Shared.Utils.DateTime.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.UserContext.Abstractions\EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
+		<ProjectReference Include="..\..\.Shared\Domain\EndlessParties.Bookings.Domain\EndlessParties.Bookings.Domain.csproj" />
+		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories.Abstractions\EndlessParties.Bookings.Repositories.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Mediator.Abstractions" />
+		<PackageReference Include="Mediator.SourceGenerator" />
+		<PackageReference Include="Riok.Mapperly" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Features\Cancel\CancelBookingCommand.cs">
+			<DependentUpon>CancelBookingHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Create\CreateBookingCommand.cs">
+			<DependentUpon>CreateBookingHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\GetById\GetBookingByIdQuery.cs">
+			<DependentUpon>GetBookingByIdHandler.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
