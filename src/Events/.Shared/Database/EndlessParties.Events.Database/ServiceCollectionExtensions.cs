@@ -1,5 +1,4 @@
-﻿using EndlessParties.Events.Database.Database;
-using EndlessParties.Shared.Utils.Database;
+﻿using EndlessParties.Shared.Utils.Database;
 using EndlessParties.Shared.Utils.Database.Settings;
 using Microsoft.Extensions.DependencyInjection;
 

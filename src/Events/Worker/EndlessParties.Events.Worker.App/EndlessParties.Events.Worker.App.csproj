@@ -5,6 +5,7 @@
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
+		<ProjectReference Include="..\..\..\Bookings\.Shared\Domain\EndlessParties.Bookings.Domain\EndlessParties.Bookings.Domain.csproj" />
 		<ProjectReference Include="..\..\.Shared\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 	</ItemGroup>

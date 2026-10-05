@@ -23,7 +23,7 @@ public class KafkaProducerBuilder
     /// <summary>
     /// Добавление поставщика
     /// </summary>
-    public KafkaProducerBuilder Add<TEvent>(string topicName)
+    public KafkaProducerBuilder Add<TEvent>(string topicName, Func<TEvent, string> keySelector)
     {
         var producers = (Dictionary<Type, KafkaProducerSettings>)Producers;
         var type = typeof(TEvent);
@@ -32,7 +32,8 @@ public class KafkaProducerBuilder
         var settings = new KafkaProducerSettings
         {
             Name = name,
-            TopicName = topicName
+            TopicName = topicName,
+            KeyProvider = new KafkaEventKeyProvider<TEvent>(keySelector)
         };
 
         return !producers.TryAdd(type, settings)

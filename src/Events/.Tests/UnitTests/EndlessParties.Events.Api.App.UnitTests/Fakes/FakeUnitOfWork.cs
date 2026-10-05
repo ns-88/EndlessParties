@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 
-namespace EndlessParties.UnitTests.Application.Fakes;
+namespace EndlessParties.Events.Api.App.UnitTests.Fakes;
 
 /// <summary>
 /// Фейковая реализация <see cref="IUnitOfWork"/>

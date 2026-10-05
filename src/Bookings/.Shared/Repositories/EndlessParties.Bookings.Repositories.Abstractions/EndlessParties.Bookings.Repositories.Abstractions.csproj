@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Domain\EndlessParties.Bookings.Domain\EndlessParties.Bookings.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

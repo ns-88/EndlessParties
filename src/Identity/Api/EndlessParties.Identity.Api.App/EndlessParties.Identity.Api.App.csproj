@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils\EndlessParties.Shared.Utils.Exceptions.csproj" />
 		<ProjectReference Include="..\..\.Shared\Domain\EndlessParties.Identity.Domain\EndlessParties.Identity.Domain.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Identity.Repositories.Abstractions\EndlessParties.Identity.Repositories.Abstractions.csproj" />
 		<ProjectReference Include="..\..\.Shared\Services\Cryptography\EndlessParties.Identity.Cryptography.Abstractions\EndlessParties.Identity.Cryptography.Abstractions.csproj" />

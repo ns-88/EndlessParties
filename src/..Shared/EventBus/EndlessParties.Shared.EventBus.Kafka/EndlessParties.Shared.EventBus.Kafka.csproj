@@ -31,6 +31,9 @@
 		<Compile Update="Settings\KafkaConsumerSettings.cs">
 			<DependentUpon>KafkaSettings.cs</DependentUpon>
 		</Compile>
+		<Compile Update="Settings\KafkaSettingsValidator.cs">
+			<DependentUpon>KafkaSettings.cs</DependentUpon>
+		</Compile>
 		<Compile Update="Settings\KafkaProducerBuilder.cs">
 			<DependentUpon>KafkaSettingsBuilder.cs</DependentUpon>
 		</Compile>
@@ -45,6 +48,9 @@
 		</Compile>
 		<Compile Update="Settings\KafkaProducerSettingsValidator.cs">
 			<DependentUpon>KafkaProducerSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IKafkaEventKeyProvider.cs">
+			<DependentUpon>KafkaEventKeyProvider.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

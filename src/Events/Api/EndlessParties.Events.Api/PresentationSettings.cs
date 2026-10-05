@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using EndlessParties.Shared.Utils.WebApiExtensions;
+using FluentValidation;
 
-namespace EndlessParties.Events.Api;
+namespace EndlessParties.Events.Api.Settings;
 
 /// <summary>
 /// Настройки презентационного слоя

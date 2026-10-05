@@ -1,4 +1,4 @@
-﻿using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Events.Database;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 

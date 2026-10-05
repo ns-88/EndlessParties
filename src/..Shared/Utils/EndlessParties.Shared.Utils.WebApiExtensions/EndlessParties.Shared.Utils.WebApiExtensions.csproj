@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="Serilog.Sinks.Console" />
+		<PackageReference Include="Serilog.Extensions.Hosting" />
+		<PackageReference Include="Serilog.Settings.Configuration" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="IdentitySettings.cs">
+			<DependentUpon>AuthenticationExtensions.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IdentitySettingsValidator.cs">
+			<DependentUpon>IdentitySettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

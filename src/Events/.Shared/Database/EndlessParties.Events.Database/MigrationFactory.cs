@@ -1,5 +1,4 @@
-﻿using EndlessParties.Events.Database.Database;
-using EndlessParties.Shared.Utils.Database.Migrations;
+﻿using EndlessParties.Shared.Utils.Database.Migrations;
 
 namespace EndlessParties.Events.Database;
 

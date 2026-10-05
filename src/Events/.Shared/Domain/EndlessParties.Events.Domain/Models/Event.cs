@@ -60,11 +60,6 @@ public partial class Event
     public DateTimeOffset EndAt { get; private set; }
 
     /// <summary>
-    /// Список связанных сущностей <see cref="Booking"/>
-    /// </summary>
-    public ICollection<Booking> Bookings { get; }
-
-    /// <summary>
     /// Токен конкуренции для оптимистичной блокировки
     /// </summary>
     public uint RowVersion { get; }
@@ -76,7 +71,6 @@ public partial class Event
     private Event()
     {
         Title = null!;
-        Bookings = new HashSet<Booking>();
     }
 
     /// <summary>
@@ -92,7 +86,6 @@ public partial class Event
         StartAt = startAt;
         EndAt = endAt;
         RowVersion = 0;
-        Bookings = new HashSet<Booking>();
 
         ValidateStartAndEndAt(startAt, endAt);
     }

@@ -1,4 +1,4 @@
-﻿using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Events.Database;
 using EndlessParties.Events.Repositories;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.Utils.IntegrationTests;
@@ -8,7 +8,7 @@ using Xunit.Sdk;
 namespace EndlessParties.Events.Api.Infrastructure.IntegrationTests.Fixtures;
 
 /// <summary>
-/// Фикстура для работы с тестами репозиториев <see cref="EventRepository"/> и <see cref="BookingRepository"/>
+/// Фикстура для работы с тестами репозитория <see cref="EventRepository"/>
 /// </summary>
 public class EventFixture : PostgreSqlContainerFixture<EventsDbContext>
 {
@@ -21,8 +21,6 @@ public class EventFixture : PostgreSqlContainerFixture<EventsDbContext>
     /// <inheritdoc />
     protected override void ConfigureServices(ServiceCollection serviceCollection)
     {
-        serviceCollection
-            .AddScoped<IEventRepository, EventRepository>()
-            .AddScoped<IBookingRepository, BookingRepository>();
+        serviceCollection.AddScoped<IEventRepository, EventRepository>();
     }
 }

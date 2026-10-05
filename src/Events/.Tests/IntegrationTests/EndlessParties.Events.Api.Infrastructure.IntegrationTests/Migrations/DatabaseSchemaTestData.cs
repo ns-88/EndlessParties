@@ -10,7 +10,6 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
     /// <inheritdoc />
     public DatabaseSchemaTestData()
     {
-        #region events
         Add(new DatabaseSchemaTestCase
         {
             TableName = "events",
@@ -67,59 +66,5 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
                 }
             ]
         });
-        #endregion
-
-        #region bookings
-        Add(new DatabaseSchemaTestCase
-        {
-            TableName = "bookings",
-            Columns = ["id", "event_id", "status", "created_at", "processed_at", "user_id"],
-            Constraints = [],
-            ForeignKeys =
-                [
-                    new ForeignKeyData
-                    {
-                        Name = "fk_bookings_events_event_id",
-                        RefersToTable = "events",
-                        Columns = ["event_id"],
-                        DeleteRule = "CASCADE",
-                        UpdateRule = "NO ACTION"
-                    }
-                ],
-            Indexes =
-            [
-                new IndexData
-                {
-                    Name = "pk_bookings",
-                    IsUnique = true,
-                    Columns = ["id"]
-                },
-                new IndexData
-                {
-                    Name = "ix_bookings_processed_at",
-                    IsUnique = false,
-                    Columns = ["processed_at"]
-                },
-                new IndexData
-                {
-                    Name = "ix_bookings_event_id",
-                    IsUnique = false,
-                    Columns = ["event_id"]
-                },
-                new IndexData
-                {
-                    Name = "ix_bookings_created_at",
-                    IsUnique = false,
-                    Columns = ["created_at"]
-                },
-                new IndexData
-                {
-                    Name="ix_bookings_user_id",
-                    IsUnique = false,
-                    Columns = ["user_id"]
-                }
-            ]
-        });
-        #endregion
     }
 }
