@@ -1,5 +1,6 @@
 ﻿using EndlessParties.Bookings.Api.App;
 using EndlessParties.Bookings.Api.Infrastructure;
+using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
@@ -81,7 +82,13 @@ public static class WebApplicationBuilderExtensions
         var kafkaSettings = new KafkaSettingsBuilder(kafkaConnectionSettings)
             .WithProducers(setup =>
             {
-                setup.Add<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1", x => x.Id.ToString());
+                setup.Add<BookingCreatedEvent>(string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), x => x.BookingId.ToString());
+            })
+            .WithConsumers(typeof(Program).Assembly, setup =>
+            {
+                setup.Add<SeatsReservedEvent>(
+                    string.Format(SeatsReservedEventTopic.GroupName,kafkaEnvironment),
+                    string.Format(SeatsReservedEventTopic.TopicName, kafkaEnvironment));
             })
             .Build();
 

@@ -1,1 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk"/>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<Compile Update="SeatsReservedEventTopic.cs">
+			<DependentUpon>SeatsReservedEvent.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

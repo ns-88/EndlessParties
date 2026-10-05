@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using EndlessParties.Events.Api.App.Features.Events.Update;
 using EndlessParties.Events.Api.App.Features.Update;
 using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Models;

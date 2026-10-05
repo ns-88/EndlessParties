@@ -1,10 +1,9 @@
-﻿using AutoFixture;
-using EndlessParties.Events.Api.App.Features.Bookings.Create;
-using EndlessParties.Events.Api.App.Features.Bookings.GetById;
-using EndlessParties.Events.Api.App.IntegrationTests.Fixtures;
-using EndlessParties.Events.Database;
-using EndlessParties.Events.Domain.Enums;
-using EndlessParties.Events.Domain.Models;
+﻿using EndlessParties.Bookings.Api.App.Features.Create;
+using EndlessParties.Bookings.Api.App.Features.GetById;
+using EndlessParties.Bookings.Api.App.IntegrationTests.Fixtures;
+using EndlessParties.Bookings.Database;
+using EndlessParties.Bookings.Domain.Enums;
+using EndlessParties.Bookings.Domain.Models;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.IntegrationTests;
 using FluentAssertions;
@@ -13,33 +12,24 @@ using Xunit;
 
 namespace EndlessParties.Bookings.Api.App.IntegrationTests.Features.GetById;
 
-using static TestConstants;
-
 /// <summary>
 /// Тесты для обработчика <see cref="GetBookingByIdHandler"/>
 /// </summary>
 [Trait("Category", "Integration")]
-public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, EventFixture<GetBookingByIdHandler>>
+public class GetByIdHandlerTests : DatabaseIntegrationTest<BookingsDbContext, BookingFixture<GetBookingByIdHandler>>
 {
-    /// <summary>
-    /// Сервис создания тестовых данных <see cref="Fixture"/>
-    /// </summary>
-    private readonly Fixture _fixture;
-
-
     /// <summary>
     /// Конструктор
     /// </summary>
-    public GetByIdHandlerTests(EventFixture<GetBookingByIdHandler> fixture) : base(fixture)
+    public GetByIdHandlerTests(BookingFixture<GetBookingByIdHandler> fixture) : base(fixture)
     {
-        _fixture = new Fixture();
     }
 
 
     /// <summary>
     /// Позитивные тесты
     /// </summary>
-    public class Positive(EventFixture<GetBookingByIdHandler> fixture) : GetByIdHandlerTests(fixture)
+    public class Positive(BookingFixture<GetBookingByIdHandler> fixture) : GetByIdHandlerTests(fixture)
     {
         /// <summary>
         /// Получение бронирования по идентификатору с возвратом ожидаемого ответа
@@ -48,17 +38,12 @@ public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, Even
         public async Task GetById_CorrectData_ReturnsValidBookingResponse()
         {
             // #### Arrange ####
-            var @event = _fixture
-                .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
-                .Create();
-            var booking = new Booking(@event.Id, Guid.NewGuid());
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
             var query = new GetBookingByIdQuery(booking.Id);
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
-                await context.Events.AddAsync(@event, TestCancellationToken);
+                var context = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
                 context.Bookings.Add(booking);
 
                 await context.SaveChangesAsync(TestCancellationToken);
@@ -83,11 +68,7 @@ public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, Even
         public async Task GetById_ChangeStatus_ReturnsValidBookingResponse()
         {
             // #### Arrange ####
-            var @event = _fixture
-                .Build<Event>()
-                .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
-                .Create();
-            var booking = new Booking(@event.Id, Guid.NewGuid());
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
             var query = new GetBookingByIdQuery(booking.Id);
 
             BookingResponse actualResultPendingStatus;
@@ -95,8 +76,7 @@ public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, Even
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
-                await context.Events.AddAsync(@event, TestCancellationToken);
+                var context = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
                 context.Bookings.Add(booking);
 
                 await context.SaveChangesAsync(TestCancellationToken);
@@ -111,7 +91,7 @@ public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, Even
 
             await using (var scope = ServiceProvider.CreateAsyncScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+                var context = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
                 var actualBooking = await context.Bookings.FindAsync([booking.Id], TestCancellationToken);
 
                 actualBooking!.Confirm();
@@ -137,7 +117,7 @@ public class GetByIdHandlerTests : DatabaseIntegrationTest<EventsDbContext, Even
     /// <summary>
     /// Негативные тесты
     /// </summary>
-    public class Negative(EventFixture<GetBookingByIdHandler> fixture) : GetByIdHandlerTests(fixture)
+    public class Negative(BookingFixture<GetBookingByIdHandler> fixture) : GetByIdHandlerTests(fixture)
     {
         /// <summary>
         /// Получение отсутствующего бронирования по идентификатору

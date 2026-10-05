@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace EndlessParties.Events.Api.App.UnitTests.Fakes;
+namespace EndlessParties.Bookings.Api.App.UnitTests.Fakes;
 
 /// <summary>
 /// Фейковая реализация <see cref="IExecutionStrategy"/>

@@ -1,10 +1,12 @@
-﻿using EndlessParties.Bookings.Domain.Errors;
+﻿using EndlessParties.Bookings.Api.App.Features.Mappers;
+using EndlessParties.Bookings.Domain.Errors;
+using EndlessParties.Bookings.Domain.Models;
 using EndlessParties.Bookings.Repositories.Abstractions;
+using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Extensions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
-using EndlessParties.Shared.Utils.DateTime.Abstractions;
 using EndlessParties.Shared.Utils.UserContext.Abstractions;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +22,6 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     /// Репозиторий <see cref="IBookingRepository"/>
     /// </summary>
     private readonly IBookingRepository _bookingRepository;
-
-    /// <summary>
-    /// Провайдер <see cref="IDateTimeProvider"/>
-    /// </summary>
-    private readonly IDateTimeProvider _dateTimeProvider;
 
     /// <summary>
     /// Сервис <see cref="IUserContextAccessor"/>
@@ -47,13 +44,11 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     /// </summary>
     public CreateBookingHandler(
         IBookingRepository bookingRepository,
-        IDateTimeProvider dateTimeProvider,
         IUserContextAccessor userContextAccessor,
         IEventBus eventBus,
         IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
-        _dateTimeProvider = dateTimeProvider;
         _userContextAccessor = userContextAccessor;
         _eventBus = eventBus;
         _unitOfWork = unitOfWork;
@@ -71,7 +66,7 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
 
             bookingResponse = await strategy.ExecuteAsync(ct => CreateBooking(request, ct), cancellationToken);
         }
-        catch (Exception ex) when (ex is NotFoundException or ConflictException)
+        catch (Exception ex) when (ex is ConflictException)
         {
             throw;
         }
@@ -88,36 +83,24 @@ public class CreateBookingHandler : IRequestHandler<CreateBookingCommand, Bookin
     /// </summary>
     private async Task<BookingResponse> CreateBooking(CreateBookingCommand request, CancellationToken cancellationToken)
     {
-        //var user = _userContextAccessor.Current;
-        //await using var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
-        //var @event = await _eventRepository.GetByIdWithLock(request.EventId, cancellationToken);
+        var user = _userContextAccessor.Current;
+        await using var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
-        //if (@event.HasStarted(_dateTimeProvider.UtcNow()))
-        //{
-        //    throw new LogicException(ApplicationErrors.Bookings.EventAlreadyStarted);
-        //}
+        var activeCount = await _bookingRepository.GetActiveCountByUserId(user.Id, cancellationToken);
 
-        //var activeCount = await _bookingRepository.GetActiveCountByUserId(user.Id, cancellationToken);
+        if (activeCount >= Booking.MaxActiveCount)
+        {
+            throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
+        }
 
-        //if (activeCount >= Booking.MaxActiveCount)
-        //{
-        //    throw new ConflictException(string.Format(ApplicationErrors.Bookings.AvailableSeatsExceeded, Booking.MaxActiveCount));
-        //}
+        var booking = new Booking(request.EventId, user.Id);
 
-        //if (!@event.TryReserveSeats())
-        //{
-        //    throw new ConflictException(ApplicationErrors.Bookings.NoAvailableSeats);
-        //}
+        await _bookingRepository.Create(booking, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        //var booking = new Booking(request.EventId, user.Id);
+        await _eventBus.Publish(new BookingCreatedEvent(booking.Id, request.EventId, user.Id), cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
-        //await _bookingRepository.Create(booking, cancellationToken);
-        //await _unitOfWork.SaveChangesAsync(cancellationToken);
-        //await transaction.CommitAsync(cancellationToken);
-
-        //await _eventBus.Publish(new BookingCreatedEvent(booking.Id, user.Id), cancellationToken);
-
-        //return BookingMapper.Map(booking);
-        return null!;
+        return BookingMapper.Map(booking);
     }
 }

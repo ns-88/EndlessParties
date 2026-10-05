@@ -1,7 +1,6 @@
-﻿using EndlessParties.Events.Api.App.Features.Update;
-using Mediator;
+﻿using Mediator;
 
-namespace EndlessParties.Events.Api.App.Features.Events.Update;
+namespace EndlessParties.Events.Api.App.Features.Update;
 
 /// <summary>
 /// Команда обновления мероприятия (события)

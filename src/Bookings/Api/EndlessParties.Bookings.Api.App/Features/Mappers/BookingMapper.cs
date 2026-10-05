@@ -13,5 +13,6 @@ internal static partial class BookingMapper
     /// <summary>
     /// Преобразование из <see cref="Booking"/> в <see cref="BookingResponse"/>
     /// </summary>
+    [MapProperty(nameof(Booking.Id), nameof(BookingResponse.BookingId))]
     public static partial BookingResponse Map(Booking source);
 }

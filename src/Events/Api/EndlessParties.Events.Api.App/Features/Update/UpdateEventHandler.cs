@@ -1,5 +1,4 @@
-﻿using EndlessParties.Events.Api.App.Features.Events.Update;
-using EndlessParties.Events.Domain.Errors;
+﻿using EndlessParties.Events.Domain.Errors;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.Exceptions.Extensions;
 using EndlessParties.Shared.Exceptions.Models;

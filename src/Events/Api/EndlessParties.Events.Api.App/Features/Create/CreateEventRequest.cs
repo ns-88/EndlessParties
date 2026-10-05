@@ -3,6 +3,6 @@
 namespace EndlessParties.Events.Api.App.Features.Create;
 
 /// <summary>
-/// Данные запроса создания мероприятия (события)
+/// Запрос создания мероприятия (события)
 /// </summary>
 public class CreateEventRequest : EventData;

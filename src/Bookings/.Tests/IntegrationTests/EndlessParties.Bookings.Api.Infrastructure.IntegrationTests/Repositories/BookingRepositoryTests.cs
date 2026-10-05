@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using EndlessParties.Bookings.Api.Infrastructure.IntegrationTests.Fixtures;
+﻿using EndlessParties.Bookings.Api.Infrastructure.IntegrationTests.Fixtures;
 using EndlessParties.Bookings.Database;
 using EndlessParties.Bookings.Domain.Models;
 using EndlessParties.Bookings.Repositories;
@@ -18,16 +17,9 @@ namespace EndlessParties.Bookings.Api.Infrastructure.IntegrationTests.Repositori
 [Trait("Category", "Integration")]
 public class BookingRepositoryTests : DatabaseIntegrationTest<BookingsDbContext, BookingFixture>
 {
-    /// <summary>
-    /// Сервис создания тестовых данных
-    /// </summary>
-    private readonly Fixture _fixture;
-
-
     /// <inheritdoc />
     public BookingRepositoryTests(BookingFixture fixture) : base(fixture)
     {
-        _fixture = new Fixture();
     }
 
 
@@ -48,41 +40,29 @@ public class BookingRepositoryTests : DatabaseIntegrationTest<BookingsDbContext,
         [Fact]
         public async Task Create_CorrectData_AddNewBooking()
         {
-            //// #### Arrange ####
-            //var @event = _fixture
-            //    .Build<Event>()
-            //    .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
-            //    .Create();
-            //var booking = new Booking(@event.Id, Guid.NewGuid());
+            // #### Arrange ####
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
 
-            //await using (var scope = ServiceProvider.CreateAsyncScope())
-            //{
-            //    var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
-            //    context.Events.Add(@event);
+            // #### Act ####
+            await using (var scope = ServiceProvider.CreateAsyncScope())
+            {
+                var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
+                var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-            //    await context.SaveChangesAsync(TestCancellationToken);
-            //}
+                await bookingRepository.Create(booking, TestCancellationToken);
+                await unitOfWork.SaveChangesAsync(TestCancellationToken);
+            }
 
-            //// #### Act ####
-            //await using (var scope = ServiceProvider.CreateAsyncScope())
-            //{
-            //    var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
-            //    var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            // #### Assert ####
+            await using (var scope = ServiceProvider.CreateAsyncScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
+                var actualResult = await context.Bookings.FindAsync([booking.Id], TestCancellationToken);
 
-            //    await bookingRepository.Create(booking, TestCancellationToken);
-            //    await unitOfWork.SaveChangesAsync(TestCancellationToken);
-            //}
-
-            //// #### Assert ####
-            //await using (var scope = ServiceProvider.CreateAsyncScope())
-            //{
-            //    var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
-            //    var actualResult = await context.Bookings.FindAsync([booking.Id], TestCancellationToken);
-                
-            //    actualResult.Should().BeEquivalentTo(booking, options => options
-            //        .Using<DateTimeOffset>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromMilliseconds(1)))
-            //        .WhenTypeIs<DateTimeOffset>());
-            //}
+                actualResult.Should().BeEquivalentTo(booking, options => options
+                    .Using<DateTimeOffset>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromMilliseconds(1)))
+                    .WhenTypeIs<DateTimeOffset>());
+            }
         }
 
         /// <summary>
@@ -91,36 +71,29 @@ public class BookingRepositoryTests : DatabaseIntegrationTest<BookingsDbContext,
         [Fact]
         public async Task GetById_ExistingEvent_ReturnsValidEvent()
         {
-            //// #### Arrange ####
-            //var @event = _fixture
-            //    .Build<Event>()
-            //    .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
-            //    .Create();
-            //var booking = new Booking(@event.Id, Guid.NewGuid());
+            // #### Arrange ####
+            var booking = new Booking(Guid.NewGuid(), Guid.NewGuid());
 
-            //await using (var scope = ServiceProvider.CreateAsyncScope())
-            //{
-            //    var context = scope.ServiceProvider.GetRequiredService<EventsDbContext>();
+            await using (var scope = ServiceProvider.CreateAsyncScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<BookingsDbContext>();
+                context.Bookings.Add(booking);
 
-            //    await context.Events.AddAsync(@event, TestCancellationToken);
-            //    context.Bookings.Add(booking);
+                await context.SaveChangesAsync(TestCancellationToken);
+            }
 
-            //    await context.SaveChangesAsync(TestCancellationToken);
-            //}
+            await using (var scope = ServiceProvider.CreateAsyncScope())
+            {
+                var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
 
-            //await using (var scope = ServiceProvider.CreateAsyncScope())
-            //{
-            //    var bookingRepository = scope.ServiceProvider.GetRequiredService<IBookingRepository>();
+                // #### Act ####
+                var actualResult = await bookingRepository.GetById(booking.Id, TestCancellationToken);
 
-            //    // #### Act ####
-            //    var actualResult = await bookingRepository.GetById(booking.Id, TestCancellationToken);
-
-            //    // #### Assert ####
-            //    actualResult.Should().BeEquivalentTo(booking, options => options
-            //        .Excluding(e => e.Event)
-            //        .Using<DateTimeOffset>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromMilliseconds(1)))
-            //        .WhenTypeIs<DateTimeOffset>());
-            //}
+                // #### Assert ####
+                actualResult.Should().BeEquivalentTo(booking, options => options
+                    .Using<DateTimeOffset>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation, TimeSpan.FromMilliseconds(1)))
+                    .WhenTypeIs<DateTimeOffset>());
+            }
         }
     }
 }

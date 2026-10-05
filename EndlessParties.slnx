@@ -5,6 +5,7 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
+    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Bookings/EndlessParties.Shared.Contracts.Bookings.csproj" Id="94e367ac-9500-4798-9d87-78bf82e67a5f" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" />
   </Folder>
