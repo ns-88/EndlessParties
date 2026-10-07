@@ -1,6 +1,6 @@
 ﻿using Mediator;
 
-namespace EndlessParties.Events.Api.App.Features.Reserve;
+namespace EndlessParties.Events.Api.App.Features.ReserveSeats;
 
 /// <summary>
 /// Команда резервирования свободных мест в мероприятии (событии)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace EndlessParties.Events.Api.App.Features.Reserve;
+namespace EndlessParties.Events.Api.App.Features.ReserveSeats;
 
 /// <summary>
 /// Обработчик <see cref="ReserveEventSeatsCommand"/>
@@ -143,6 +143,10 @@ public partial class ReserveEventSeatsHandler : IRequestHandler<ReserveEventSeat
                 RejectReason = rejectReason
             };
 
+            await unitOfWork.SaveChangesAsync(cancellationTokenLocal);
+            await _eventBus.Publish(reservedEvent, cancellationTokenLocal);
+            await transaction.CommitAsync(cancellationTokenLocal);
+
             if (isSuccess)
             {
                 LogEventSeatReserved(request.EventId, @event!.TotalSeats, @event.AvailableSeats);
@@ -151,10 +155,6 @@ public partial class ReserveEventSeatsHandler : IRequestHandler<ReserveEventSeat
             {
                 LogEventSeatNotReserved(reservedEvent.EventId, rejectReason!);
             }
-
-            await unitOfWork.SaveChangesAsync(cancellationTokenLocal);
-            await _eventBus.Publish(reservedEvent, cancellationTokenLocal);
-            await transaction.CommitAsync(cancellationTokenLocal);
         }
     }
 }

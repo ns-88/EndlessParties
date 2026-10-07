@@ -48,11 +48,14 @@
 		<Compile Update="Features\Remove\DeleteEventCommand.cs">
 			<DependentUpon>DeleteEventHandler.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Reserve\ReserveEventSeatsCommand.cs">
+		<Compile Update="Features\ReserveSeats\ReserveEventSeatsCommand.cs">
 			<DependentUpon>ReserveEventSeatsHandler.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Reserve\ReserveEventSeatsHandler.Logging.cs">
+		<Compile Update="Features\ReserveSeats\ReserveEventSeatsHandler.Logging.cs">
 			<DependentUpon>ReserveEventSeatsHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\ReleaseSeats\ReleaseEventSeatsCommand.cs">
+			<DependentUpon>ReleaseEventSeatsHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

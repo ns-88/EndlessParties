@@ -1,9 +1,9 @@
-﻿namespace EndlessParties.Events.Api.App.Features.Reserve;
+﻿namespace EndlessParties.Shared.Contracts.Bookings;
 
 /// <summary>
-/// Запрос резервирования свободного места в мероприятии (событии)
+/// Событие отмены бронирования
 /// </summary>
-public class ReserveEventSeatRequest(Guid bookingId, Guid eventId, Guid userId)
+public class BookingCancelledEvent(Guid bookingId, Guid eventId, Guid userId)
 {
     /// <summary>
     /// Идентификатор бронирования
