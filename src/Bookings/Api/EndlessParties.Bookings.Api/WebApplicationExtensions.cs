@@ -52,7 +52,7 @@ public static class WebApplicationExtensions
             .UseSwagger()
             .UseSwaggerUI(setup =>
             {
-                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Events API V1");
+                setup.SwaggerEndpoint("/swagger/v1/swagger.json", "Bookings API V1");
                 setup.EnablePersistAuthorization();
                 setup.RoutePrefix = string.Empty;
             });

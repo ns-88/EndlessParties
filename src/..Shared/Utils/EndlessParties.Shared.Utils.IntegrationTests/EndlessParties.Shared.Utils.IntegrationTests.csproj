@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<NoWarn>NU1608</NoWarn>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 	</ItemGroup>
@@ -13,10 +9,6 @@
 		<PackageReference Include="Respawn" />
 		<PackageReference Include="Testcontainers.PostgreSql" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Testcontainers.XunitV3" />
 		<PackageReference Include="DatabaseSchemaReader" />
 	</ItemGroup>
