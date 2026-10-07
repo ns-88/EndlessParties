@@ -82,12 +82,14 @@ public static class WebApplicationBuilderExtensions
         var kafkaSettings = new KafkaSettingsBuilder(kafkaConnectionSettings)
             .WithProducers(setup =>
             {
-                setup.Add<BookingCreatedEvent>(string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), x => x.BookingId.ToString());
+                setup
+                    .Add<BookingCreatedEvent>(string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), x => x.BookingId.ToString())
+                    .Add<BookingCancelledEvent>(string.Format(BookingCancelledTopic.TopicName, kafkaEnvironment), x => x.BookingId.ToString());
             })
             .WithConsumers(typeof(Program).Assembly, setup =>
             {
                 setup.Add<SeatsReservedEvent>(
-                    string.Format(SeatsReservedEventTopic.GroupName,kafkaEnvironment),
+                    string.Format(SeatsReservedEventTopic.GroupName, kafkaEnvironment),
                     string.Format(SeatsReservedEventTopic.TopicName, kafkaEnvironment));
             })
             .Build();

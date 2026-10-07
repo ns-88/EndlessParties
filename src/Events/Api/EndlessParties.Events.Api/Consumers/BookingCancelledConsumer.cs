@@ -1,4 +1,4 @@
-﻿using EndlessParties.Events.Api.App.Features.ReserveSeats;
+﻿using EndlessParties.Events.Api.App.Features.ReleaseSeats;
 using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.EventBus.Abstractions;
 using Mediator;
@@ -6,9 +6,9 @@ using Mediator;
 namespace EndlessParties.Events.Api.Consumers;
 
 /// <summary>
-/// Потребитель событий о создании бронирования
+/// Потребитель событий об отмене бронирования
 /// </summary>
-public class BookingCreatedConsumer : IEventBusBatchConsumer<BookingCreatedEvent>
+public class BookingCancelledConsumer : IEventBusBatchConsumer<BookingCancelledEvent>
 {
     /// <summary>
     /// <see cref="IMediator"/>
@@ -19,19 +19,19 @@ public class BookingCreatedConsumer : IEventBusBatchConsumer<BookingCreatedEvent
     /// <summary>
     /// Конструктор
     /// </summary>
-    public BookingCreatedConsumer(IMediator mediator)
+    public BookingCancelledConsumer(IMediator mediator)
     {
         _mediator = mediator;
     }
 
 
     /// <inheritdoc />
-    public async Task Consume(IReadOnlyList<BookingCreatedEvent> events, CancellationToken cancellationToken)
+    public async Task Consume(IReadOnlyList<BookingCancelledEvent> events, CancellationToken cancellationToken)
     {
         var requests = events
-            .Select(x => new ReserveEventSeatRequest(x.BookingId, x.EventId, x.UserId))
+            .Select(x => new ReleaseEventSeatRequest(x.BookingId, x.EventId, x.UserId))
             .ToList();
-        var command = new ReserveEventSeatsCommand(requests);
+        var command = new ReleaseEventSeatsCommand(requests);
 
         await _mediator.Send(command, cancellationToken);
     }

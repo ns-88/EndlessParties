@@ -1,9 +1,13 @@
-﻿using EndlessParties.Bookings.Domain.Errors;
+﻿using EndlessParties.Bookings.Domain.Enums;
+using EndlessParties.Bookings.Domain.Errors;
 using EndlessParties.Bookings.Repositories.Abstractions;
+using EndlessParties.Shared.Contracts.Bookings;
+using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Extensions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
 using EndlessParties.Shared.Utils.UserContext.Abstractions;
+using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +29,11 @@ public class CancelBookingHandler : IRequestHandler<CancelBookingCommand>
     private readonly IUserContextAccessor _userContextAccessor;
 
     /// <summary>
+    /// Шина событий <see cref="IEventBus"/>
+    /// </summary>
+    private readonly IEventBus _eventBus;
+
+    /// <summary>
     /// Единица работы <see cref="IUnitOfWork"/>
     /// </summary>
     private readonly IUnitOfWork _unitOfWork;
@@ -36,10 +45,12 @@ public class CancelBookingHandler : IRequestHandler<CancelBookingCommand>
     public CancelBookingHandler(
         IBookingRepository bookingRepository,
         IUserContextAccessor userContextAccessor,
+        IEventBus eventBus,
         IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _userContextAccessor = userContextAccessor;
+        _eventBus = eventBus;
         _unitOfWork = unitOfWork;
     }
 
@@ -70,31 +81,26 @@ public class CancelBookingHandler : IRequestHandler<CancelBookingCommand>
     /// </summary>
     private async Task CancelBooking(CancelBookingCommand request, CancellationToken cancellationToken)
     {
-        //var user = _userContextAccessor.Current;
-        //var booking = await _bookingRepository.GetById(request.Id, cancellationToken);
+        var user = _userContextAccessor.Current;
+        await using var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
+        var booking = await _bookingRepository.GetById(request.Id, cancellationToken);
 
-        //if (booking.Status == BookingStatus.Canceled)
-        //{
-        //    return;
-        //}
+        if (booking.Status == BookingStatus.Canceled)
+        {
+            return;
+        }
 
-        //if (booking.UserId != user.Id && user.Role != UserRole.Admin)
-        //{
-        //    throw new ForbiddenException(ApplicationErrors.Bookings.NotPossibleCancelBookingFromAnotherUser);
-        //}
+        if (booking.UserId != user.Id && user.Role != UserRole.Admin)
+        {
+            throw new ForbiddenException(ApplicationErrors.Bookings.NotPossibleCancelBookingFromAnotherUser);
+        }
 
-        //await using var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
-        //var @event = await _eventRepository.GetByIdWithLock(booking.EventId, cancellationToken);
+        booking.Cancel();
 
-        //if (booking.Status == BookingStatus.Canceled)
-        //{
-        //    return;
-        //}
+        var cancelledEvent = new BookingCancelledEvent(request.Id, booking.EventId, user.Id);
 
-        //booking.Cancel();
-        //@event.ReleaseSeats();
-
-        //await _unitOfWork.SaveChangesAsync(cancellationToken);
-        //await transaction.CommitAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _eventBus.Publish(cancelledEvent, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
     }
 }

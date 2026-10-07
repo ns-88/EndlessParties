@@ -87,9 +87,13 @@ public static class WebApplicationBuilderExtensions
             })
             .WithConsumers(typeof(Program).Assembly, setup =>
             {
-                setup.Add<BookingCreatedEvent>(
-                    string.Format(BookingCreatedTopic.GroupName, kafkaEnvironment),
-                    string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), KafkaBatchSettings.Default);
+                setup
+                    .Add<BookingCreatedEvent>(
+                        string.Format(BookingCreatedTopic.GroupName, kafkaEnvironment),
+                        string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), KafkaBatchSettings.Default)
+                    .Add<BookingCancelledEvent>(
+                        string.Format(BookingCancelledTopic.GroupName, kafkaEnvironment),
+                        string.Format(BookingCancelledTopic.TopicName, kafkaEnvironment), KafkaBatchSettings.Default);
             })
             .Build();
 

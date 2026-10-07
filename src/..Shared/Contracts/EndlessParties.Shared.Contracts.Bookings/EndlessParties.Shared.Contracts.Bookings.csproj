@@ -4,6 +4,9 @@
 		<Compile Update="BookingCreatedTopic.cs">
 			<DependentUpon>BookingCreatedEvent.cs</DependentUpon>
 		</Compile>
+		<Compile Update="BookingCancelledTopic.cs">
+			<DependentUpon>BookingCancelledEvent.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>
