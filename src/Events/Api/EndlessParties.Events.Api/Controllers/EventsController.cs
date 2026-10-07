@@ -1,6 +1,5 @@
 ﻿using EndlessParties.Events.Api.App.Features.Create;
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
-using EndlessParties.Events.Api.App.Features.Events.Update;
 using EndlessParties.Events.Api.App.Features.GetAll;
 using EndlessParties.Events.Api.App.Features.GetById;
 using EndlessParties.Events.Api.App.Features.Remove;

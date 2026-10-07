@@ -36,16 +36,6 @@ public static partial class ApplicationErrors
         public const string Cancel = "Ошибка отмены бронирования. Id: \"{0}\"";
 
         /// <summary>
-        /// Нет доступных мест для бронирования
-        /// </summary>
-        public const string NoAvailableSeats = "Нет доступных мест для бронирования";
-
-        /// <summary>
-        /// Событие уже началось
-        /// </summary>
-        public const string EventAlreadyStarted = "Событие уже началось";
-
-        /// <summary>
         /// Превышено максимальное число доступных мест для бронирования пользователем
         /// </summary>
         public const string AvailableSeatsExceeded = "Превышено максимальное количество бронирований для одного пользователя. Лимит бронирований: \"{0}\"";

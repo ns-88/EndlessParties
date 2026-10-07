@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Bookings\EndlessParties.Shared.Contracts.Bookings.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions\EndlessParties.Shared.Exceptions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.WebApiExtensions\EndlessParties.Shared.Utils.WebApiExtensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.HttpUserContext\EndlessParties.Shared.Utils.HttpUserContext.csproj" />

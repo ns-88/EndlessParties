@@ -15,6 +15,8 @@ public static class AuthenticationExtensions
     /// </summary>
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IdentitySettings settings)
     {
+        settings.Validate();
+
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.SecretKey));
 
         services

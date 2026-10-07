@@ -35,7 +35,6 @@ public class BookingsController : ControllerBase
     /// Создание бронирования
     /// </summary>
     [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [HttpPost("{id:guid}/book")]
     public async Task<ActionResult<BookingResponse>> CreateBooking([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -43,7 +42,7 @@ public class BookingsController : ControllerBase
         var command = new CreateBookingCommand(id);
         var bookingModel = await _mediator.Send(command, cancellationToken);
 
-        return AcceptedAtAction(nameof(GetById), "Bookings", new { id = bookingModel.Id }, bookingModel);
+        return AcceptedAtAction(nameof(GetById), "Bookings", new { id = bookingModel.BookingId }, bookingModel);
     }
 
     /// <summary>

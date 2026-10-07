@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Database\EndlessParties.Bookings.Database\EndlessParties.Bookings.Database.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories\EndlessParties.Bookings.Repositories.csproj" />
+		<ProjectReference Include="..\..\..\Api\EndlessParties.Bookings.Api.App\EndlessParties.Bookings.Api.App.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoFixture" />
 		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="Moq" />

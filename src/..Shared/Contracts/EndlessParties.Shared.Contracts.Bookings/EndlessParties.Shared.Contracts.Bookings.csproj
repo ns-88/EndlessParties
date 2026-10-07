@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<Compile Update="BookingCreatedTopic.cs">
+			<DependentUpon>BookingCreatedEvent.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

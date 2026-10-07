@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Bookings\EndlessParties.Shared.Contracts.Bookings.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
@@ -27,6 +28,12 @@
 		</Compile>
 		<Compile Update="Features\GetById\GetBookingByIdQuery.cs">
 			<DependentUpon>GetBookingByIdHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Reserved\SeatsReservedResultCommand.cs">
+			<DependentUpon>SeatsReservedResultHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\Reserved\SeatsReservedResultHandler.Logger.cs">
+			<DependentUpon>SeatsReservedResultHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

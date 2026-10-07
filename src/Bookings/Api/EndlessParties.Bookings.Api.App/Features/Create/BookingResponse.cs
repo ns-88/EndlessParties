@@ -8,9 +8,9 @@ namespace EndlessParties.Bookings.Api.App.Features.Create;
 public class BookingResponse
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор бронирования
     /// </summary>
-    public required Guid Id { get; init; }
+    public required Guid BookingId { get; init; }
 
     /// <summary>
     /// Идентификатор связанного события

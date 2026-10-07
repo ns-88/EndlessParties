@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="EndlessParties.Bookings.Api.Infrastructure.IntegrationTests" />
+		<InternalsVisibleTo Include="EndlessParties.Bookings.Api.App.IntegrationTests" />
 	</ItemGroup>
 
 </Project>
