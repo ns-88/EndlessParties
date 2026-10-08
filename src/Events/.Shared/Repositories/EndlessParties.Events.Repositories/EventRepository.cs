@@ -1,12 +1,12 @@
-﻿using EndlessParties.Events.Database.Database;
+﻿using EndlessParties.Events.Database;
 using EndlessParties.Events.Domain.Errors;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Events.Repositories.Abstractions.Models;
 using EndlessParties.Shared.Contracts.Filters;
 using EndlessParties.Shared.Contracts.Models;
+using EndlessParties.Shared.Exceptions.Extensions;
 using EndlessParties.Shared.Exceptions.Models;
-using EndlessParties.Shared.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EndlessParties.Events.Repositories;

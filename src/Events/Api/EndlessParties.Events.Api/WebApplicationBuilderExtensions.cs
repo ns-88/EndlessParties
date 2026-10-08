@@ -1,10 +1,12 @@
 ﻿using EndlessParties.Events.Api.App;
 using EndlessParties.Events.Api.Infrastructure;
+using EndlessParties.Events.Api.Settings;
+using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
-using EndlessParties.Shared.Utils.Logger;
+using EndlessParties.Shared.Utils.WebApiExtensions;
 using EndlessParties.Shared.Validations;
 
 namespace EndlessParties.Events.Api;
@@ -74,11 +76,26 @@ public static class WebApplicationBuilderExtensions
     private static InfrastructureSettings GetInfrastructureSettings(IConfiguration config)
     {
         var kafkaEnvironment = config["Kafka:Environment"]!;
-        var kafkaEventBus = config
+        var kafkaConnectionSettings = config
             .GetRequiredSection("Kafka")
-            .Get<KafkaEventBusSettings>();
+            .Get<KafkaConnectionSettings>()!;
 
-        kafkaEventBus?.AddProducer<BookingCreatedEvent>($"{kafkaEnvironment}.endless-parties.bookings.created-new.1");
+        var kafkaSettings = new KafkaSettingsBuilder(kafkaConnectionSettings)
+            .WithProducers(setup =>
+            {
+                setup.Add<SeatsReservedEvent>(string.Format(SeatsReservedEventTopic.TopicName, kafkaEnvironment), x => x.BookingId.ToString());
+            })
+            .WithConsumers(typeof(Program).Assembly, setup =>
+            {
+                setup
+                    .Add<BookingCreatedEvent>(
+                        string.Format(BookingCreatedTopic.GroupName, kafkaEnvironment),
+                        string.Format(BookingCreatedTopic.TopicName, kafkaEnvironment), KafkaBatchSettings.Default)
+                    .Add<BookingCancelledEvent>(
+                        string.Format(BookingCancelledTopic.GroupName, kafkaEnvironment),
+                        string.Format(BookingCancelledTopic.TopicName, kafkaEnvironment), KafkaBatchSettings.Default);
+            })
+            .Build();
 
         return new InfrastructureSettings
         {
@@ -87,7 +104,7 @@ public static class WebApplicationBuilderExtensions
                 ConnectionString = config.GetConnectionString("Postgres:Events")!,
                 RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
             },
-            KafkaEventBus = kafkaEventBus!
+            KafkaEventBus = kafkaSettings
         };
     }
 }

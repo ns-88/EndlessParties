@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  identity-db:
+    image: 'postgres:16-alpine'
+    container_name: endless-parties-identity-db
+    restart: always
+    environment:
+      POSTGRES_DB: endless_parties_identity
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'identity-db-data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  events-db:
+    image: 'postgres:16-alpine'
+    container_name: endless-parties-events-db
+    restart: always
+    environment:
+      POSTGRES_DB: endless_parties_events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5433:5432'
+    volumes:
+      - 'events-db-data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  bookings-db:
+    image: 'postgres:16-alpine'
+    container_name: endless-parties-bookings-db
+    restart: always
+    environment:
+      POSTGRES_DB: endless_parties_bookings
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5434:5432'
+    volumes:
+      - 'bookings-db-data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  kafka:
+    image: 'apache/kafka:3.9.1'
+    container_name: endless-parties-kafka
+    restart: always
+    ports:
+      - '9092:9092'
+      - '9094:9094'
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:29093'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENERS: 'CONTROLLER://:29093,PLAINTEXT://:9092,EXTERNAL://:9094'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    volumes:
+      - 'kafka-data:/var/lib/kafka/data'
+
+volumes:
+  identity-db-data:
+  events-db-data:
+  bookings-db-data:
+  kafka-data:

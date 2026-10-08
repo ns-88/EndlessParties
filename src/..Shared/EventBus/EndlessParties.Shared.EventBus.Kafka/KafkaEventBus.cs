@@ -23,7 +23,7 @@ internal class KafkaEventBus : IEventBus
     /// <summary>
     /// Конструктор
     /// </summary>
-    public KafkaEventBus(KafkaEventBusSettings settings, IProducerAccessor producerAccessor)
+    public KafkaEventBus(KafkaSettings settings, IProducerAccessor producerAccessor)
     {
         _producers = settings.Producers;
         _producerAccessor = producerAccessor;
@@ -33,15 +33,25 @@ internal class KafkaEventBus : IEventBus
     /// <inheritdoc />
     public async Task Publish(object @event, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(@event);
+
         var eventType = @event.GetType();
 
-        if (!_producers.TryGetValue(eventType, out var producerSettings))
+        try
         {
-            throw new InvalidOperationException($"Не найден поставщик событий для указанного типа. Тип события: \"{eventType.Name}\"");
+            if (!_producers.TryGetValue(eventType, out var producerSettings))
+            {
+                throw new InvalidOperationException("Не найден поставщик событий для указанного типа");
+            }
+
+            var eventKey = producerSettings.KeyProvider.GetKey(@event);
+            var producer = _producerAccessor.GetProducer(producerSettings.Name);
+
+            await producer.ProduceAsync(eventKey, @event);
         }
-
-        var producer = _producerAccessor.GetProducer(producerSettings.Name);
-
-        await producer.ProduceAsync(Guid.NewGuid().ToString(), @event);
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Ошибка публикации события в очередь Kafka. Тип события: \"{eventType.Name}\"", ex);
+        }
     }
 }

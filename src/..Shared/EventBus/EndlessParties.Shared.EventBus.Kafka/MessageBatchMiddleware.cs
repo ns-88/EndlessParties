@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace EndlessParties.Shared.EventBus.Kafka;
 
 /// <summary>
-/// ПО промежуточного слоя для доступа к списку событий, получаемых из очереди
+/// ПО промежуточного слоя для доступа к списку сообщений, получаемых из очереди
 /// </summary>
 internal partial class MessageBatchMiddleware<T> : IMessageMiddleware where T : class
 {
@@ -34,10 +34,12 @@ internal partial class MessageBatchMiddleware<T> : IMessageMiddleware where T : 
     /// <inheritdoc />
     public async Task Invoke(IMessageContext context, MiddlewareDelegate next)
     {
+        var messageType = typeof(T).Name;
+        var topicName = context.ConsumerContext.Topic;
         var batch = context.GetMessagesBatch();
-
-        LogEventsForProcessingReceived(batch.Count, typeof(T).Name, context.ConsumerContext.Topic);
-
+        
+        LogMessagesForProcessingReceived(batch.Count, messageType, topicName);
+        
         try
         {
             var typedList = batch.Select(x => x.Message.Value).Cast<T>().ToArray();
@@ -48,7 +50,7 @@ internal partial class MessageBatchMiddleware<T> : IMessageMiddleware where T : 
         }
         catch (Exception ex)
         {
-            LogEventsProcessingError(ex, typeof(T).Name, context.ConsumerContext.Topic);
+            LogMessagesProcessingError(ex, messageType, topicName);
         }
 
         await next(context);

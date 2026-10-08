@@ -2,9 +2,9 @@
 using EndlessParties.Identity.Domain.Errors;
 using EndlessParties.Identity.Domain.Models;
 using EndlessParties.Identity.Repositories.Abstractions;
+using EndlessParties.Shared.Exceptions.Extensions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
-using EndlessParties.Shared.Utils.Exceptions;
 using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 using Mediator;
 

@@ -3,7 +3,7 @@ using EndlessParties.Identity.Api.Infrastructure;
 using EndlessParties.Identity.Cryptography.Settings;
 using EndlessParties.Shared.Exceptions;
 using EndlessParties.Shared.Utils.Database.Settings;
-using EndlessParties.Shared.Utils.Logger;
+using EndlessParties.Shared.Utils.WebApiExtensions;
 using EndlessParties.Shared.Validations;
 
 namespace EndlessParties.Identity.Api;

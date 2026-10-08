@@ -14,4 +14,9 @@ public class KafkaProducerSettings
     /// Наименование топика
     /// </summary>
     public required string TopicName { get; init; }
+
+    /// <summary>
+    /// Провайдер для получения значения ключа события
+    /// </summary>
+    public required IKafkaEventKeyProvider KeyProvider { get; init; }
 }

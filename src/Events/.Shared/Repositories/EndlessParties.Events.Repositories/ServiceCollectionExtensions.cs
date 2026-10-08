@@ -13,9 +13,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services
-            .AddScoped<IEventRepository, EventRepository>()
-            .AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
 
         return services;
     }

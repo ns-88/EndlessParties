@@ -1,5 +1,4 @@
-﻿using EndlessParties.Identity.Cryptography.Abstractions.Models;
-using EndlessParties.Identity.Cryptography.Settings;
+﻿using EndlessParties.Identity.Cryptography.Settings;
 using EndlessParties.Shared.Utils.Database.Settings;
 using FluentValidation;
 

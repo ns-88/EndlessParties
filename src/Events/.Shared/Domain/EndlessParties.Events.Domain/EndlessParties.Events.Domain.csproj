@@ -11,7 +11,7 @@
 		<Compile Update="Errors\EventsErrors.cs">
 			<DependentUpon>ApplicationErrors.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Errors\BookingsErrors.cs">
+		<Compile Update="Errors\SeatsErrors.cs">
 			<DependentUpon>ApplicationErrors.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>

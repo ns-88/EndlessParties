@@ -11,9 +11,19 @@ public class KafkaConsumerSettings
     public required Type EventType { get; init; }
 
     /// <summary>
-    /// Тип потребителя
+    /// Тип потребителя-посредника
     /// </summary>
-    public required Type ConsumerType { get; init; }
+    public required Type ProxyType { get; init; }
+
+    /// <summary>
+    /// Тип целевого потребителя (абстракция)
+    /// </summary>
+    public required Type TargetInterfaceType { get; init; }
+
+    /// <summary>
+    /// Тип целевого потребителя (реализация)
+    /// </summary>
+    public required Type TargetImplementationType { get; init; }
 
     /// <summary>
     /// Идентификатор группы

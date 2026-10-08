@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database.Migrations\EndlessParties.Shared.Utils.Database.Migrations.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
+		<ProjectReference Include="..\..\Domain\EndlessParties.Bookings.Domain\EndlessParties.Bookings.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+	</ItemGroup>
+
+</Project>

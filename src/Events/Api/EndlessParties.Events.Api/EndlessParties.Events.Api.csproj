@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Bookings\EndlessParties.Shared.Contracts.Bookings.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions\EndlessParties.Shared.Exceptions.csproj" />
-		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Logger\EndlessParties.Shared.Utils.Logger.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.WebApiExtensions\EndlessParties.Shared.Utils.WebApiExtensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.HttpUserContext\EndlessParties.Shared.Utils.HttpUserContext.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Validations\EndlessParties.Shared.Validations\EndlessParties.Shared.Validations.csproj" />
 		<ProjectReference Include="..\..\.Shared\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
@@ -13,7 +14,6 @@
 	<ItemGroup>
 		<PackageReference Include="Mediator.Abstractions" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,12 +28,6 @@
 		</Compile>
 		<Compile Update="PresentationSettingsValidator.cs">
 			<DependentUpon>PresentationSettings.cs</DependentUpon>
-		</Compile>
-		<Compile Update="IdentitySettings.cs">
-			<DependentUpon>ServiceCollectionExtensions.cs</DependentUpon>
-		</Compile>
-		<Compile Update="IdentitySettingsValidator.cs">
-			<DependentUpon>IdentitySettings.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

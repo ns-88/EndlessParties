@@ -5,6 +5,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="KafkaFlow" />
 		<PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" />
 		<PackageReference Include="KafkaFlow.Serializer.JsonCore" />
@@ -14,6 +15,42 @@
 	<ItemGroup>
 		<Compile Update="MessageBatchMiddleware.Logging.cs">
 			<DependentUpon>MessageBatchMiddleware.cs</DependentUpon>
+		</Compile>
+		<Compile Update="MessageHandler.Logging.cs">
+			<DependentUpon>MessageHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaConnectionSettings.cs">
+			<DependentUpon>KafkaSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaProducerSettings.cs">
+			<DependentUpon>KafkaSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaConsumerBatchSettings.cs">
+			<DependentUpon>KafkaConsumerSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaConsumerSettings.cs">
+			<DependentUpon>KafkaSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaSettingsValidator.cs">
+			<DependentUpon>KafkaSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaProducerBuilder.cs">
+			<DependentUpon>KafkaSettingsBuilder.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaConsumerBuilder.cs">
+			<DependentUpon>KafkaSettingsBuilder.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaBatchSettings.cs">
+			<DependentUpon>KafkaConsumerBuilder.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaConsumerSettingsValidator.cs">
+			<DependentUpon>KafkaConsumerSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\KafkaProducerSettingsValidator.cs">
+			<DependentUpon>KafkaProducerSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IKafkaEventKeyProvider.cs">
+			<DependentUpon>KafkaEventKeyProvider.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
