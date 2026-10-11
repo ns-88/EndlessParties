@@ -39,7 +39,7 @@ public static class WebApplicationBuilderExtensions
     /// </summary>
     private static void AddDependencyValidation(this WebApplicationBuilder builder)
     {
-        if (!builder.Environment.IsEnvironment("local"))
+        if (!builder.Environment.IsDevelopment())
         {
             return;
         }
