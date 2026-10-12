@@ -329,3 +329,4 @@ ASALocalRun/
 ocelot.json
 /src/Events/Api/EndlessParties.Events.Api/Properties/launchSettings.json
 /src/Identity/Api/EndlessParties.Identity.Api/Properties/launchSettings.json
+/.deploy/.env

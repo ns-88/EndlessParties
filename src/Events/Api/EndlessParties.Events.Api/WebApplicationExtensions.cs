@@ -43,7 +43,7 @@ public static class WebApplicationExtensions
     /// </summary>
     private static WebApplication AddSwagger(this WebApplication application)
     {
-        if (!application.Environment.IsEnvironment("local"))
+        if (!application.Environment.IsDevelopment())
         {
             return application;
         }
@@ -65,7 +65,7 @@ public static class WebApplicationExtensions
     /// </summary>
     private static void ApplyMigrations(this WebApplication application)
     {
-        if (!application.Environment.IsEnvironment("local"))
+        if (!application.Environment.IsDevelopment())
         {
             return;
         }
