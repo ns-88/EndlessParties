@@ -51,10 +51,16 @@ public class KafkaBusLifecycleManager : IHostedLifecycleService
     }
 
     /// <inheritdoc />
-    public async Task StartedAsync(CancellationToken cancellationToken)
+    public Task StartedAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public async Task StartingAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Создание и запуск шины событий Kafka");
-
+        
         try
         {
             _kafkaBus = _serviceProvider.CreateKafkaBus();
@@ -65,13 +71,9 @@ public class KafkaBusLifecycleManager : IHostedLifecycleService
         catch (Exception ex)
         {
             _logger.LogCritical(ex, "Ошибка создания и запуска шины событий Kafka");
-        }
-    }
 
-    /// <inheritdoc />
-    public Task StartingAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
+            throw;
+        }
     }
 
     /// <inheritdoc />

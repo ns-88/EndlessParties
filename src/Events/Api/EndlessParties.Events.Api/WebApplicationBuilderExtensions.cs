@@ -1,6 +1,7 @@
 ﻿using EndlessParties.Events.Api.App;
 using EndlessParties.Events.Api.Infrastructure;
 using EndlessParties.Events.Api.Settings;
+using EndlessParties.Shared.Cache.Redis.Settings;
 using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.Contracts.Events;
 using EndlessParties.Shared.EventBus.Kafka.Settings;
@@ -104,7 +105,10 @@ public static class WebApplicationBuilderExtensions
                 ConnectionString = config.GetConnectionString("Postgres:Events")!,
                 RetryReconnectDatabaseCount = int.Parse(config["Database:RetryOnFailureCount"]!)
             },
-            KafkaEventBus = kafkaSettings
+            KafkaEventBus = kafkaSettings,
+            RedisClient = config
+                .GetRequiredSection("Redis")
+                .Get<RedisClientSettings>()!
         };
     }
 }

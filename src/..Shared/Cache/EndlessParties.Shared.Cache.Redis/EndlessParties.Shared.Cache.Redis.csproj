@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="StackExchange.Redis" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+		<PackageReference Include="FluentValidation" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Settings\RedisClientSettingsValidator.cs">
+			<DependentUpon>RedisClientSettings.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

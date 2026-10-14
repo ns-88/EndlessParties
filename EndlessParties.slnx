@@ -4,6 +4,10 @@
     <File Path="Directory.Packages.props" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/..Shared/Cache/">
+    <Project Path="src/..Shared/Cache/EndlessParties.Shared.Cache.Abstractions/EndlessParties.Shared.Cache.Abstractions.csproj" Id="d53220f4-cb53-4916-8639-ac5a1bd598d3" />
+    <Project Path="src/..Shared/Cache/EndlessParties.Shared.Cache.Redis/EndlessParties.Shared.Cache.Redis.csproj" Id="d783d976-94d4-4a2e-83e0-ab64a2703ce9" />
+  </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Bookings/EndlessParties.Shared.Contracts.Bookings.csproj" Id="94e367ac-9500-4798-9d87-78bf82e67a5f" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
