@@ -12,16 +12,17 @@ internal class RedisConnectionProvider : IRedisConnectionProvider, IAsyncDisposa
     private readonly RedisClientSettings _settings;
 
     /// <summary>
+    /// Подключение к серверу Redis
+    /// </summary>
+    private ConnectionMultiplexer? _connection;
+
+    /// <summary>
     /// Адрес подключения в виде строки
     /// </summary>
     public string Address { get; }
 
-    #region Connection
-    private IConnectionMultiplexer? _connection;
     /// <inheritdoc />
-    public IConnectionMultiplexer Connection =>
-        _connection ?? throw new InvalidOperationException("Подключение к серверу Redis не инициализировано");
-    #endregion
+    public IConnectionMultiplexer Connection => GetConnection();
 
 
     /// <summary>
@@ -69,5 +70,13 @@ internal class RedisConnectionProvider : IRedisConnectionProvider, IAsyncDisposa
 
         await _connection.CloseAsync();
         await _connection.DisposeAsync();
+    }
+
+    /// <summary>
+    /// Получение объекта подключения
+    /// </summary>
+    private ConnectionMultiplexer GetConnection()
+    {
+        return _connection ?? throw new InvalidOperationException("Подключение к серверу Redis не инициализировано");
     }
 }

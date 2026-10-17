@@ -19,7 +19,6 @@ public class SeatsReservedConsumer : IEventBusConsumer<SeatsReservedEvent>
     /// <summary>
     /// Конструктор
     /// </summary>
-    /// <param name="mediator"></param>
     public SeatsReservedConsumer(IMediator mediator)
     {
         _mediator = mediator;

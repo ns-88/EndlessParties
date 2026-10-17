@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Models\EndlessParties.Shared.Exceptions.Models.csproj" />
+	  <ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.Ddd\EndlessParties.Shared.Utils.Ddd.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

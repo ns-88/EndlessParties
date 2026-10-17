@@ -16,4 +16,8 @@
 		<InternalsVisibleTo Include="EndlessParties.IntegrationTests.Infrastructure" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\EndlessParties.Shared.Utils.Ddd\EndlessParties.Shared.Utils.Ddd.csproj" />
+	</ItemGroup>
+
 </Project>

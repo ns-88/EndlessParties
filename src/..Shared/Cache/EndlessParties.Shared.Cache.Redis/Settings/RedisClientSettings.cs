@@ -3,7 +3,7 @@
 namespace EndlessParties.Shared.Cache.Redis.Settings;
 
 /// <summary>
-/// Настройки клиента Redis
+/// Настройки клиента СУБД Redis
 /// </summary>
 public class RedisClientSettings
 {

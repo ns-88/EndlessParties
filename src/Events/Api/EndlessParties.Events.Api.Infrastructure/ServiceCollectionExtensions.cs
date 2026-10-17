@@ -1,3 +1,4 @@
+using EndlessParties.Events.Data;
 using EndlessParties.Events.Database;
 using EndlessParties.Events.Repositories;
 using EndlessParties.Shared.Cache.Redis;
@@ -23,6 +24,7 @@ public static class ServiceCollectionExtensions
         services
             .AddTransient<IDateTimeProvider, DateTimeProvider>()
             .AddRepositories()
+            .AddDataProviders()
             .AddKafkaEventBus(settings.KafkaEventBus)
             .AddEventsDatabase(settings.EventsDatabase)
             .AddRedisClient(settings.RedisClient);

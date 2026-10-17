@@ -1,12 +1,14 @@
 ﻿using EndlessParties.Events.Domain.Errors;
+using EndlessParties.Events.Domain.Events;
 using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Utils.Ddd;
 
 namespace EndlessParties.Events.Domain.Models;
 
 /// <summary>
 /// Мероприятие (событие)
 /// </summary>
-public partial class Event
+public partial class Event : AggregateRoot
 {
     /// <summary>
     /// Максимальная длина наименования
@@ -107,6 +109,7 @@ public partial class Event
         }
 
         AvailableSeats -= count;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
 
         return true;
     }
@@ -132,6 +135,7 @@ public partial class Event
         }
 
         AvailableSeats += count;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -148,6 +152,7 @@ public partial class Event
     public void ChangeTitle(string title)
     {
         Title = ValidateTitle(title);
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -164,6 +169,7 @@ public partial class Event
 
         AvailableSeats = totalSeats - BookedSeats;
         TotalSeats = totalSeats;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -172,6 +178,7 @@ public partial class Event
     public void ChangeDescription(string? description)
     {
         Description = ValidateDescription(description);
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -183,5 +190,6 @@ public partial class Event
 
         StartAt = startAt;
         EndAt = endAt;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 }
