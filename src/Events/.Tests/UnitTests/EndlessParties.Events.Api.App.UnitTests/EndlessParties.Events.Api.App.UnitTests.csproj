@@ -17,6 +17,7 @@
 		<PackageReference Include="Moq.AutoMock" />
 		<PackageReference Include="xunit.v3.mtp-v2" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Mediator.Abstractions" />
 	</ItemGroup>
 
 </Project>

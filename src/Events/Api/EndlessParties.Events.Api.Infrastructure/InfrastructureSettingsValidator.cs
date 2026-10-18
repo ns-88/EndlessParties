@@ -15,5 +15,8 @@ public class InfrastructureSettingsValidator : AbstractValidator<InfrastructureS
 
         RuleFor(x => x.KafkaEventBus)
             .NotEmpty();
+
+        RuleFor(x => x.RedisClient)
+            .NotEmpty();
     }
 }

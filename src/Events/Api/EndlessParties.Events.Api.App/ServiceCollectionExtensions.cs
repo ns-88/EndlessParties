@@ -1,3 +1,4 @@
+using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EndlessParties.Events.Api.App;
@@ -14,10 +15,15 @@ public static class ServiceCollectionExtensions
     {
         services.AddMediator(setup =>
         {
-            setup.Namespace = "EndlessParties.Events.Api.App.Mediator";
+            setup.Namespace = "EndlessParties.Events.Api.App";
             setup.ServiceLifetime = ServiceLifetime.Scoped;
             setup.GenerateTypesAsInternal = true;
-            setup.Assemblies = [typeof(ServiceCollectionExtensions).Assembly];
+            setup.Assemblies = 
+            [
+                typeof(ServiceCollectionExtensions).Assembly,
+                typeof(Domain.Models.Event).Assembly
+            ];
+            setup.NotificationPublisherType = typeof(ForeachAwaitPublisher);
         });
 
         return services;

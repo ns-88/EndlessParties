@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\EndlessParties.Shared.Cache.Abstractions\EndlessParties.Shared.Cache.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StackExchange.Redis" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+		<PackageReference Include="FluentValidation" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Settings\RedisClientSettingsValidator.cs">
+			<DependentUpon>RedisClientSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="IRedisConnectionProvider.cs">
+			<DependentUpon>RedisConnectionProvider.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

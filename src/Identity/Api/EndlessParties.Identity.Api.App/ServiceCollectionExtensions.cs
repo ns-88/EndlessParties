@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddMediator(setup =>
         {
-            setup.Namespace = "EndlessParties.Identity.Api.App.Mediator";
+            setup.Namespace = "EndlessParties.Identity.Api.App";
             setup.ServiceLifetime = ServiceLifetime.Scoped;
             setup.GenerateTypesAsInternal = true;
             setup.Assemblies = [typeof(ServiceCollectionExtensions).Assembly];

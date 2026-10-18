@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Cache\EndlessParties.Shared.Cache.Abstractions\EndlessParties.Shared.Cache.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
+		<ProjectReference Include="..\..\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
+		<ProjectReference Include="..\..\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
+		<ProjectReference Include="..\EndlessParties.Events.Data.Abstractions\EndlessParties.Events.Data.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Riok.Mapperly" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="CachingEventDataProvider.cs">
+			<DependentUpon>EventDataProvider.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

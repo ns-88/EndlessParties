@@ -4,7 +4,6 @@
 		<OutputType>Exe</OutputType>
 		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-		<NoWarn>1701;1702;NU1608</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,19 +16,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
-	  <ProjectReference Include="..\..\..\.Shared\Database\EndlessParties.Bookings.Database\EndlessParties.Bookings.Database.csproj" />
-	  <ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories.Abstractions\EndlessParties.Bookings.Repositories.Abstractions.csproj" />
-	  <ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories\EndlessParties.Bookings.Repositories.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.IntegrationTests\EndlessParties.Shared.Utils.IntegrationTests.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Database\EndlessParties.Bookings.Database\EndlessParties.Bookings.Database.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories.Abstractions\EndlessParties.Bookings.Repositories.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Repositories\EndlessParties.Bookings.Repositories\EndlessParties.Bookings.Repositories.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Migrations\DatabaseSchemaTestCase.cs">
-	    <DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
-	  </Compile>
-	  <Compile Update="Migrations\DatabaseSchemaTestData.cs">
-	    <DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
-	  </Compile>
+		<Compile Update="Migrations\DatabaseSchemaTestCase.cs">
+			<DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Migrations\DatabaseSchemaTestData.cs">
+			<DependentUpon>DatabaseSchemaTests.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>

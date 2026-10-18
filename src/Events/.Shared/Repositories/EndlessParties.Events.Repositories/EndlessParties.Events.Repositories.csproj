@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Cache\EndlessParties.Shared.Cache.Abstractions\EndlessParties.Shared.Cache.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
 		<ProjectReference Include="..\..\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />

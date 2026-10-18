@@ -1,4 +1,5 @@
-﻿using EndlessParties.Shared.EventBus.Kafka.Settings;
+﻿using EndlessParties.Shared.Cache.Redis.Settings;
+using EndlessParties.Shared.EventBus.Kafka.Settings;
 using EndlessParties.Shared.Utils.Database.Settings;
 using FluentValidation;
 
@@ -18,6 +19,11 @@ public class InfrastructureSettings
     /// Настройки шины событий на основе очереди Kafka
     /// </summary>
     public required KafkaSettings KafkaEventBus { get; init; }
+
+    /// <summary>
+    /// Настройки клиента Redis
+    /// </summary>
+    public required RedisClientSettings RedisClient { get; init; }
 
 
     /// <summary>

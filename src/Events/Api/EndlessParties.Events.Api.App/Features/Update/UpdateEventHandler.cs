@@ -38,7 +38,7 @@ public class UpdateEventHandler : IRequestHandler<UpdateEventCommand>
     public async ValueTask<Unit> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
     {
         var updateRequest = request.UpdateRequest;
-
+        
         try
         {
             var @event = await _eventRepository.GetById(request.Id, cancellationToken);
