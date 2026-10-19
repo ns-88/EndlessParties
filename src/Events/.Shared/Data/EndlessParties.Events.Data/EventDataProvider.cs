@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EndlessParties.Events.Data.Abstractions;
+﻿using EndlessParties.Events.Data.Abstractions;
 using EndlessParties.Events.Data.Abstractions.Models;
 using EndlessParties.Events.Database;
 using EndlessParties.Events.Domain.Errors;
@@ -38,7 +35,8 @@ internal class EventDataProvider : IEventDataProvider
         try
         {
             @event = await _events
-                .ProjectToDto()
+                .AsNoTracking()
+                .ProjectToEventDto()
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
         catch (Exception ex) when (!ex.IsCancelled(cancellationToken))
@@ -52,5 +50,28 @@ internal class EventDataProvider : IEventDataProvider
         }
 
         return @event;
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<EventTopModel>> GetTop10MostFilled(CancellationToken cancellationToken)
+    {
+        IReadOnlyList<EventTopModel> events;
+
+        try
+        {
+            events = await _events
+                .AsNoTracking()
+                .Where(x => x.TotalSeats > 0 && x.AvailableSeats < x.TotalSeats)
+                .ProjectToEventTopDto()
+                .OrderByDescending(x => x.OccupancyRate)
+                .Take(10)
+                .ToListAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new LogicException(ApplicationErrors.Events.Top10MostFilledReceiving, ex);
+        }
+
+        return events;
     }
 }

@@ -2,9 +2,11 @@
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
 using EndlessParties.Events.Api.App.Features.GetAll;
 using EndlessParties.Events.Api.App.Features.GetById;
+using EndlessParties.Events.Api.App.Features.GetTop10MostFilled;
 using EndlessParties.Events.Api.App.Features.Remove;
 using EndlessParties.Events.Api.App.Features.Shared;
 using EndlessParties.Events.Api.App.Features.Update;
+using EndlessParties.Events.Data.Abstractions.Models;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +65,20 @@ public class EventsController : ControllerBase
     }
 
     /// <summary>
+    /// Получение 10 самых популярных событий
+    /// </summary>
+    [ProducesResponseType(typeof(EventResponse), StatusCodes.Status200OK)]
+    [HttpGet("/top")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IReadOnlyList<EventTopModel>>> GetTop10MostFilled(CancellationToken cancellationToken)
+    {
+        var query = new GetTop10MostFilledQuery();
+        var events = await _mediator.Send(query, cancellationToken);
+
+        return Ok(events);
+    }
+
+    /// <summary>
     /// Создание события
     /// </summary>
     [ProducesResponseType(typeof(EventResponse), StatusCodes.Status201Created)]
@@ -85,7 +101,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [HttpPut("{id:guid}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateEventRequest request, CancellationToken cancellationToken)
     {
         var command = new UpdateEventCommand(id, request);

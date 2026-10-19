@@ -7,7 +7,7 @@ namespace EndlessParties.Events.Api.App.Features.Updated;
 /// <summary>
 /// Обработчик <see cref="EventUpdatedDomainEvent"/>
 /// </summary>
-public class UpdatedEventHandlerTest : INotificationHandler<EventUpdatedDomainEvent>
+public class UpdatedEventHandler : INotificationHandler<EventUpdatedDomainEvent>
 {
     /// <summary>
     /// Клиент <see cref="ICacheClient"/>
@@ -18,7 +18,7 @@ public class UpdatedEventHandlerTest : INotificationHandler<EventUpdatedDomainEv
     /// <summary>
     /// Конструктор
     /// </summary>
-    public UpdatedEventHandlerTest(ICacheClient cacheClient)
+    public UpdatedEventHandler(ICacheClient cacheClient)
     {
         _cacheClient = cacheClient;
     }
