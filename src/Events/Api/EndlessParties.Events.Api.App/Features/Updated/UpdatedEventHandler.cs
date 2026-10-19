@@ -1,5 +1,6 @@
 ﻿using EndlessParties.Events.Domain.Events;
 using EndlessParties.Shared.Cache.Abstractions;
+using EndlessParties.Shared.Contracts.Cache;
 using Mediator;
 
 namespace EndlessParties.Events.Api.App.Features.Updated;
@@ -27,7 +28,7 @@ public class UpdatedEventHandler : INotificationHandler<EventUpdatedDomainEvent>
     /// <inheritdoc />
     public async ValueTask Handle(EventUpdatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var key = $"events:{notification.Id}";
+        var key = string.Format(EventsKeys.Single, notification.Id);
         await _cacheClient.Remove(key);
     }
 }

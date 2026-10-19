@@ -70,14 +70,14 @@ internal class RedisLifecycleManager : IHostedLifecycleService
         {
             await _connectionProvider.Initialize();
 
-            if (_connectionProvider.Connection.IsConnected)
+            if (_connectionProvider.Connection?.IsConnected == true)
             {
                 _logger.LogInformation("Установлено подключение к серверу Redis. Адрес: \"{RedisAddress}\"",
                     _connectionProvider.Address);
             }
             else
             {
-                _logger.LogWarning("Не установлено подключение к серверу Redis. Адрес: \"{RedisAddress}\"",
+                _logger.LogWarning("Подключение к серверу Redis не было установлено. Адрес: \"{RedisAddress}\"",
                     _connectionProvider.Address);
             }
         }

@@ -18,7 +18,7 @@ internal class RedisCacheClient : ICacheClient
     /// <summary>
     /// Объект управления базой данных
     /// </summary>
-    private readonly IDatabase _database;
+    private readonly IDatabase? _database;
 
 
     /// <summary>
@@ -26,7 +26,7 @@ internal class RedisCacheClient : ICacheClient
     /// </summary>
     public RedisCacheClient(IRedisConnectionProvider connectionProvider, ILoggerFactory loggerFactory)
     {
-        _database = connectionProvider.Connection.GetDatabase();
+        _database = connectionProvider.Connection?.GetDatabase();
         _logger = loggerFactory.CreateLogger(nameof(RedisCacheClient));
     }
 
@@ -34,6 +34,8 @@ internal class RedisCacheClient : ICacheClient
     /// <inheritdoc />
     public async Task Set<T>(string key, T value, TimeSpan? expired = null) where T : class
     {
+        if (_database == null) return;
+
         try
         {
             var textValue = JsonSerializer.Serialize(value);
@@ -49,6 +51,8 @@ internal class RedisCacheClient : ICacheClient
     public async Task<T?> Get<T>(string key) where T : class
     {
         T? value = null;
+
+        if (_database == null) return value;
 
         try
         {
@@ -69,6 +73,8 @@ internal class RedisCacheClient : ICacheClient
     /// <inheritdoc />
     public async Task Remove(string key)
     {
+        if (_database == null) return;
+
         try
         {
             await _database.KeyDeleteAsync(key);

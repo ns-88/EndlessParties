@@ -1,7 +1,8 @@
 ﻿using AutoFixture;
 using EndlessParties.Events.Api.App.Features.GetById;
-using EndlessParties.Events.Api.App.Features.Shared;
 using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
+using EndlessParties.Events.Data.Abstractions;
+using EndlessParties.Events.Data.Abstractions.Models;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using FluentAssertions;
@@ -61,9 +62,9 @@ public class GetEventByIdHandlerTests
                 .FromFactory((string title, string? description) => new Event(title, TotalSeats, description, StartAt, EndAt))
                 .Create();
 
-            var eventResponse = new EventResponse
+            var eventModel = new EventModel
             {
-                Id = Guid.NewGuid(),
+                Id = @event.Id,
                 Title = @event.Title,
                 TotalSeats = @event.TotalSeats,
                 AvailableSeats = @event.TotalSeats,
@@ -73,18 +74,18 @@ public class GetEventByIdHandlerTests
             };
 
             _autoMocker
-                .GetMock<IEventRepository>()
+                .GetMock<IEventDataProvider>()
                 .Setup(x => x.GetById(eventId, CancellationToken.None))
-                .ReturnsAsync(@event);
+                .ReturnsAsync(eventModel);
 
             // #### Act ####
             var actualResult = await handler.Handle(query, CancellationToken.None);
 
             // #### Assert ####
-            actualResult.Should().BeEquivalentTo(eventResponse, x => x.Excluding(e => e.Id));
+            actualResult.Should().BeEquivalentTo(eventModel);
 
             _autoMocker
-                .GetMock<IEventRepository>()
+                .GetMock<IEventDataProvider>()
                 .Verify(x => x.GetById(eventId, CancellationToken.None), Times.Once);
 
             _autoMocker.VerifyNoOtherCalls();
