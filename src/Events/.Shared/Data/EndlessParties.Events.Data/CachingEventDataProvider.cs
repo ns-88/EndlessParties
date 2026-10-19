@@ -1,6 +1,7 @@
 ﻿using EndlessParties.Events.Data.Abstractions;
 using EndlessParties.Events.Data.Abstractions.Models;
 using EndlessParties.Shared.Cache.Abstractions;
+using EndlessParties.Shared.Contracts.Cache;
 
 namespace EndlessParties.Events.Data;
 
@@ -24,10 +25,11 @@ internal class CachingEventDataProvider : IEventDataProvider
     /// </summary>
     private readonly TimeSpan _ttlTop10MostFilledEmpty = TimeSpan.FromMinutes(1);
 
+
     /// <summary>
     /// Внутренний провайдер данных для работы с событиями
     /// </summary>
-    private readonly EventDataProvider _innerDataProvider;
+    private readonly IEventDataProvider _innerDataProvider;
 
     /// <summary>
     /// Клиент <see cref="ICacheClient"/>
@@ -38,7 +40,7 @@ internal class CachingEventDataProvider : IEventDataProvider
     /// <summary>
     /// Конструктор
     /// </summary>
-    public CachingEventDataProvider(EventDataProvider innerDataProvider, ICacheClient cacheClient)
+    public CachingEventDataProvider(IEventDataProvider innerDataProvider, ICacheClient cacheClient)
     {
         _innerDataProvider = innerDataProvider;
         _cacheClient = cacheClient;
@@ -48,7 +50,7 @@ internal class CachingEventDataProvider : IEventDataProvider
     /// <inheritdoc />
     public async Task<EventModel> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var key = $"events:{id}";
+        var key = string.Format(EventsKeys.Single, id);
         var @event = await _cacheClient.Get<EventModel>(key);
         if (@event != null)
         {
@@ -64,8 +66,7 @@ internal class CachingEventDataProvider : IEventDataProvider
     /// <inheritdoc />
     public async Task<IReadOnlyList<EventTopModel>> GetTop10MostFilled(CancellationToken cancellationToken)
     {
-        const string key = "events:top10";
-        var events = await _cacheClient.Get<IReadOnlyList<EventTopModel>>(key);
+        var events = await _cacheClient.Get<IReadOnlyList<EventTopModel>>(EventsKeys.Top10MostFilled);
         if (events != null)
         {
             return events;
@@ -74,11 +75,11 @@ internal class CachingEventDataProvider : IEventDataProvider
         events = await _innerDataProvider.GetTop10MostFilled(cancellationToken);
         if (events.Count != 0)
         {
-            await _cacheClient.Set(key, events, _ttlTop10MostFilled);
+            await _cacheClient.Set(EventsKeys.Top10MostFilled, events, _ttlTop10MostFilled);
         }
         else
         {
-            await _cacheClient.Set(key, events, _ttlTop10MostFilledEmpty);
+            await _cacheClient.Set(EventsKeys.Top10MostFilled, events, _ttlTop10MostFilledEmpty);
         }
 
         return events;

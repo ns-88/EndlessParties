@@ -10,6 +10,7 @@
   </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Bookings/EndlessParties.Shared.Contracts.Bookings.csproj" Id="94e367ac-9500-4798-9d87-78bf82e67a5f" />
+    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Cache/EndlessParties.Shared.Contracts.Cache.csproj" Id="3ab9d95e-36e2-45f5-b572-bc9def0dbecb" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" />
   </Folder>
@@ -87,6 +88,7 @@
   </Folder>
   <Folder Name="/Events/.Tests/UnitTests/">
     <Project Path="src/Events/.Tests/UnitTests/EndlessParties.Events.Api.App.UnitTests/EndlessParties.Events.Api.App.UnitTests.csproj" />
+    <Project Path="src/Events/.Tests/UnitTests/EndlessParties.Events.Api.Infrastructure.UnitTests/EndlessParties.Events.Api.Infrastructure.UnitTests.csproj" Id="3f883c3d-514c-41c2-9b47-f8f8eb56ce04" />
   </Folder>
   <Folder Name="/Events/Api/">
     <Project Path="src/Events/Api/EndlessParties.Events.Api.App/EndlessParties.Events.Api.App.csproj" Id="e287640a-9bc5-4ff8-a30f-3a673e4e9654" />

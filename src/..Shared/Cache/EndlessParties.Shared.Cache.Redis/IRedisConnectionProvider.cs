@@ -10,5 +10,5 @@ internal interface IRedisConnectionProvider
     /// <summary>
     /// Подключение к серверу Redis
     /// </summary>
-    IConnectionMultiplexer Connection { get; }
+    IConnectionMultiplexer? Connection { get; }
 }

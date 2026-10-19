@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\..Shared\Cache\EndlessParties.Shared.Cache.Abstractions\EndlessParties.Shared.Cache.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Cache\EndlessParties.Shared.Contracts.Cache.csproj" />
 		<ProjectReference Include="..\..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
 		<ProjectReference Include="..\..\Database\EndlessParties.Events.Database\EndlessParties.Events.Database.csproj" />
 		<ProjectReference Include="..\..\Domain\EndlessParties.Events.Domain\EndlessParties.Events.Domain.csproj" />
@@ -16,6 +17,10 @@
 		<Compile Update="CachingEventDataProvider.cs">
 			<DependentUpon>EventDataProvider.cs</DependentUpon>
 		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="EndlessParties.Events.Api.Infrastructure.UnitTests" />
 	</ItemGroup>
 
 </Project>

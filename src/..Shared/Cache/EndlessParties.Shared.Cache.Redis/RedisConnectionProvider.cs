@@ -12,17 +12,12 @@ internal class RedisConnectionProvider : IRedisConnectionProvider, IAsyncDisposa
     private readonly RedisClientSettings _settings;
 
     /// <summary>
-    /// Подключение к серверу Redis
-    /// </summary>
-    private ConnectionMultiplexer? _connection;
-
-    /// <summary>
     /// Адрес подключения в виде строки
     /// </summary>
     public string Address { get; }
 
     /// <inheritdoc />
-    public IConnectionMultiplexer Connection => GetConnection();
+    public IConnectionMultiplexer? Connection { get; private set; }
 
 
     /// <summary>
@@ -40,11 +35,6 @@ internal class RedisConnectionProvider : IRedisConnectionProvider, IAsyncDisposa
     /// </summary>
     public async Task Initialize()
     {
-        if (_connection != null)
-        {
-            return;
-        }
-
         var connectTimeout = _settings.ConnectTimeout * (int)TimeSpan.MillisecondsPerSecond;
         var queryTimeout = _settings.QueryTimeout * (int)TimeSpan.MillisecondsPerSecond;
         var options = new ConfigurationOptions
@@ -57,26 +47,18 @@ internal class RedisConnectionProvider : IRedisConnectionProvider, IAsyncDisposa
         };
         options.EndPoints.Add(_settings.Host, _settings.Port);
 
-        _connection = await ConnectionMultiplexer.ConnectAsync(options);
+        Connection = await ConnectionMultiplexer.ConnectAsync(options);
     }
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        if (_connection == null)
+        if (Connection == null)
         {
             return;
         }
 
-        await _connection.CloseAsync();
-        await _connection.DisposeAsync();
-    }
-
-    /// <summary>
-    /// Получение объекта подключения
-    /// </summary>
-    private ConnectionMultiplexer GetConnection()
-    {
-        return _connection ?? throw new InvalidOperationException("Подключение к серверу Redis не инициализировано");
+        await Connection.CloseAsync();
+        await Connection.DisposeAsync();
     }
 }

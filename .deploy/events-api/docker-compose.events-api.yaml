@@ -13,6 +13,8 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__Postgres__Events=Host=events-db;Port=5432;Database=endless-parties-events;Username=${POSTGRES_DB_USER};Password=${POSTGRES_DB_PASSWORD}
       - Kafka__BrokerAddress=kafka:9092
+      - Redis__Host=redis
+      - Redis__Port=6379
       - Identity__JwtToken__SecretKey=${JWT_SECRET_KEY}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
