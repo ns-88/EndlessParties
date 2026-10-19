@@ -1,7 +1,7 @@
 ﻿namespace EndlessParties.Events.Data.Abstractions.Models;
 
 /// <summary>
-/// Модель данных мероприятия (события)
+/// Модель мероприятия (события)
 /// </summary>
 public class EventModel
 {

@@ -81,6 +81,11 @@ public static partial class ApplicationErrors
         public const string ReceivingById = "Ошибка получения события по идентификатору. Id: \"{0}\"";
 
         /// <summary>
+        /// Ошибка получения 10 самых популярных событий
+        /// </summary>
+        public const string Top10MostFilledReceiving = "Ошибка получения 10 самых популярных событий";
+
+        /// <summary>
         /// Ошибка создания
         /// </summary>
         public const string Creation = "Ошибка создания события";

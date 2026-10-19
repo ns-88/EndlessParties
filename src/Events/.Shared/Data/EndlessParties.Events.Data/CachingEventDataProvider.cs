@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EndlessParties.Events.Data.Abstractions;
+﻿using EndlessParties.Events.Data.Abstractions;
 using EndlessParties.Events.Data.Abstractions.Models;
-using EndlessParties.Events.Domain.Models;
 using EndlessParties.Shared.Cache.Abstractions;
 
 namespace EndlessParties.Events.Data;
@@ -17,6 +13,16 @@ internal class CachingEventDataProvider : IEventDataProvider
     /// TTL одиночного события
     /// </summary>
     private readonly TimeSpan _ttlSingleEvent = TimeSpan.FromMinutes(5);
+
+    /// <summary>
+    /// TTL списка 10 самых популярных событий
+    /// </summary>
+    private readonly TimeSpan _ttlTop10MostFilled = TimeSpan.FromMinutes(15);
+
+    /// <summary>
+    /// TTL списка 10 самых популярных событий (если список пуст)
+    /// </summary>
+    private readonly TimeSpan _ttlTop10MostFilledEmpty = TimeSpan.FromMinutes(1);
 
     /// <summary>
     /// Внутренний провайдер данных для работы с событиями
@@ -44,7 +50,6 @@ internal class CachingEventDataProvider : IEventDataProvider
     {
         var key = $"events:{id}";
         var @event = await _cacheClient.Get<EventModel>(key);
-
         if (@event != null)
         {
             return @event;
@@ -54,5 +59,28 @@ internal class CachingEventDataProvider : IEventDataProvider
         await _cacheClient.Set(key, @event, _ttlSingleEvent);
 
         return @event;
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<EventTopModel>> GetTop10MostFilled(CancellationToken cancellationToken)
+    {
+        const string key = "events:top10";
+        var events = await _cacheClient.Get<IReadOnlyList<EventTopModel>>(key);
+        if (events != null)
+        {
+            return events;
+        }
+
+        events = await _innerDataProvider.GetTop10MostFilled(cancellationToken);
+        if (events.Count != 0)
+        {
+            await _cacheClient.Set(key, events, _ttlTop10MostFilled);
+        }
+        else
+        {
+            await _cacheClient.Set(key, events, _ttlTop10MostFilledEmpty);
+        }
+
+        return events;
     }
 }

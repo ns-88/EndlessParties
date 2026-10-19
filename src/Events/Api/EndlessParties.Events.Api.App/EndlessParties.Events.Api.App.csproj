@@ -62,6 +62,9 @@
 		<Compile Update="Features\ReleaseSeats\ReleaseEventSeatsHandler.Logging.cs">
 			<DependentUpon>ReleaseEventSeatsHandler.cs</DependentUpon>
 		</Compile>
+		<Compile Update="Features\GetTop10MostFilled\GetTop10MostFilledQuery.cs">
+			<DependentUpon>GetTop10MostFilledHandler.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
