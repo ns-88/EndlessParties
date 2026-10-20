@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IRedisConnectionProvider>(connectionProvider)
             .AddSingleton(connectionProvider)
-            .AddScoped<ICacheClient, RedisCacheClient>()
+            .AddSingleton<ICacheClient, RedisCacheClient>()
             .AddHostedService<RedisLifecycleManager>();
 
         return services;

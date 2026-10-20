@@ -48,7 +48,7 @@
 		<Compile Update="Features\Update\UpdateEventRequestValidator.cs">
 			<DependentUpon>UpdateEventRequest.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Remove\DeleteEventCommand.cs">
+		<Compile Update="Features\Delete\DeleteEventCommand.cs">
 			<DependentUpon>DeleteEventHandler.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Features\ReserveSeats\ReserveEventSeatsCommand.cs">

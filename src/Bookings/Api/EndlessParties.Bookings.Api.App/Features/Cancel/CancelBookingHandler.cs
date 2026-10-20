@@ -64,7 +64,7 @@ public class CancelBookingHandler : IRequestHandler<CancelBookingCommand>
 
             await strategy.ExecuteAsync(ct => CancelBooking(request, ct), cancellationToken);
         }
-        catch (Exception ex) when(ex is NotFoundException or ForbiddenException)
+        catch (Exception ex) when (ex is NotFoundException or ForbiddenException)
         {
             throw;
         }

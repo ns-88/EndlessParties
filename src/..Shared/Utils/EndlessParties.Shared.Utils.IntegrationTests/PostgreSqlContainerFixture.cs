@@ -48,7 +48,7 @@ public abstract class PostgreSqlContainerFixture<TContext> : ContainerFixture<Po
     {
         var connectionString = Container.GetConnectionString();
         await using var connection = new NpgsqlConnection(connectionString);
-        
+
         await connection.OpenAsync();
         await Respawner.ResetAsync(connection);
     }
@@ -76,7 +76,7 @@ public abstract class PostgreSqlContainerFixture<TContext> : ContainerFixture<Po
     protected override async ValueTask InitializeAsync()
     {
         await base.InitializeAsync();
-        
+
         var serviceCollection = new ServiceCollection();
 
         var connectionString = Container.GetConnectionString();

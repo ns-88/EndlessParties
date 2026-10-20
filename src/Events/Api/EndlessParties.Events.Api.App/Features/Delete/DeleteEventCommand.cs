@@ -1,6 +1,6 @@
 ﻿using Mediator;
 
-namespace EndlessParties.Events.Api.App.Features.Remove;
+namespace EndlessParties.Events.Api.App.Features.Delete;
 
 /// <summary>
 /// Команда удаления мероприятия (события)

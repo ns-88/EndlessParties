@@ -104,5 +104,10 @@ public static partial class ApplicationErrors
         /// Данные события были изменены другим пользователем или системой
         /// </summary>
         public const string ModifiedByAnotherUserOrSystem = "Данные события были изменены другим пользователем или системой. Id: \"{0}\"";
+
+        /// <summary>
+        /// Операции с удаленным событием невозможны
+        /// </summary>
+        public const string Deleted = "Операции с удаленным событием невозможны";
     }
 }

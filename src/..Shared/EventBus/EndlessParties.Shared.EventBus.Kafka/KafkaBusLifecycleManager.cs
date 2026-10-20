@@ -60,7 +60,7 @@ public class KafkaBusLifecycleManager : IHostedLifecycleService
     public async Task StartingAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Создание и запуск шины событий Kafka");
-        
+
         try
         {
             _kafkaBus = _serviceProvider.CreateKafkaBus();
@@ -89,7 +89,7 @@ public class KafkaBusLifecycleManager : IHostedLifecycleService
         {
             return;
         }
-        
+
         await _kafkaBus.StopAsync();
     }
 }

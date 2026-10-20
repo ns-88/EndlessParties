@@ -15,7 +15,10 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
     {
         builder
             .ToTable("events");
-        
+
+        builder
+            .HasQueryFilter(x => !x.IsDeleted);
+
         builder
             .HasKey(x => x.Id);
         builder
@@ -37,14 +40,16 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .HasComputedColumnSql("to_tsvector('russian', coalesce(title, ''))", stored: true);
         builder
             .HasIndex("title_search_vector")
-            .HasMethod("GIN");
+            .HasMethod("GIN")
+            .HasFilter("is_deleted = FALSE");
 
         builder
             .Property<NpgsqlTsVector>("description_search_vector")
             .HasComputedColumnSql("to_tsvector('russian', coalesce(description, ''))", stored: true);
         builder
             .HasIndex("description_search_vector")
-            .HasMethod("GIN");
+            .HasMethod("GIN")
+            .HasFilter("is_deleted = FALSE");
 
         builder
             .Property(x => x.TotalSeats)
@@ -55,13 +60,19 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .IsRequired();
 
         builder
-            .HasIndex(x => x.StartAt);
+            .HasIndex(x => new { x.AvailableSeats, x.TotalSeats })
+            .HasFilter("is_deleted = FALSE");
+
+        builder
+            .HasIndex(x => x.StartAt)
+            .HasFilter("is_deleted = FALSE");
         builder
             .Property(x => x.StartAt)
             .IsRequired();
 
         builder
-            .HasIndex(x => x.EndAt);
+            .HasIndex(x => x.EndAt)
+            .HasFilter("is_deleted = FALSE");
         builder
             .Property(x => x.EndAt)
             .IsRequired();
@@ -69,6 +80,10 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
         builder
             .Property(x => x.RowVersion)
             .IsRowVersion();
+
+        builder
+            .Property(x => x.IsDeleted)
+            .IsRequired();
 
         builder
             .ToTable(x => x.HasCheckConstraint("ck_events_seats",

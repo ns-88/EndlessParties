@@ -27,6 +27,7 @@
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.DateTime/EndlessParties.Shared.Utils.DateTime.csproj" Id="64618b86-3f99-4412-b39c-2d57c8426589" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Ddd/EndlessParties.Shared.Utils.Ddd.csproj" Id="d3d4b182-45b5-45ef-8a74-204976286a07" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.IntegrationTests/EndlessParties.Shared.Utils.IntegrationTests.csproj" Id="4486edcb-72b4-4ef9-896c-4fef937a913e" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.UnitTests/EndlessParties.Shared.Utils.UnitTests.csproj" Id="0dfb0013-39e1-46a2-ad53-074ade0530b6" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.WebApiExtensions/EndlessParties.Shared.Utils.WebApiExtensions.csproj" Id="9869fe66-9ead-44fd-8fc8-bf43bbf76a9f" />
   </Folder>
   <Folder Name="/..Shared/Utils/Database/">

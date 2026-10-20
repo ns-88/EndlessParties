@@ -62,6 +62,11 @@ public partial class Event : AggregateRoot
     public DateTimeOffset EndAt { get; private set; }
 
     /// <summary>
+    /// Флаг признака удаления события
+    /// </summary>
+    public bool IsDeleted { get; private set; }
+
+    /// <summary>
     /// Токен конкуренции для оптимистичной блокировки
     /// </summary>
     public uint RowVersion { get; }
@@ -98,6 +103,8 @@ public partial class Event : AggregateRoot
     /// </summary>
     public bool TryReserveSeats(int count = 1)
     {
+        ValidateState();
+
         if (count <= 0)
         {
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
@@ -119,6 +126,8 @@ public partial class Event : AggregateRoot
     /// </summary>
     public void ReleaseSeats(int count = 1)
     {
+        ValidateState();
+
         if (count <= 0)
         {
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
@@ -143,6 +152,7 @@ public partial class Event : AggregateRoot
     /// </summary>
     public bool HasStarted(DateTimeOffset currentTime)
     {
+        ValidateState();
         return currentTime >= StartAt;
     }
 
@@ -151,7 +161,9 @@ public partial class Event : AggregateRoot
     /// </summary>
     public void ChangeTitle(string title)
     {
+        ValidateState();
         Title = ValidateTitle(title);
+
         RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
@@ -160,6 +172,7 @@ public partial class Event : AggregateRoot
     /// </summary>
     public void ChangeTotalSeats(int totalSeats)
     {
+        ValidateState();
         ValidateTotalSeats(totalSeats);
 
         if (totalSeats < BookedSeats)
@@ -177,6 +190,8 @@ public partial class Event : AggregateRoot
     /// </summary>
     public void ChangeDescription(string? description)
     {
+        ValidateState();
+
         Description = ValidateDescription(description);
         RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
@@ -186,10 +201,22 @@ public partial class Event : AggregateRoot
     /// </summary>
     public void ChangeStartAndEndAt(DateTimeOffset startAt, DateTimeOffset endAt)
     {
+        ValidateState();
         ValidateStartAndEndAt(startAt, endAt);
 
         StartAt = startAt;
         EndAt = endAt;
         RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
+    }
+
+    /// <summary>
+    /// Удаление события
+    /// </summary>
+    public void Delete()
+    {
+        ValidateState();
+
+        IsDeleted = true;
+        RaiseDomainEvent(new EventDeletedDomainEvent(Id));
     }
 }

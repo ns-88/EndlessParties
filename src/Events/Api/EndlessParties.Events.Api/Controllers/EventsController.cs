@@ -1,9 +1,9 @@
 ﻿using EndlessParties.Events.Api.App.Features.Create;
+using EndlessParties.Events.Api.App.Features.Delete;
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
 using EndlessParties.Events.Api.App.Features.GetAll;
 using EndlessParties.Events.Api.App.Features.GetById;
 using EndlessParties.Events.Api.App.Features.GetTop10MostFilled;
-using EndlessParties.Events.Api.App.Features.Remove;
 using EndlessParties.Events.Api.App.Features.Shared;
 using EndlessParties.Events.Api.App.Features.Update;
 using EndlessParties.Events.Data.Abstractions.Models;
@@ -117,7 +117,7 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Remove([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteEventCommand(id);
         await _mediator.Send(command, cancellationToken);

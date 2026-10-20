@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
-using EndlessParties.Events.Api.Infrastructure.UnitTests.Infrastructure;
 using EndlessParties.Events.Data;
 using EndlessParties.Events.Data.Abstractions;
 using EndlessParties.Events.Data.Abstractions.Models;
 using EndlessParties.Shared.Cache.Abstractions;
+using EndlessParties.Shared.Utils.UnitTests;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

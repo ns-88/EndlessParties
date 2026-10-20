@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
             setup.Namespace = "EndlessParties.Events.Api.App";
             setup.ServiceLifetime = ServiceLifetime.Scoped;
             setup.GenerateTypesAsInternal = true;
-            setup.Assemblies = 
+            setup.Assemblies =
             [
                 typeof(ServiceCollectionExtensions).Assembly,
                 typeof(Domain.Models.Event).Assembly

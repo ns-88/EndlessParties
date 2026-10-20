@@ -18,7 +18,7 @@ namespace EndlessParties.Events.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -41,6 +41,10 @@ namespace EndlessParties.Events.Database.Migrations
                     b.Property<DateTimeOffset>("EndAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_at");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<uint>("RowVersion")
                         .IsConcurrencyToken()
@@ -78,20 +82,28 @@ namespace EndlessParties.Events.Database.Migrations
                         .HasName("pk_events");
 
                     b.HasIndex("EndAt")
-                        .HasDatabaseName("ix_events_end_at");
+                        .HasDatabaseName("ix_events_end_at")
+                        .HasFilter("is_deleted = FALSE");
 
                     b.HasIndex("StartAt")
-                        .HasDatabaseName("ix_events_start_at");
+                        .HasDatabaseName("ix_events_start_at")
+                        .HasFilter("is_deleted = FALSE");
 
                     b.HasIndex("description_search_vector")
-                        .HasDatabaseName("ix_events_description_search_vector");
+                        .HasDatabaseName("ix_events_description_search_vector")
+                        .HasFilter("is_deleted = FALSE");
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("description_search_vector"), "GIN");
 
                     b.HasIndex("title_search_vector")
-                        .HasDatabaseName("ix_events_title_search_vector");
+                        .HasDatabaseName("ix_events_title_search_vector")
+                        .HasFilter("is_deleted = FALSE");
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("title_search_vector"), "GIN");
+
+                    b.HasIndex("AvailableSeats", "TotalSeats")
+                        .HasDatabaseName("ix_events_available_seats_total_seats")
+                        .HasFilter("is_deleted = FALSE");
 
                     b.ToTable("events", null, t =>
                         {

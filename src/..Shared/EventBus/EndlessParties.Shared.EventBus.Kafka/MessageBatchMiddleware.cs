@@ -37,9 +37,9 @@ internal partial class MessageBatchMiddleware<T> : IMessageMiddleware where T : 
         var messageType = typeof(T).Name;
         var topicName = context.ConsumerContext.Topic;
         var batch = context.GetMessagesBatch();
-        
+
         LogMessagesForProcessingReceived(batch.Count, messageType, topicName);
-        
+
         try
         {
             var typedList = batch.Select(x => x.Message.Value).Cast<T>().ToArray();
