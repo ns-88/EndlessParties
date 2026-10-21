@@ -13,6 +13,7 @@ internal static partial class EventMapper
     /// Преобразование из <see cref="Event"/> в <see cref="EventResponse"/>
     /// </summary>
     [MapperIgnoreSource(nameof(Event.RowVersion))]
+    [MapperIgnoreSource(nameof(Event.IsDeleted))]
     public static partial EventResponse Map(Event source);
 
     /// <summary>

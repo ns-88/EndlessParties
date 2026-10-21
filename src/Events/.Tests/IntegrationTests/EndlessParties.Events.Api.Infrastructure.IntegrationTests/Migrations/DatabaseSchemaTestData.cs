@@ -15,8 +15,8 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
             TableName = "events",
             Columns =
             [
-                "id", "title", "total_seats", "available_seats", "description", 
-                "start_at", "end_at", "description_search_vector", "title_search_vector"
+                "id", "title", "total_seats", "available_seats", "description", "start_at",
+                "end_at", "description_search_vector", "title_search_vector", "is_deleted"
             ],
             Constraints =
             [
@@ -63,6 +63,12 @@ public sealed class DatabaseSchemaTestData : TheoryData<DatabaseSchemaTestCase>
                     Name = "ix_events_title_search_vector",
                     IsUnique = false,
                     Columns = ["title_search_vector"]
+                },
+                new IndexData
+                {
+                    Name = "ix_events_available_seats_total_seats",
+                    IsUnique = false,
+                    Columns = ["available_seats", "total_seats"]
                 }
             ]
         });

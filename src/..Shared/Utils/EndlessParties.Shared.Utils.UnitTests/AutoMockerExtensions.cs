@@ -1,12 +1,12 @@
 ﻿using Moq;
 using Moq.AutoMock;
 
-namespace EndlessParties.Bookings.Api.App.UnitTests.Infrastructure;
+namespace EndlessParties.Shared.Utils.UnitTests;
 
 /// <summary>
 /// Набор методов-расширений для класса <see cref="AutoMocker"/>
 /// </summary>
-internal static class AutoMockerExtensions
+public static class AutoMockerExtensions
 {
     /// <summary>
     /// Проверка наличия неверифицированных вызовов

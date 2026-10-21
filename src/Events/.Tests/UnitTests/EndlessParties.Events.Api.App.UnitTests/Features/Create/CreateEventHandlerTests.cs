@@ -1,10 +1,10 @@
 ﻿using AutoFixture;
 using EndlessParties.Events.Api.App.Features.Create;
 using EndlessParties.Events.Api.App.Features.Shared;
-using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Shared.Utils.Database.Abstractions;
+using EndlessParties.Shared.Utils.UnitTests;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

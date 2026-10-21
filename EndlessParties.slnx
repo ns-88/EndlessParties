@@ -2,11 +2,15 @@
   <Folder Name="/..Shared/">
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
-    <File Path="docker-compose.yml" />
     <File Path="README.md" />
+  </Folder>
+  <Folder Name="/..Shared/Cache/">
+    <Project Path="src/..Shared/Cache/EndlessParties.Shared.Cache.Abstractions/EndlessParties.Shared.Cache.Abstractions.csproj" Id="d53220f4-cb53-4916-8639-ac5a1bd598d3" />
+    <Project Path="src/..Shared/Cache/EndlessParties.Shared.Cache.Redis/EndlessParties.Shared.Cache.Redis.csproj" Id="d783d976-94d4-4a2e-83e0-ab64a2703ce9" />
   </Folder>
   <Folder Name="/..Shared/Contracts/">
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Bookings/EndlessParties.Shared.Contracts.Bookings.csproj" Id="94e367ac-9500-4798-9d87-78bf82e67a5f" />
+    <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Cache/EndlessParties.Shared.Contracts.Cache.csproj" Id="3ab9d95e-36e2-45f5-b572-bc9def0dbecb" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts.Events/EndlessParties.Shared.Contracts.Events.csproj" />
     <Project Path="src/..Shared/Contracts/EndlessParties.Shared.Contracts/EndlessParties.Shared.Contracts.csproj" />
   </Folder>
@@ -21,7 +25,9 @@
   </Folder>
   <Folder Name="/..Shared/Utils/">
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.DateTime/EndlessParties.Shared.Utils.DateTime.csproj" Id="64618b86-3f99-4412-b39c-2d57c8426589" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.Ddd/EndlessParties.Shared.Utils.Ddd.csproj" Id="d3d4b182-45b5-45ef-8a74-204976286a07" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.IntegrationTests/EndlessParties.Shared.Utils.IntegrationTests.csproj" Id="4486edcb-72b4-4ef9-896c-4fef937a913e" />
+    <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.UnitTests/EndlessParties.Shared.Utils.UnitTests.csproj" Id="0dfb0013-39e1-46a2-ad53-074ade0530b6" />
     <Project Path="src/..Shared/Utils/EndlessParties.Shared.Utils.WebApiExtensions/EndlessParties.Shared.Utils.WebApiExtensions.csproj" Id="9869fe66-9ead-44fd-8fc8-bf43bbf76a9f" />
   </Folder>
   <Folder Name="/..Shared/Utils/Database/">
@@ -62,6 +68,10 @@
   </Folder>
   <Folder Name="/Events/" />
   <Folder Name="/Events/.Shared/" />
+  <Folder Name="/Events/.Shared/Data/">
+    <Project Path="src/Events/.Shared/Data/EndlessParties.Events.Data.Abstractions/EndlessParties.Events.Data.Abstractions.csproj" Id="a32e0c65-f392-4d95-a3ec-da2ee17d1372" />
+    <Project Path="src/Events/.Shared/Data/EndlessParties.Events.Data/EndlessParties.Events.Data.csproj" Id="2d09821a-81fa-4efa-9156-a730e2507282" />
+  </Folder>
   <Folder Name="/Events/.Shared/Database/">
     <Project Path="src/Events/.Shared/Database/EndlessParties.Events.Database/EndlessParties.Events.Database.csproj" />
   </Folder>
@@ -79,6 +89,7 @@
   </Folder>
   <Folder Name="/Events/.Tests/UnitTests/">
     <Project Path="src/Events/.Tests/UnitTests/EndlessParties.Events.Api.App.UnitTests/EndlessParties.Events.Api.App.UnitTests.csproj" />
+    <Project Path="src/Events/.Tests/UnitTests/EndlessParties.Events.Api.Infrastructure.UnitTests/EndlessParties.Events.Api.Infrastructure.UnitTests.csproj" Id="3f883c3d-514c-41c2-9b47-f8f8eb56ce04" />
   </Folder>
   <Folder Name="/Events/Api/">
     <Project Path="src/Events/Api/EndlessParties.Events.Api.App/EndlessParties.Events.Api.App.csproj" Id="e287640a-9bc5-4ff8-a30f-3a673e4e9654" />

@@ -1,8 +1,5 @@
-﻿using System.Collections.Concurrent;
-using AutoFixture;
-using EndlessParties.Bookings.Api.App.Features.Create;
+﻿using EndlessParties.Bookings.Api.App.Features.Create;
 using EndlessParties.Bookings.Api.App.UnitTests.Fakes;
-using EndlessParties.Bookings.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Bookings.Domain.Enums;
 using EndlessParties.Bookings.Domain.Errors;
 using EndlessParties.Bookings.Domain.Models;
@@ -11,7 +8,7 @@ using EndlessParties.Shared.Contracts.Bookings;
 using EndlessParties.Shared.EventBus.Abstractions;
 using EndlessParties.Shared.Exceptions.Models;
 using EndlessParties.Shared.Utils.Database.Abstractions;
-using EndlessParties.Shared.Utils.DateTime.Abstractions;
+using EndlessParties.Shared.Utils.UnitTests;
 using EndlessParties.Shared.Utils.UserContext.Abstractions;
 using EndlessParties.Shared.Utils.UserContext.Abstractions.Enums;
 using EndlessParties.Shared.Utils.UserContext.Abstractions.Models;

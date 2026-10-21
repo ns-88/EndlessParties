@@ -1,19 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..Shared\Cache\EndlessParties.Shared.Cache.Abstractions\EndlessParties.Shared.Cache.Abstractions.csproj" />
+		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Cache\EndlessParties.Shared.Contracts.Cache.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Contracts\EndlessParties.Shared.Contracts.Events\EndlessParties.Shared.Contracts.Events.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\EventBus\EndlessParties.Shared.EventBus.Abstractions\EndlessParties.Shared.EventBus.Abstractions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Exceptions\EndlessParties.Shared.Exceptions.Extensions\EndlessParties.Shared.Exceptions.Extensions.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\Database\EndlessParties.Shared.Utils.Database\EndlessParties.Shared.Utils.Database.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.DateTime\EndlessParties.Shared.Utils.DateTime.csproj" />
 		<ProjectReference Include="..\..\..\..Shared\Utils\UserContext\EndlessParties.Shared.Utils.UserContext.Abstractions\EndlessParties.Shared.Utils.UserContext.Abstractions.csproj" />
+		<ProjectReference Include="..\..\.Shared\Data\EndlessParties.Events.Data.Abstractions\EndlessParties.Events.Data.Abstractions.csproj" />
 		<ProjectReference Include="..\..\.Shared\Repositories\EndlessParties.Events.Repositories.Abstractions\EndlessParties.Events.Repositories.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 		<PackageReference Include="Mediator.Abstractions" />
-		<PackageReference Include="Mediator.SourceGenerator" />
+		<PackageReference Include="Mediator.SourceGenerator" PrivateAssets="All" />
 		<PackageReference Include="Riok.Mapperly" />
 	</ItemGroup>
 
@@ -45,7 +48,7 @@
 		<Compile Update="Features\Update\UpdateEventRequestValidator.cs">
 			<DependentUpon>UpdateEventRequest.cs</DependentUpon>
 		</Compile>
-		<Compile Update="Features\Remove\DeleteEventCommand.cs">
+		<Compile Update="Features\Delete\DeleteEventCommand.cs">
 			<DependentUpon>DeleteEventHandler.cs</DependentUpon>
 		</Compile>
 		<Compile Update="Features\ReserveSeats\ReserveEventSeatsCommand.cs">
@@ -56,6 +59,12 @@
 		</Compile>
 		<Compile Update="Features\ReleaseSeats\ReleaseEventSeatsCommand.cs">
 			<DependentUpon>ReleaseEventSeatsHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\ReleaseSeats\ReleaseEventSeatsHandler.Logging.cs">
+			<DependentUpon>ReleaseEventSeatsHandler.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Features\GetTop10MostFilled\GetTop10MostFilledQuery.cs">
+			<DependentUpon>GetTop10MostFilledHandler.cs</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

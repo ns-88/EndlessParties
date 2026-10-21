@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.UnitTests\EndlessParties.Shared.Utils.UnitTests.csproj" />
+		<ProjectReference Include="..\..\..\.Shared\Data\EndlessParties.Events.Data\EndlessParties.Events.Data.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoFixture" />
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="xunit.v3.mtp-v2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+	</ItemGroup>
+
+</Project>

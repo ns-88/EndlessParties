@@ -69,4 +69,15 @@ public partial class Event
             throw new LogicException(ApplicationErrors.Events.StartCannotLaterCompletion);
         }
     }
+
+    /// <summary>
+    /// Валидация состояния события
+    /// </summary>
+    private void ValidateState()
+    {
+        if (IsDeleted)
+        {
+            throw new LogicException(ApplicationErrors.Events.Deleted);
+        }
+    }
 }

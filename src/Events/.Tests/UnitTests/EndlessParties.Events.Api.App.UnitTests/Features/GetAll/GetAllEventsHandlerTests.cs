@@ -2,11 +2,11 @@
 using EndlessParties.Events.Api.App.Features.Events.GetAll;
 using EndlessParties.Events.Api.App.Features.GetAll;
 using EndlessParties.Events.Api.App.Features.Shared;
-using EndlessParties.Events.Api.App.UnitTests.Infrastructure;
 using EndlessParties.Events.Domain.Models;
 using EndlessParties.Events.Repositories.Abstractions;
 using EndlessParties.Events.Repositories.Abstractions.Models;
 using EndlessParties.Shared.Contracts.Models;
+using EndlessParties.Shared.Utils.UnitTests;
 using FluentAssertions;
 using Moq;
 using Moq.AutoMock;

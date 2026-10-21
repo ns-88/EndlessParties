@@ -38,7 +38,7 @@ internal class EventRepository : IEventRepository
         {
             // Применение фильтра запроса
             var filteredQuery = _events.ApplyFilter(filter);
-            
+
             // Подсчет общего числа результатов запроса
             var totalCount = await filteredQuery.CountAsync(cancellationToken);
 

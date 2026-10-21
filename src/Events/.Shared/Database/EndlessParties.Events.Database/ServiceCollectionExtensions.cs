@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddEventsDatabase(this IServiceCollection services, DatabaseSettings settings)
     {
-        services.AddDatabase<EventsDbContext>(settings);
+        services.AddDatabase<EventsDbContext>(settings, useDomainEvents: true);
 
         return services;
     }

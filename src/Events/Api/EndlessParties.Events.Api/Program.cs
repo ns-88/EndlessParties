@@ -15,7 +15,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         Log.AddBootstrapLogger();
-        
+
         try
         {
             var builder = WebApplication.CreateBuilder(args);

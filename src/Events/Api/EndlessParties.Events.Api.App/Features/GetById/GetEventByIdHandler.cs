@@ -1,5 +1,5 @@
-﻿using EndlessParties.Events.Api.App.Features.Shared;
-using EndlessParties.Events.Repositories.Abstractions;
+﻿using EndlessParties.Events.Data.Abstractions;
+using EndlessParties.Events.Data.Abstractions.Models;
 using Mediator;
 
 namespace EndlessParties.Events.Api.App.Features.GetById;
@@ -7,28 +7,26 @@ namespace EndlessParties.Events.Api.App.Features.GetById;
 /// <summary>
 /// Обработчик <see cref="GetEventByIdQuery"/>
 /// </summary>
-public class GetEventByIdHandler : IRequestHandler<GetEventByIdQuery, EventResponse>
+public class GetEventByIdHandler : IRequestHandler<GetEventByIdQuery, EventModel>
 {
     /// <summary>
-    /// Репозиторий <see cref="IEventRepository"/>
+    /// Провайдер данных <see cref="IEventDataProvider"/>
     /// </summary>
-    private readonly IEventRepository _eventRepository;
+    private readonly IEventDataProvider _eventDataProvider;
 
 
     /// <summary>
     /// Конструктор
     /// </summary>
-    public GetEventByIdHandler(IEventRepository eventRepository)
+    public GetEventByIdHandler(IEventDataProvider eventDataProvider)
     {
-        _eventRepository = eventRepository;
+        _eventDataProvider = eventDataProvider;
     }
 
 
     /// <inheritdoc />
-    public async ValueTask<EventResponse> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<EventModel> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
     {
-        var @event = await _eventRepository.GetById(request.Id, cancellationToken);
-
-        return EventMapper.Map(@event);
+        return await _eventDataProvider.GetById(request.Id, cancellationToken);
     }
 }

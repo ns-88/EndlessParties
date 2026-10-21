@@ -14,11 +14,18 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Добавление базы данных
     /// </summary>
-    public static IServiceCollection AddDatabase<TContext>(this IServiceCollection services,
-        DatabaseSettings settings, bool usePooling = true, bool ignorePendingModelChanges = false)
+    public static IServiceCollection AddDatabase<TContext>(this IServiceCollection services, DatabaseSettings settings,
+        bool usePooling = true, bool ignorePendingModelChanges = false, bool useDomainEvents = false)
         where TContext : DbContext
     {
         settings.Validate();
+
+        services.AddScoped<IUnitOfWork, DefaultUnitOfWork<TContext>>();
+
+        if (useDomainEvents)
+        {
+            services.AddSingleton<DomainEventsInterceptor>();
+        }
 
         if (usePooling)
         {
@@ -29,11 +36,9 @@ public static class ServiceCollectionExtensions
             services.AddDbContext<TContext>(ConfigureContext);
         }
 
-        services.AddScoped<IUnitOfWork, DefaultUnitOfWork<TContext>>();
-
         return services;
 
-        void ConfigureContext(DbContextOptionsBuilder dbContextSetup)
+        void ConfigureContext(IServiceProvider serviceProvider, DbContextOptionsBuilder dbContextSetup)
         {
             dbContextSetup.UseNpgsql(settings.ConnectionString, npgsqlSetup =>
             {
@@ -48,6 +53,11 @@ public static class ServiceCollectionExtensions
             }
 
             dbContextSetup.UseSnakeCaseNamingConvention();
+
+            if (useDomainEvents)
+            {
+                dbContextSetup.AddInterceptors(serviceProvider.GetRequiredService<DomainEventsInterceptor>());
+            }
         }
     }
 }

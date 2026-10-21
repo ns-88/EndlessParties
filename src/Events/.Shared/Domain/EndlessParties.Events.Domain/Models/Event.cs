@@ -1,12 +1,14 @@
 ﻿using EndlessParties.Events.Domain.Errors;
+using EndlessParties.Events.Domain.Events;
 using EndlessParties.Shared.Exceptions.Models;
+using EndlessParties.Shared.Utils.Ddd;
 
 namespace EndlessParties.Events.Domain.Models;
 
 /// <summary>
 /// Мероприятие (событие)
 /// </summary>
-public partial class Event
+public partial class Event : AggregateRoot
 {
     /// <summary>
     /// Максимальная длина наименования
@@ -60,6 +62,11 @@ public partial class Event
     public DateTimeOffset EndAt { get; private set; }
 
     /// <summary>
+    /// Флаг признака удаления события
+    /// </summary>
+    public bool IsDeleted { get; private set; }
+
+    /// <summary>
     /// Токен конкуренции для оптимистичной блокировки
     /// </summary>
     public uint RowVersion { get; }
@@ -96,6 +103,8 @@ public partial class Event
     /// </summary>
     public bool TryReserveSeats(int count = 1)
     {
+        ValidateState();
+
         if (count <= 0)
         {
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
@@ -107,6 +116,7 @@ public partial class Event
         }
 
         AvailableSeats -= count;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
 
         return true;
     }
@@ -116,6 +126,8 @@ public partial class Event
     /// </summary>
     public void ReleaseSeats(int count = 1)
     {
+        ValidateState();
+
         if (count <= 0)
         {
             throw new LogicException(ApplicationErrors.Events.SeatsCountWrongValue);
@@ -132,6 +144,7 @@ public partial class Event
         }
 
         AvailableSeats += count;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -139,6 +152,7 @@ public partial class Event
     /// </summary>
     public bool HasStarted(DateTimeOffset currentTime)
     {
+        ValidateState();
         return currentTime >= StartAt;
     }
 
@@ -147,7 +161,10 @@ public partial class Event
     /// </summary>
     public void ChangeTitle(string title)
     {
+        ValidateState();
         Title = ValidateTitle(title);
+
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -155,6 +172,7 @@ public partial class Event
     /// </summary>
     public void ChangeTotalSeats(int totalSeats)
     {
+        ValidateState();
         ValidateTotalSeats(totalSeats);
 
         if (totalSeats < BookedSeats)
@@ -164,6 +182,7 @@ public partial class Event
 
         AvailableSeats = totalSeats - BookedSeats;
         TotalSeats = totalSeats;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -171,7 +190,10 @@ public partial class Event
     /// </summary>
     public void ChangeDescription(string? description)
     {
+        ValidateState();
+
         Description = ValidateDescription(description);
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
     }
 
     /// <summary>
@@ -179,9 +201,22 @@ public partial class Event
     /// </summary>
     public void ChangeStartAndEndAt(DateTimeOffset startAt, DateTimeOffset endAt)
     {
+        ValidateState();
         ValidateStartAndEndAt(startAt, endAt);
 
         StartAt = startAt;
         EndAt = endAt;
+        RaiseDomainEvent(new EventUpdatedDomainEvent(Id));
+    }
+
+    /// <summary>
+    /// Удаление события
+    /// </summary>
+    public void Delete()
+    {
+        ValidateState();
+
+        IsDeleted = true;
+        RaiseDomainEvent(new EventDeletedDomainEvent(Id));
     }
 }

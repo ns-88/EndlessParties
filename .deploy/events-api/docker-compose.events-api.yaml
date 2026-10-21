@@ -1,0 +1,54 @@
+services:
+  events-api:
+    image: endless-parties-events:latest
+    container_name: endless-parties-events-api
+    restart: always
+    build:
+      context: ../../
+      dockerfile: src/Events/Api/EndlessParties.Events.Api/Dockerfile
+    ports:
+      - '5000:8080'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__Postgres__Events=Host=events-db;Port=5432;Database=endless-parties-events;Username=${POSTGRES_DB_USER};Password=${POSTGRES_DB_PASSWORD}
+      - Kafka__BrokerAddress=kafka:9092
+      - Redis__Host=redis
+      - Redis__Port=6379
+      - Identity__JwtToken__SecretKey=${JWT_SECRET_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      events-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  events-db:
+    image: 'postgres:16-alpine'
+    container_name: endless-parties-events-db
+    restart: always
+    environment:
+      POSTGRES_DB: endless_parties_events
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    ports:
+      - '5433:5432'
+    volumes:
+      - 'events-db-data:/var/lib/postgresql/data'
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  events-db-data:
