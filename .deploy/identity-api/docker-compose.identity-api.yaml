@@ -14,6 +14,7 @@ services:
       - ConnectionStrings__Postgres__Identity=Host=identity-db;Port=5432;Database=endless-parties-identity-db;Username=${POSTGRES_DB_USER};Password=${POSTGRES_DB_PASSWORD}
       - JwtToken__SecretKey=${JWT_SECRET_KEY}
       - JwtToken__Expires=${JWT_EXPIRES}
+      - Observability_OltpEndpoint=${OBSERVABILITY_OLTP_ENDPOINT}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
       interval: 10s

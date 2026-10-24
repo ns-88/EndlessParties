@@ -16,6 +16,7 @@ services:
       - Redis__Host=redis
       - Redis__Port=6379
       - Identity__JwtToken__SecretKey=${JWT_SECRET_KEY}
+      - Observability_OltpEndpoint=${OBSERVABILITY_OLTP_ENDPOINT}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
       interval: 10s

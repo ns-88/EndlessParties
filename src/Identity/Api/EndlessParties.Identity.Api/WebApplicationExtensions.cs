@@ -39,7 +39,7 @@ public static class WebApplicationExtensions
     /// </summary>
     private static WebApplication AddSwagger(this WebApplication application)
     {
-        if (!application.Environment.IsDevelopment())
+        if (!application.Environment.IsEnvironment("local"))
         {
             return application;
         }

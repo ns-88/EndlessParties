@@ -1,5 +1,4 @@
-﻿using EndlessParties.Events.Api.Settings;
-using EndlessParties.Shared.Utils.WebApiExtensions;
+﻿using EndlessParties.Shared.Utils.WebApiExtensions;
 using FluentValidation;
 
 namespace EndlessParties.Events.Api;

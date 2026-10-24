@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace EndlessParties.Events.Api.Settings;
+namespace EndlessParties.Events.Api;
 
 /// <summary>
 /// Валидатор <see cref="PresentationSettings"/>
 /// </summary>
-public class PresentationSettingsValidator : AbstractValidator<PresentationSettings>
+internal class PresentationSettingsValidator : AbstractValidator<PresentationSettings>
 {
     /// <inheritdoc />
     public PresentationSettingsValidator()

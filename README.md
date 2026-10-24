@@ -111,6 +111,13 @@ Use Cases находятся в реализации команд и запро�
 Его получает сервис **Events.Api** и обрабатывает как запрос на освобождение занятого места, выполняя проверку наличия события по данному id. После обработки запроса,
 происходит сохранение данных в БД и завершение взаимодействия.
 
+## 📊 Наблюдаемость
+Наблюдаемость в проекте придеставлена стеком Grafana + Prometheus + Jaeger. Компоненты мониторинга запускаются автоматически при разворачивании системы из docler-compose файла.
+Порты:
+Grafana: 3000
+Prometheus: 9090
+Jaeger: 16686 (UI), 4317 (gRPC)
+
 ## ⚡ Кэширование
 Кэширование в проекте реализовано с помощью СУБД Redis посредством паттерна Cache-Aside. Для обеспечения актуальности данных в кэше используется пассивная и активная
 ивалидации.
@@ -268,58 +275,64 @@ Use Cases находятся в реализации команд и запро�
    ```
    Пароль: test
 
-5. Произведите настроки сервисов, указывая значения в файла конфигурации appsettings.json каждого.
+5. Произведите настройки сервисов, указывая значения в файле конфигурации launchsettings.json каждого.
 
-   **Identity.Api**
-   ```bash
-   ConnectionStrings:Postgres:Identity - укажите адрес хоста для подключения к БД;
-   JwtToken:SecretKey - секретный ключ для шифрования JWT-токена, должен быть одинаковый для всех сервисов;
-   JwtToken:Issuer - наименование издателя;
-   JwtToken:Audiences - массив потребителей;
-   JwtToken:Expires - время жизни в минутах
-   ```
+  **Identity.Api**
+  ```bash
+  ASPNETCORE_ENVIRONMENT - окружение
+  Kestrel__Endpoints__Http__Url - адрес и порт, на котором сервис будет принимать подключения
+  ConnectionStrings__Postgres__Identity - укажите строку подключения к БД;
+  Identity__JwtToken__SecretKey - секретный ключ для шифрования JWT-токена;
+  ```
 
-   **Events.Api**
-   ```bash
-   ConnectionStrings:Postgres:Events - укажите адрес хоста для подключения к БД;
-   Kafka:Environment - нанименование окружения;
-   Kafka:BrokerAddress - адрес брокера;
-   Identity:JwtToken:SecretKey - секретный ключ для шифрования JWT-токена;
-   Identity:JwtToken:Issuer - наименование издателя;
-   Identity:JwtToken:Audience - наименование потребителя
-   ```
+  **Events.Api**
+  ```bash
+  ASPNETCORE_ENVIRONMENT - окружение
+  Kestrel__Endpoints__Http__Url - адрес и порт, на котором сервис будет принимать подключения
+  ConnectionStrings__Postgres__Events - укажите адрес хоста для подключения к БД;
+  Kafka__BrokerAddress - адрес брокера;
+  Redis__Host - адрес для подключения к СУБД Redis
+  Redis__Port - порт для подключения к СУБД Redis
+  Identity__JwtToken__SecretKey - секретный ключ для шифрования JWT-токена;
+  ```
 
-   **Bookings.Api**
-   ```bash
-   ConnectionStrings:Postgres:Bookings - укажите адрес хоста для подключения к БД;
-   Kafka:Environment - нанименование окружения;
-   Kafka:BrokerAddress - адрес брокера;
-   Identity:JwtToken:SecretKey - секретный ключ для шифрования JWT-токена;
-   Identity:JwtToken:Issuer - наименование издателя;
-   Identity:JwtToken:Audience - наименование потребителя
-   ```
+  **Bookings.Api**
+  ```bash
+  ASPNETCORE_ENVIRONMENT - окружение
+  Kestrel__Endpoints__Http__Url - адрес и порт, на котором сервис будет принимать подключения
+  ConnectionStrings__Postgres__Bookings - укажите строку подключения к БД;
+  Kafka:BrokerAddress - адрес брокера;
+  Identity__JwtToken__SecretKey - секретный ключ для шифрования JWT-токена;
+  ```
 
-6. Выполните подготовку инфраструктуры. Для этого перейдите в корень проекта и выполните команду:
-   ```bash
-   docker compose up -d
-   ```
+6. Выполните подготовку инфраструктуры, развернув компоненты системы в Docker. Перейдите в папку .deploy в корне решения и выполните следующие команды в терминале:
+
+  для запуска всего приложения в Docker
+  ```bash
+     docker compose up -d --build
+  ```
+  для запуска только инфраструктуры
+  ```bash
+     docker compose -f docker-compose.infra.yml up -d
+  ```
+  При запуске в Docker создайте файл .env в папке .deploy и укажите настройки в нем на основе примера в файле .env.example.
 
 7. Запустите сервисы следующими командами:
  
-   **Events.Api**
-   ```bash
-   dotnet run --project src\Events\Api\EndlessParties.Events.Api
-   ```
-   Swagger: http://localhost:5000/index.html
+  **Events.Api**
+  ```bash
+  dotnet run --project src\Events\Api\EndlessParties.Events.Api
+  ```
+  Swagger: http://localhost:5000/index.html
 
-   **Bookings.Api**
-   ```bash
-   dotnet run --project src\Bookings\Api\EndlessParties.Bookings.Api
-   ```
-   Swagger: http://localhost:5100/index.html
+  **Bookings.Api**
+  ```bash
+  dotnet run --project src\Bookings\Api\EndlessParties.Bookings.Api
+  ```
+  Swagger: http://localhost:5100/index.html
 
-   **Identity.Api**
-   ```bash
-   dotnet run --project src\Identity\Api\EndlessParties.Identity.Api
-   ```
-   Swagger: http://localhost:5200/index.html
+  **Identity.Api**
+  ```bash
+  dotnet run --project src\Identity\Api\EndlessParties.Identity.Api
+  ```
+  Swagger: http://localhost:5200/index.html
