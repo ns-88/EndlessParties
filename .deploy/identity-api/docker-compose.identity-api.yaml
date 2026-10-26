@@ -14,7 +14,7 @@ services:
       - ConnectionStrings__Postgres__Identity=Host=identity-db;Port=5432;Database=endless-parties-identity-db;Username=${POSTGRES_DB_USER};Password=${POSTGRES_DB_PASSWORD}
       - JwtToken__SecretKey=${JWT_SECRET_KEY}
       - JwtToken__Expires=${JWT_EXPIRES}
-      - Observability_OltpEndpoint=${OBSERVABILITY_OLTP_ENDPOINT}
+      - Observability__OtlpEndpoint=${OTLP_ENDPOINT}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
       interval: 10s
@@ -24,26 +24,3 @@ services:
     depends_on:
       identity-db:
         condition: service_healthy
-
-  identity-db:
-    image: 'postgres:16-alpine'
-    container_name: endless-parties-identity-db
-    restart: always
-    environment:
-      POSTGRES_DB: endless_parties_identity
-      POSTGRES_USER: ${POSTGRES_DB_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
-    ports:
-      - '5432:5432'
-    volumes:
-      - 'identity-db-data:/var/lib/postgresql/data'
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -U postgres
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-volumes:
-  identity-db-data:

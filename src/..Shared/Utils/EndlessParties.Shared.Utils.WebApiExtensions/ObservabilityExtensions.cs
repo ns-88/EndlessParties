@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Exporter;
-using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -32,14 +31,19 @@ public static class ObservabilityExtensions
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation()
-                    .AddPrometheusExporter();
+                    .AddPrometheusExporter(prometheusSetup =>
+                    {
+                        prometheusSetup.ResourceConstantLabels = attributeKey => attributeKey == "service.name";
+                    });
             })
             .WithTracing(tracingSetup =>
             {
                 tracingSetup
                     .AddAspNetCoreInstrumentation(aspNetCoreSetup =>
                     {
-                        aspNetCoreSetup.Filter = httpContext => !httpContext.Request.Path.StartsWithSegments("/metrics");
+                        aspNetCoreSetup.Filter = httpContext => !httpContext.Request.Path.StartsWithSegments("/metrics") &&
+                                                                !httpContext.Request.Path.StartsWithSegments("/healthcheck/health") &&
+                                                                !httpContext.Request.Path.StartsWithSegments("/api/health");
                     })
                     .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation(efCoreSetup =>
@@ -49,16 +53,8 @@ public static class ObservabilityExtensions
                     .AddOtlpExporter(otlpSetup =>
                     {
                         otlpSetup.Protocol = OtlpExportProtocol.Grpc;
-                        otlpSetup.Endpoint = new Uri(settings.OltpEndpoint);
+                        otlpSetup.Endpoint = new Uri(settings.OtlpEndpoint);
                     });
-            })
-            .WithLogging(loggingSetup =>
-            {
-                loggingSetup.AddOtlpExporter(otlpSetup =>
-                {
-                    otlpSetup.Protocol = OtlpExportProtocol.Grpc;
-                    otlpSetup.Endpoint = new Uri(settings.OltpEndpoint);
-                });
             });
 
         return builder;

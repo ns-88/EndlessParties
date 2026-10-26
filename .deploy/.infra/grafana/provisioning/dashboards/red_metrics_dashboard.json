@@ -25,7 +25,7 @@
       "collapsed": false,
       "gridPos": {
         "h": 8,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -33,17 +33,15 @@
       "title": "Throughput (RPS)",
       "type": "timeseries",
       "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
+        "type": "prometheus"
       },
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\"}[$__rate_interval])) by (http_route, http_response_status_code) or sum(rate(http_server_duration_seconds_count{service_name=\"${service_name}\"}[$__rate_interval])) by (http_route, http_status_code)",
+          "expr": "sum(rate(http_server_request_duration_seconds_count{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (http_route, http_response_status_code) or sum(rate(http_server_duration_seconds_count{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (http_route, http_status_code)",
           "legendFormat": "{{http_route}} (Status: {{http_response_status_code}}{{http_status_code}})",
           "range": true,
           "refId": "A"
@@ -66,36 +64,72 @@
       "collapsed": false,
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 4,
+      "title": "Active Requests",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(http_server_active_requests{service_name=\"EndlessParties.Events.Api\"}) by (http_route)",
+          "legendFormat": "{{http_route}} Active",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 5
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
         "y": 0
       },
       "id": 2,
       "title": "Latency Percentiles (p95 / p99)",
       "type": "timeseries",
       "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
+        "type": "prometheus"
       },
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(http_server_request_duration_seconds_bucket{service_name=\"${service_name}\"}[$__rate_interval])) by (le)) or histogram_quantile(0.95, sum(rate(http_server_duration_seconds_bucket{service_name=\"${service_name}\"}[$__rate_interval])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_request_duration_seconds_bucket{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (le)) or histogram_quantile(0.95, sum(rate(http_server_duration_seconds_bucket{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (le))",
           "legendFormat": "p95 Latency",
           "range": true,
           "refId": "A"
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{service_name=\"${service_name}\"}[$__rate_interval])) by (le)) or histogram_quantile(0.99, sum(rate(http_server_duration_seconds_bucket{service_name=\"${service_name}\"}[$__rate_interval])) by (le))",
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (le)) or histogram_quantile(0.99, sum(rate(http_server_duration_seconds_bucket{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) by (le))",
           "legendFormat": "p99 Latency",
           "range": true,
           "refId": "B"
@@ -117,25 +151,23 @@
       "collapsed": false,
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 0
       },
       "id": 3,
       "title": "Error Rate (%)",
       "type": "timeseries",
       "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
+        "type": "prometheus"
       },
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+            "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "(sum(rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\", http_response_status_code=~\"5..\"}[$__rate_interval])) or sum(rate(http_server_duration_seconds_count{service_name=\"${service_name}\", http_status_code=~\"5..\"}[$__rate_interval])) or vector(0)) / (sum(rate(http_server_request_duration_seconds_count{service_name=\"${service_name}\"}[$__rate_interval])) or sum(rate(http_server_duration_seconds_count{service_name=\"${service_name}\"}[$__rate_interval]))) * 100",
+          "expr": "(sum(rate(http_server_request_duration_seconds_count{service_name=\"EndlessParties.Events.Api\", http_response_status_code=~\"5..\"}[$__rate_interval])) or sum(rate(http_server_duration_seconds_count{service_name=\"EndlessParties.Events.Api\", http_status_code=~\"5..\"}[$__rate_interval])) or vector(0)) / (sum(rate(http_server_request_duration_seconds_count{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval])) or sum(rate(http_server_duration_seconds_count{service_name=\"EndlessParties.Events.Api\"}[$__rate_interval]))) * 100",
           "legendFormat": "HTTP 5xx Error Rate",
           "range": true,
           "refId": "A"
@@ -159,7 +191,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 39,
+  "schemaVersion": 38,
   "tags": ["dotnet", "otel", "red"],
   "time": {
     "from": "now-15m",
@@ -169,42 +201,7 @@
   "timezone": "browser",
   "title": "RED Metrics: EndlessParties.Events.Api",
   "variables": {
-    "list": [
-      {
-        "current": {
-          "selected": true,
-          "value": "prometheus"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": "Datasource",
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "type": "datasource"
-      },
-      {
-        "current": {
-          "selected": true,
-          "text": "EndlessParties.Events.Api",
-          "value": "EndlessParties.Events.Api"
-        },
-        "hide": 0,
-        "name": "service_name",
-        "options": [
-          {
-            "selected": true,
-            "text": "EndlessParties.Events.Api",
-            "value": "EndlessParties.Events.Api"
-          }
-        ],
-        "query": "EndlessParties.Events.Api",
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
-  "version": 1
+  "version": 6
 }

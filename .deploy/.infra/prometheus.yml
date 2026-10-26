@@ -2,17 +2,17 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: events-api-service
+  - job_name: events-api
     static_configs:
-      - targets: ["events-api-service:8080"]
+      - targets: ["events-api:8080"]
     metrics_path: /metrics
 
-  - job_name: bookings-api-service
+  - job_name: bookings-api
     static_configs:
-      - targets: ["bookings-api-service:8080"]
+      - targets: ["bookings-api:8080"]
     metrics_path: /metrics
 
-  - job_name: identity-api-service
+  - job_name: identity-api
     static_configs:
-      - targets: ["identity-api-service:8080"]
+      - targets: ["identity-api:8080"]
     metrics_path: /metrics

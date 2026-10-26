@@ -10,7 +10,7 @@ internal class ObservabilitySettingsValidator : AbstractValidator<ObservabilityS
     /// <inheritdoc />
     public ObservabilitySettingsValidator()
     {
-        RuleFor(x => x.OltpEndpoint)
+        RuleFor(x => x.OtlpEndpoint)
             .NotEmpty();
 
         RuleFor(x => x.ServiceName)

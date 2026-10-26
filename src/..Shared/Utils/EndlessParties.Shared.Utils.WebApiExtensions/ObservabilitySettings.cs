@@ -5,12 +5,12 @@ namespace EndlessParties.Shared.Utils.WebApiExtensions;
 /// <summary>
 /// Настройки наблюдаемости
 /// </summary>
-internal class ObservabilitySettings
+public class ObservabilitySettings
 {
     /// <summary>
     /// Адрес отправления данных для OpenTelemetry
     /// </summary>
-    public required string OltpEndpoint { get; init; }
+    public required string OtlpEndpoint { get; init; }
 
     /// <summary>
     /// Наименование сервиса
