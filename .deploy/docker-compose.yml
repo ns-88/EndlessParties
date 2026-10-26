@@ -1,6 +1,12 @@
 include:
   - .infra/docker-compose.kafka.yml
   - .infra/docker-compose.redis.yml
+  - .infra/docker-compose.jaeger.yml
+  - .infra/docker-compose.prometheus.yml
+  - .infra/docker-compose.grafana.yml
   - identity-api/docker-compose.identity-api.yaml
+  - identity-api/docker-compose.identity-db.yaml
   - events-api/docker-compose.events-api.yaml
+  - events-api/docker-compose.events-db.yaml
   - bookings-api/docker-compose.bookings-api.yaml
+  - bookings-api/docker-compose.bookings-db.yaml

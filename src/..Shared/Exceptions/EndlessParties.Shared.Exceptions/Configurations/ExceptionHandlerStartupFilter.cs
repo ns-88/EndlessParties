@@ -6,7 +6,7 @@ namespace EndlessParties.Shared.Exceptions.Configurations;
 /// <summary>
 /// Фильтр запуска для включения обработчика исключений
 /// </summary>
-internal class ExceptionHandlerFilter : IStartupFilter
+internal class ExceptionHandlerStartupFilter : IStartupFilter
 {
     /// <inheritdoc />
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
