@@ -18,7 +18,7 @@ public static class WebApplicationBuilderExtensions
     {
         builder.Services
             .AddProblemDetails()
-            .AddTransient<IStartupFilter, ExceptionHandlerFilter>()
+            .AddTransient<IStartupFilter, ExceptionHandlerStartupFilter>()
             .AddSingleton<IExceptionHandler, ExceptionHandler>()
             .ConfigureOptions<ConfigureMvcOptions>();
 

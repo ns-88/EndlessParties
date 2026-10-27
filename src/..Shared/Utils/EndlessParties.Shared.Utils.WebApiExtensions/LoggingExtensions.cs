@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Serilog;
+using Serilog.Formatting.Compact;
 
 namespace EndlessParties.Shared.Utils.WebApiExtensions;
 
@@ -17,7 +18,7 @@ public static class LoggingExtensions
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Console(new CompactJsonFormatter())
                 .CreateBootstrapLogger();
         }
     }
@@ -33,6 +34,10 @@ public static class LoggingExtensions
             {
                 loggerConfiguration
                     .ReadFrom.Configuration(builder.Configuration)
+                    .Enrich.FromLogContext()
+                    .Enrich.WithMachineName()
+                    .Enrich.WithThreadId()
+                    .WriteTo.Console(new CompactJsonFormatter())
                     .ReadFrom.Services(services);
             });
 

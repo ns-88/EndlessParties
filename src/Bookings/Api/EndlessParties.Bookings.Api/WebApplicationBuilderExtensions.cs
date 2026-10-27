@@ -22,6 +22,7 @@ public static class WebApplicationBuilderExtensions
     {
         builder
             .AddSerilog()
+            .AddObservability()
             .AddApplicationExceptions()
             .AddApplicationValidations()
             .AddDependencyValidation();
@@ -42,7 +43,7 @@ public static class WebApplicationBuilderExtensions
     /// </summary>
     private static void AddDependencyValidation(this WebApplicationBuilder builder)
     {
-        if (!builder.Environment.IsDevelopment())
+        if (!builder.Environment.IsEnvironment("local"))
         {
             return;
         }

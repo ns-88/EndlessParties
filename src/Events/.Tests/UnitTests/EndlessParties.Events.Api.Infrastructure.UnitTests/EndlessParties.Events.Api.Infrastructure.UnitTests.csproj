@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\..Shared\Utils\EndlessParties.Shared.Utils.UnitTests\EndlessParties.Shared.Utils.UnitTests.csproj" />
+		<ProjectReference Include="..\..\..\..\..Shared\Utils\Tests\EndlessParties.Shared.Utils.UnitTests\EndlessParties.Shared.Utils.UnitTests.csproj" />
 		<ProjectReference Include="..\..\..\.Shared\Data\EndlessParties.Events.Data\EndlessParties.Events.Data.csproj" />
 	</ItemGroup>
 

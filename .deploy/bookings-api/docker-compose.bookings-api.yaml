@@ -14,6 +14,7 @@ services:
       - ConnectionStrings__Postgres__Bookings=Host=bookings-db;Port=5432;Database=endless_parties_bookings;Username=${POSTGRES_DB_USER};Password=${POSTGRES_DB_PASSWORD}
       - Kafka__BrokerAddress=kafka:9092
       - Identity__JwtToken__SecretKey=${JWT_SECRET_KEY}
+      - Observability__OtlpEndpoint=${OTLP_ENDPOINT}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthcheck/health || exit 1"]
       interval: 10s
@@ -25,26 +26,3 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
-
-  bookings-db:
-    image: 'postgres:16-alpine'
-    container_name: endless-parties-bookings-db
-    restart: always
-    environment:
-      POSTGRES_DB: endless_parties_bookings
-      POSTGRES_USER: ${POSTGRES_DB_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
-    ports:
-      - '5434:5432'
-    volumes:
-      - 'bookings-db-data:/var/lib/postgresql/data'
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - pg_isready -U postgres
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-volumes:
-  bookings-db-data:
